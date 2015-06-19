@@ -1,0 +1,54 @@
+.completed{
+	text-decoration: line-through;
+}
+
+.task-block{
+	border:1px solid;
+	background: #333333;
+	padding: 10px 15px;
+	box-sizing:border-box;
+	font-family: 'Trebuchet MS';
+}
+
+	h1.title{
+		color:#e0e0e0;
+		font-size: 20px;
+		text-align: center;
+	}
+
+	ul{
+		padding: 0;
+	}
+
+		ul li{
+			margin-top: 5px;
+			border-radius: 5px;
+			display: inline-block;
+			white-space:nowrap;
+			width: 100%;
+			background: #f7f7f7;
+			padding: 3px 10px;
+			box-sizing:border-box;
+			color: #454545;
+			cursor:pointer;
+		}
+
+input.new-task{
+	height: 30px;
+	background: #454545;
+	padding-left: 10px;
+	box-sizing:border-box;
+	font-family: 'Trebuchet MS';
+	font-size: 14px;
+	color:#f7f7f7;
+}
+
+.control{
+	width: 100%;
+}
+
+.fixed{
+	position:fixed;
+	bottom: 0;
+	left:10;
+}
