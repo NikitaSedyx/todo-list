@@ -1,0 +1,19 @@
+{
+  "name": "todo",
+  "version": "0.0.0",
+  "authors": [
+    "Nikita Sedyh <nikita.sedyx.94@gmail.com>"
+  ],
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "1.3.16",
+    "angular-resource": "1.3.16",
+    "underscore": "~1.8.3",
+    "bootstrap": "~3.3.5",
+    "angular-mocks": "1.3.16"
+  }
+}
