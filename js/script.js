@@ -1,41 +1,51 @@
-(function(){
-  app = angular.module("todo",['ngResource'])
+;(function(){
+  app = angular.module("todo",['ngResource', 'ui.router'])
 
-  app.service("TaskService", function($http){
+  app.config(function($stateProvider, $urlRouterProvider) {
 
-    this.getAllTasks = function(){
-      return $http.get("/tasks").then(function(res){
-        return _.reduceRight(res.data, function(a, b) { return a.concat(b); }, []);
+    $urlRouterProvider.otherwise("/list")
+
+    $stateProvider
+      .state('list', {
+        url: '/list',
+        templateUrl: '../task-list.html'
       })
-      
-    }
-
-    this.addNewTask = function(newTask){
-      return $http.post("/tasks", newTask);
-    }
-
-    this.changeTaskState = function(task){
-      return $http.put("/tasks", task);
-    }
-
-  })
+      .state('edit', {
+        url:"/edit",
+        params:{task:null},
+        templateUrl: '../edit-task.html'
+      })
+  });
 
   app.service("TaskResource", function($resource){
     return $resource("/tasks", {}, {
       getAllTasks:{
         method:"GET",
-        isArray:true,
-        transformResponse: function(data, headers){
-          return _.reduceRight(JSON.parse(data), function(a, b) { return a.concat(b); }, []);
-        }
+        isArray:true
       },
-      changeTaskState:{
+      editTask:{
         method:"PUT"        
       }
     });
   })
 
-  app.controller("TaskController",function($scope, TaskResource){
+  app.service("TaskFilter", function(){
+    var filterState = "all";
+
+    var filters = {
+      all: function(){return true},
+      active: function(task){return !task.isCompleted},
+      completed: function(task){return task.isCompleted}
+    }
+
+    this.filterTasks = function(tasks, state){
+      filterState = state || filterState;
+      return tasks.filter(filters[filterState]);
+    }
+
+  })
+
+  app.controller("TaskController",function($scope, $state, TaskResource, TaskFilter){
 
     var allTasks = [];
 
@@ -44,47 +54,41 @@
       $scope.tasks = allTasks
     })
 
-    var filters = {
-      all: function(){return true},
-      active: function(task){return !task.isCompleted},
-      completed: function(task){return task.isCompleted}
-    }
-
-    $scope.filterState = "all";
-
-    $scope.addTask = function(event){
-      if(event.keyCode == 13) {
-        var length = allTasks.length;
-        var newTask = {description:$scope.newTask, isCompleted: false, id:"id"+length};
-        TaskResource.save(newTask).$promise.then(function(){
-          allTasks= [newTask].concat(allTasks);
-          $scope.newTask = "";
-          $scope.filter();          
-        })
-
-        /*TaskService.addNewTask(newTask).then(function(){
-          allTasks= [newTask].concat(allTasks);
-          $scope.newTask = "";
-          $scope.filter();
-        })*/
-      }
+    $scope.addTask = function(){
+      var length = allTasks.length;
+      var newTask = {description:$scope.newTask, deadline: new Date(), isCompleted: false, id:"id"+length};
+      TaskResource.save(newTask).$promise.then(function(){
+        allTasks.push(newTask)
+        $scope.newTask = "";
+        $scope.filter();          
+      })
     }
 
     $scope.filter = function(state){
-      $scope.filterState = state || $scope.filterState;
-      $scope.tasks = allTasks.filter(filters[$scope.filterState]);
+      $scope.tasks = TaskFilter.filterTasks(allTasks, state)
     }
 
-    $scope.changeState = function(id){
-      var task = _.find(allTasks, function(task) { return task.id === id });
-      TaskResource.changeTaskState(task).$promise.then(function(){
-        task.isCompleted = !task.isCompleted;
-        $scope.filter();        
+    $scope.edit = function(task){
+      $state.go("edit", {task:task})
+    }
+
+  })
+
+  app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
+
+    if(!$stateParams.task){
+      $state.go("list")
+    }
+
+    $scope.task = JSON.parse(JSON.stringify($stateParams.task));
+
+    $scope.task.deadline = new Date($scope.task.deadline);
+
+    $scope.saveEditing = function(){
+      
+      TaskResource.editTask({original: $stateParams.task, edited: $scope.task}).$promise
+      .then(function(){
       })
-      /*TaskService.changeTaskState(task).then(function(){
-        task.isCompleted = !task.isCompleted;
-        $scope.filter();
-      })*/
     }
   })
 

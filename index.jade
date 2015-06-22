@@ -6,43 +6,21 @@ html(ng-app="todo")
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
 
-    link(href="bower_components/bootstrap/docs/assets/css/bootstrap.min.css", rel="stylesheet")
-    link(href="bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css", rel="stylesheet")
+    link(href="bower_components/bootstrap/dist/css/bootstrap.css", rel="stylesheet")
     link(href="css/index.css", rel="stylesheet")
 
   body
     .container-fluid
-      .row-fluid
-        .span4.offset4.task-block(ng-controller="TaskController")
+      .row
+        .col-md-4.col-md-offset-4.task-block
           h1.title ToDo
-          .row-fluid
-            input.new-task.span12(
-              type="text",
-              placeholder="Type your task",
-              ng-model="newTask",
-              ng-keypress="addTask($event)"
-            )
-          .row-fluid
-            ul#tasks.unstyled
-              li(
-                ng-repeat="task in tasks",
-                ng-class="{completed:task.isCompleted}",
-                ng-click="changeState(task.id)"
-              ) {{task.description}}
-          .row-fluid
-            .btn-group.span12(data-toggle="buttons-radio")
-              .row-fluid
-                .span4
-                  button#active.btn.control(ng-click="filter('active')") active
-                .span4
-                  button#completed.btn.control(ng-click="filter('completed')") completed
-                .span4
-                  button#all.btn.control(ng-click="filter('all')") all
+          div(ui-view)
 
-    script(src="bower_components/jquery/dist/jquery.js")
-    script(src="bower_components/bootstrap/docs/assets/js/bootstrap.js")
-    script(src="bower_components/angular/angular.js")
-    script(src="bower_components/angular-resource/angular-resource.js")
-    script(src="bower_components/underscore/underscore.js")
-    script(src="js/script.js")
+    script(src="bower_components/jquery/dist/jquery.min.js")
+    script(src="bower_components/bootstrap/dist/js/bootstrap.js")
+    script(src="bower_components/angular/angular.min.js")
+    script(src="bower_components/angular-resource/angular-resource.min.js")
+    script(src="bower_components/angular-ui-router/release/angular-ui-router.min.js")
+    script(src="bower_components/underscore/underscore-min.js")
+    script(src="js/index.js")
     
