@@ -75,10 +75,6 @@
       $scope.tasks = TaskFilter.filterTasks(allTasks, state)
     }
 
-    $scope.edit = function(task){
-      $state.go("edit", {task:task})
-    }
-
   })
 
   app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
