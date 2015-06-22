@@ -2,20 +2,20 @@
   .row
     form(ng-submit="addTask()")
       input.form-control.input-task(
-        type="text",
-        placeholder="Type your task",
+        type="text"
+        placeholder="Type your task"
         ng-model="newTask"
       )
       input.btn.add-task(
-        type="submit",
+        type="submit"
         value="Add task"
       )
   .row
     ul#tasks.unstyled
       li(
-        ng-repeat="task in tasks | orderBy : '-isCompleted' : 'deadline'",
-        ng-class="{completed:task.isCompleted}",
-        ng-click="edit(task)"
+        ng-repeat="task in tasks | orderBy : '-deadline' : '-isCompleted'"
+        ng-class="{completed:task.isCompleted}"
+        ui-sref="edit({id:task.id})"
       ) {{task.description}}
 
   .row
@@ -29,4 +29,4 @@
       label.btn.control(ng-click="filter('all')")
         input#All(type="radio", name="options") 
         |All
-  
+  //ng-click="edit(task.id)"
