@@ -1,0 +1,32 @@
+.task-list(ng-controller="TaskController")
+  .row
+    form(ng-submit="addTask()")
+      input.form-control.input-task(
+        type="text"
+        placeholder="Type your task"
+        ng-model="newTask"
+      )
+      input.btn.add-task(
+        type="submit"
+        value="Add task"
+      )
+  .row
+    ul#tasks.unstyled
+      li(
+        ng-repeat="task in tasks | orderBy : '-deadline' : '-isCompleted'"
+        ng-class="{completed:task.isCompleted}"
+        ui-sref="edit({id:task.id})"
+      ) {{task.description}}
+
+  .row
+    .btn-group.controls(data-toggle="buttons")
+      label.btn.control(ng-click="filter('active')")
+        input#active(type="radio", name="options") 
+        |Active
+      label.btn.control(ng-click="filter('completed')")
+        input#completed(type="radio", name="options") 
+        |Completed
+      label.btn.control(ng-click="filter('all')")
+        input#All(type="radio", name="options") 
+        |All
+  //ng-click="edit(task.id)"

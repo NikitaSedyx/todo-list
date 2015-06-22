@@ -1,0 +1,27 @@
+.task-edit(ng-controller="EditTaskController")
+  .row
+    form
+      .form-group
+        label Description of task
+        input.form-control(
+          type="text"
+          ng-model="task.description"
+        )
+        p.help-block Change the description of task
+      .form-group
+        label Deadline
+        input.form-control(
+          type="date"
+          ng-model="task.deadline"
+        )
+        p.help-block Change the end date
+      .checkbox
+        label
+          input(
+            type="checkbox"
+            ng-model="task.isCompleted"
+            ng-checked="task.isCompleted"
+          )
+          | Is task comleted?
+      button.btn(ng-click="saveEditing()") Save
+      button.btn(ui-sref="list") Exit

@@ -20,10 +20,18 @@
     "karma": "~0.12.36",
     "karma-firefox-launcher": "~0.1.6",
     "karma-jasmine": "~0.3.5",
-    "jasmine": "~2.3.1"
+    "jasmine": "~2.3.1",
+    "underscore": "~1.8.3"
   },
   "private": true,
   "devDependencies": {
-    "bower": "~1.4.1"
+    "bower": "~1.4.1",
+    "gulp": "~3.9.0",
+    "gulp-concat": "~2.5.2",
+    "gulp-csso": "~1.0.0",
+    "gulp-jade": "~1.0.1",
+    "gulp-rename": "~1.2.2",
+    "gulp-uglify": "~1.2.0",
+    "gulp-jshint": "~1.11.0"
   }
 }

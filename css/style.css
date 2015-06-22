@@ -1,0 +1,92 @@
+.completed{
+	text-decoration: line-through;
+}
+
+.task-block{
+	background: #333333;
+	padding: 10px 15px;
+	box-sizing:border-box;
+	font-family: 'Trebuchet MS';
+}
+
+.task-list, .task-edit{
+	padding-left:3%;
+	padding-right: 3%;
+}
+
+	.task-edit label{
+		color:#F7F7F7;
+	}
+
+	h1.title{
+		color:#e0e0e0;
+		font-size: 20px;
+		text-align: center;
+	}
+
+	ul{
+		padding: 0;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+		ul li{
+			margin-top: 5px;
+			border-radius: 5px;
+			display: inline-block;
+			white-space:nowrap;
+			width: 100%;
+			background: #f7f7f7;
+			padding: 3px 10px;
+			box-sizing:border-box;
+			color: #454545;
+			cursor:pointer;
+		}
+
+input.new-task{
+	height: 34px;
+	background: #454545;
+	padding-left: 10px;
+	box-sizing:border-box;
+	font-family: 'Trebuchet MS';
+	font-size: 14px;
+	color:#f7f7f7;
+	width: 100%;
+}
+
+.input-task{
+	width: 75%;
+	margin-right: 5%;
+	float: left;
+}
+
+.add-task{
+	width:20%;
+}
+
+.controls{
+	display: block;
+}
+
+	.control{
+		background: #F7F7F7;
+		width: 32%;
+	}
+
+		.controls .control:first-child{
+			margin-left: 2%;
+		}
+
+		.control:last-child{
+			margin-right: 2%;
+		}
+
+.fixed{
+	position:fixed;
+	bottom: 0;
+	left:10;
+}
+
+.aaa{
+	color:#fff;
+}
