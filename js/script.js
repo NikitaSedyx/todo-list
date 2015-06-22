@@ -11,17 +11,24 @@
         templateUrl: '../task-list.html'
       })
       .state('edit', {
-        url:"/edit",
-        params:{task:null},
+        url:"/edit/:id",
         templateUrl: '../edit-task.html'
       })
   });
 
   app.service("TaskResource", function($resource){
-    return $resource("/tasks", {}, {
+    return $resource("/tasks/:id", {id:"@id"}, {
       getAllTasks:{
         method:"GET",
-        isArray:true
+        isArray:true,
+        params: {id:null}
+      },
+      createTask:{
+        method: "POST",
+        params: {id:null}
+      },
+      getTask:{
+        method:"GET"
       },
       editTask:{
         method:"PUT"        
@@ -57,7 +64,7 @@
     $scope.addTask = function(){
       var length = allTasks.length;
       var newTask = {description:$scope.newTask, deadline: new Date(), isCompleted: false, id:"id"+length};
-      TaskResource.save(newTask).$promise.then(function(){
+      TaskResource.createTask(newTask).$promise.then(function(){
         allTasks.push(newTask)
         $scope.newTask = "";
         $scope.filter();          
@@ -76,20 +83,17 @@
 
   app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
 
-    if(!$stateParams.task){
-      $state.go("list")
-    }
+    console.log($stateParams.id)
 
-    $scope.task = JSON.parse(JSON.stringify($stateParams.task));
-
-    $scope.task.deadline = new Date($scope.task.deadline);
+    var task = TaskResource.getTask({id: $stateParams.id}, function(){
+      $scope.task = task
+      $scope.task.deadline = new Date($scope.task.deadline);
+    })
 
     $scope.saveEditing = function(){
-      
-      TaskResource.editTask({original: $stateParams.task, edited: $scope.task}).$promise
-      .then(function(){
-      })
+      TaskResource.editTask($scope.task)
     }
+
   })
 
 })();
