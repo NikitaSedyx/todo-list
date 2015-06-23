@@ -57,12 +57,29 @@ app.put("/tasks/:id", function(req, res){
   var editedTask = req.body
   fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
     tasks = JSON.parse(buffer)
-    var task = _.find(tasks, function(task, index){
-      return task.id === taskId ? index : null//req.params.id
+    var task = _.find(tasks, function(task){
+      return task.id === taskId
     })  
     tasks[_.indexOf(tasks, task)] = editedTask
     fs.writeFile('./tasks.json', JSON.stringify(tasks), 'utf8', function (err) {
-        if (err) return console.log(err);
+      if (err) return console.log(err);
+    });
+  })
+})
+
+app.delete("/tasks/:id", function(req, res){
+  var taskId = req.params.id
+  fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
+    tasks = JSON.parse(buffer)
+    var task = _.find(tasks, function(task){
+      return task.id === taskId
+    })  
+    tasks.splice(_.indexOf(tasks, task),1)
+    fs.writeFile('./tasks.json', JSON.stringify(tasks), 'utf8', function (err) {
+      if (err) return console.log(err);
+      fs.readFile('./tasks.json', function(err, buffer){
+        isFirst = !JSON.parse(buffer).length ? true : false;
+      })
     });
   })
 })

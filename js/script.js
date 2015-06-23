@@ -52,7 +52,22 @@
 
   })
 
-  app.controller("TaskController",function($scope, $state, TaskResource, TaskFilter){
+  app.factory("IdGenerator", function(){
+    var generateId = function(tasks){
+      var ids = _.map(tasks, function(task){
+        return +task.id.slice(2,task.id.length)
+      })
+      var maxId = _.max(ids)
+      if (maxId === -Infinity) maxId = 0
+      return maxId
+    }
+
+    return {
+      generateId : generateId
+    }
+  })
+
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, IdGenerator){
 
     var allTasks = [];
 
@@ -62,12 +77,16 @@
     })
 
     $scope.addTask = function(){
-      var length = allTasks.length;
-      var newTask = {description:$scope.newTask, deadline: new Date(), isCompleted: false, id:"id"+length};
+      var newTask = {
+        description:$scope.newTask, 
+        deadline: new Date(), 
+        isCompleted: false, 
+        id:"id"+ (IdGenerator.generateId(allTasks) + 1)
+      };
       TaskResource.createTask(newTask).$promise.then(function(){
         allTasks.push(newTask)
         $scope.newTask = "";
-        $scope.filter();          
+        $scope.filter();      
       })
     }
 
@@ -79,8 +98,6 @@
 
   app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
 
-    console.log($stateParams.id)
-
     var task = TaskResource.getTask({id: $stateParams.id}, function(){
       $scope.task = task
       $scope.task.deadline = new Date($scope.task.deadline);
@@ -88,6 +105,12 @@
 
     $scope.saveEditing = function(){
       TaskResource.editTask($scope.task)
+      $state.go("list")
+    }
+
+    $scope.deleteTask = function(){
+      TaskResource.remove({id: $stateParams.id})
+      $state.go("list")
     }
 
   })
