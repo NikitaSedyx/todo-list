@@ -3,6 +3,9 @@ var bodyParser = require('body-parser');
 var fs = require("fs");
 var _ = require("underscore");
 
+var httpProxy = require('http-proxy');
+var apiProxy = httpProxy.createProxyServer();
+
 var tasksJSON = require("./tasks.json");
 var isFirst = !tasksJSON.length ? true : false;
 
@@ -14,8 +17,27 @@ app.use(bodyParser.json());
 app.get("/", function(req, res){
   res.sendFile(__dirname + "/build/index.html")
 });
+ 
+app.all("/*", function(req, res){ 
 
-app.get("/tasks", function(req, res){
+  req.removeAllListeners('data');
+  req.removeAllListeners('end');
+
+  process.nextTick(function () {
+    if(req.body) {
+      req.emit('data', JSON.stringify(req.body));
+    }
+    req.emit('end');
+  });
+
+  apiProxy.web(req, res, { target: 'http://localhost:8080'});
+});
+
+app.listen(8000);
+
+
+
+/*app.get("/tasks", function(req, res){
   fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
     res.send(buffer);
   })
@@ -57,14 +79,31 @@ app.put("/tasks/:id", function(req, res){
   var editedTask = req.body
   fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
     tasks = JSON.parse(buffer)
-    var task = _.find(tasks, function(task, index){
-      return task.id === taskId ? index : null//req.params.id
+    var task = _.find(tasks, function(task){
+      return task.id === taskId
     })  
     tasks[_.indexOf(tasks, task)] = editedTask
     fs.writeFile('./tasks.json', JSON.stringify(tasks), 'utf8', function (err) {
-        if (err) return console.log(err);
+      if (err) return console.log(err);
     });
   })
 })
 
-app.listen(8000);
+app.delete("/tasks/:id", function(req, res){
+  var taskId = req.params.id
+  fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
+    tasks = JSON.parse(buffer)
+    var task = _.find(tasks, function(task){
+      return task.id === taskId
+    })  
+    tasks.splice(_.indexOf(tasks, task),1)
+    fs.writeFile('./tasks.json', JSON.stringify(tasks), 'utf8', function (err) {
+      if (err) return console.log(err);
+      fs.readFile('./tasks.json', function(err, buffer){
+        isFirst = !JSON.parse(buffer).length ? true : false;
+      })
+    });
+  })
+})*/
+
+

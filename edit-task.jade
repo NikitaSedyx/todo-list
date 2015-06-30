@@ -19,9 +19,10 @@
         label
           input(
             type="checkbox"
-            ng-model="task.isCompleted"
-            ng-checked="task.isCompleted"
+            ng-model="task.is_completed"
+            ng-checked="task.is_completed"
           )
           | Is task comleted?
       button.btn(ng-click="saveEditing()") Save
+      button.btn(ng-click="deleteTask()") Delete
       button.btn(ui-sref="list") Exit

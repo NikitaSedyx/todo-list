@@ -13,8 +13,8 @@
   .row
     ul#tasks.unstyled
       li(
-        ng-repeat="task in tasks | orderBy : '-deadline' : '-isCompleted'"
-        ng-class="{completed:task.isCompleted}"
+        ng-repeat="task in tasks | orderBy : '-deadline' : '-is_completed'"
+        ng-class="{completed:task.is_completed}"
         ui-sref="edit({id:task.id})"
       ) {{task.description}}
 
@@ -29,4 +29,3 @@
       label.btn.control(ng-click="filter('all')")
         input#All(type="radio", name="options") 
         |All
-  //ng-click="edit(task.id)"

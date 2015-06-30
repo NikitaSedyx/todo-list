@@ -1,6 +1,10 @@
 ;(function(){
   app = angular.module("todo",['ngResource', 'ui.router'])
 
+  app.config(['$resourceProvider', function($resourceProvider) {
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+  }]);
+
   app.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/list")
@@ -16,16 +20,19 @@
       })
   });
 
-  app.service("TaskResource", function($resource){
-    return $resource("/tasks/:id", {id:"@id"}, {
+  app.constant("URLConstants", {
+    BASE:"/api/v1",
+    ITEM:"/item/"
+  })
+
+  app.service("TaskResource", function($resource, URLConstants){
+    return $resource(URLConstants.BASE + URLConstants.ITEM + ":id/", {id:"@id"}, {
       getAllTasks:{
         method:"GET",
-        isArray:true,
         params: {id:null}
       },
       createTask:{
-        method: "POST",
-        params: {id:null}
+        method: "POST"
       },
       getTask:{
         method:"GET"
@@ -36,13 +43,29 @@
     });
   })
 
+  app.service("TaskStorage", function(TaskResource){
+    var tasks = []
+
+    this.setTasks = function(initTasks){
+      tasks = initTasks
+    }
+
+    this.getTasks = function(){
+      return tasks
+    }
+
+    this.addTask = function(task){
+      tasks.push(task)
+    }
+  })
+
   app.service("TaskFilter", function(){
     var filterState = "all";
 
     var filters = {
       all: function(){return true},
-      active: function(task){return !task.isCompleted},
-      completed: function(task){return task.isCompleted}
+      active: function(task){return !task.is_completed},
+      completed: function(task){return task.is_completed}
     }
 
     this.filterTasks = function(tasks, state){
@@ -52,34 +75,32 @@
 
   })
 
-  app.controller("TaskController",function($scope, $state, TaskResource, TaskFilter){
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage){
 
-    var allTasks = [];
-
-    var rTask = TaskResource.getAllTasks(function(){
-      allTasks = rTask;
-      $scope.tasks = allTasks
+    TaskResource.getAllTasks().$promise.then(function(res){
+      TaskStorage.setTasks(res.objects)
+      $scope.tasks = TaskStorage.getTasks()
     })
 
     $scope.addTask = function(){
-      var length = allTasks.length;
-      var newTask = {description:$scope.newTask, deadline: new Date(), isCompleted: false, id:"id"+length};
+      var newTask = {
+        description:$scope.newTask, 
+        user: "/api/v1/user/1/"
+      };
       TaskResource.createTask(newTask).$promise.then(function(){
-        allTasks.push(newTask)
+        TaskStorage.addTask(newTask)
         $scope.newTask = "";
-        $scope.filter();          
+        $scope.filter();  
       })
     }
 
     $scope.filter = function(state){
-      $scope.tasks = TaskFilter.filterTasks(allTasks, state)
+      $scope.tasks = TaskFilter.filterTasks(TaskStorage.getTasks(), state)
     }
 
   })
 
   app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
-
-    console.log($stateParams.id)
 
     var task = TaskResource.getTask({id: $stateParams.id}, function(){
       $scope.task = task
@@ -88,6 +109,12 @@
 
     $scope.saveEditing = function(){
       TaskResource.editTask($scope.task)
+      $state.go("list")
+    }
+
+    $scope.deleteTask = function(){
+      TaskResource.remove({id: $stateParams.id})
+      $state.go("list")
     }
 
   })
