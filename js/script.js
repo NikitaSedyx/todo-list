@@ -20,8 +20,13 @@
       })
   });
 
-  app.service("TaskResource", function($resource){
-    return $resource("/api/v1/item/:id/", {id:"@id"}, {
+  app.constant("URLConstants", {
+    BASE:"/api/v1",
+    ITEM:"/item/"
+  })
+
+  app.service("TaskResource", function($resource, URLConstants){
+    return $resource(URLConstants.BASE + URLConstants.ITEM + ":id/", {id:"@id"}, {
       getAllTasks:{
         method:"GET",
         params: {id:null}
