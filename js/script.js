@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router', 'ngCookies'])
+  app = angular.module("todo", ['ngResource', 'ui.router'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -87,14 +87,6 @@
     var user = null;
 
     this.getUser = function(){
-      return user
-    }
-
-    this.initUser = function(initUser){
-      user = initUser
-    }
-
-    this.setUser = function(){
       if (!user){
         $http.get(API.BASE + API.AUTH + "info/")
         .then(function(response){
@@ -102,11 +94,16 @@
             user = response.data
           }
         })
-      }
+      } 
+      return user 
+    }
+
+    this.setUser = function(initUser){
+      user = initUser
     }
 
     this.clearUser = function(){
-      this.user = null
+      user = null
     }
 
   })
@@ -132,7 +129,6 @@
     TaskResource.getAllTasks().$promise.then(function(res){
       TaskStorage.setTasks(res.objects)
       $scope.tasks = TaskStorage.getTasks()
-      SessionUser.setUser()
     })
 
     $scope.addTask = function(){
@@ -173,7 +169,7 @@
 
   app.controller("LoginController", function($scope, $http, $state, API, SessionUser){
 
-    if (SessionUser.user){
+    if (SessionUser.getUser()){
       $state.go("list")
     }
 
@@ -183,7 +179,7 @@
         password:$scope.password
       })
       .then(function(response){
-        SessionUser.initUser(response.data)
+        SessionUser.setUser(response.data)
         $state.go("list")
       })
       .catch(function(){
@@ -196,7 +192,7 @@
 
   app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
 
-    $scope.username = SessionUser.user;
+    $scope.username = SessionUser.getUser();
 
     $scope.$watch(function(){return SessionUser.getUser()}, function(n, o){
       $scope.username = n
@@ -209,7 +205,6 @@
         $state.go("login")
       })
     }
-
   })
 
 })();
