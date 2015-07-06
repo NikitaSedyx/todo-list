@@ -9,9 +9,14 @@
 	font-family: 'Trebuchet MS';
 }
 
-.task-list, .task-edit{
+.task-list, .task-edit, .login-block{
 	padding-left:3%;
 	padding-right: 3%;
+}
+
+.logout-block{
+	margin-bottom: 10px; 
+	float: right;
 }
 
 	.task-edit label{

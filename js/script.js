@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo",['ngResource', 'ui.router'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ngCookies'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -10,23 +10,46 @@
     $urlRouterProvider.otherwise("/list")
 
     $stateProvider
-      .state('list', {
-        url: '/list',
-        templateUrl: '../task-list.html'
+      .state("list", {
+        url: "/list",
+        templateUrl: "../task-list.html"
       })
-      .state('edit', {
+      .state("edit", {
         url:"/edit/:id",
-        templateUrl: '../edit-task.html'
+        templateUrl: "../edit-task.html"
+      })
+      .state("login", {
+        url:"/login",
+        templateUrl: "../login.html"
       })
   });
 
-  app.constant("URLConstants", {
-    BASE:"/api/v1",
-    ITEM:"/item/"
+  app.config(function ($httpProvider, $injector) {
+    $httpProvider.interceptors.push(function($q, $injector){
+      return {
+        responseError:function(rejection){
+          if (rejection.status !== 401) {
+            return rejection;
+          }
+          var state = $injector.get("$state")
+          state.go("login")
+          return $q.reject(rejection);
+        }
+      }
+    })
+
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken'
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'
   })
 
-  app.service("TaskResource", function($resource, URLConstants){
-    return $resource(URLConstants.BASE + URLConstants.ITEM + ":id/", {id:"@id"}, {
+  app.constant("API", {
+    BASE:"/api/v1",
+    ITEM:"/item/",
+    AUTH:"/auth/"
+  })
+
+  app.service("TaskResource", function($resource, API){
+    return $resource(API.BASE + API.ITEM + ":id/", {id:"@id"}, {
       getAllTasks:{
         method:"GET",
         params: {id:null}
@@ -43,7 +66,7 @@
     });
   })
 
-  app.service("TaskStorage", function(TaskResource){
+  app.service("TaskStorage", function(){
     var tasks = []
 
     this.setTasks = function(initTasks){
@@ -57,6 +80,26 @@
     this.addTask = function(task){
       tasks.push(task)
     }
+  })
+
+  app.service("UserStorage", function($http, API){
+
+    this.user = null;
+
+    this.setUser = function(){
+      var self = this
+      $http.get(API.BASE + API.AUTH + "info/")
+      .then(function(response){
+        if (response.data !== "AnonymousUser"){
+          self.user = response.data
+        }
+      })
+    }
+
+    this.clearUser = function(){
+      this.user = null
+    }
+
   })
 
   app.service("TaskFilter", function(){
@@ -75,17 +118,18 @@
 
   })
 
-  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage){
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, UserStorage){
 
     TaskResource.getAllTasks().$promise.then(function(res){
       TaskStorage.setTasks(res.objects)
       $scope.tasks = TaskStorage.getTasks()
+      UserStorage.setUser()
     })
 
     $scope.addTask = function(){
       var newTask = {
-        description:$scope.newTask, 
-        user: "/api/v1/user/1/"
+        description:$scope.newTask,
+        user: {}
       };
       TaskResource.createTask(newTask).$promise.then(function(){
         TaskStorage.addTask(newTask)
@@ -119,4 +163,45 @@
 
   })
 
+  app.controller("LoginController", function($scope, $http, $state, API, UserStorage){
+
+    if (UserStorage.user){
+      $state.go("list")
+    }
+
+    $scope.login = function(){
+      $http.post(API.BASE + API.AUTH + "login/", {
+        username:$scope.username, 
+        password:$scope.password
+      })
+      .then(function(response){
+        $state.go("list")
+      })
+      .catch(function(){
+        $scope.username = ""
+        $scope.password = ""
+      })
+    }
+
+  })
+
+  app.controller("LogoutController", function($scope, $http, $state, API, UserStorage){
+
+    $scope.username = UserStorage.user;
+
+    $scope.$watch(function(){return UserStorage.user}, function(n, o){
+      $scope.username = n
+    })
+
+    $scope.logout = function(){
+      $http.get(API.BASE + API.AUTH + "logout/")
+      .then(function(){
+        UserStorage.clearUser()
+        $state.go("login")
+      })
+    }
+
+  })
+
 })();
+
