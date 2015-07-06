@@ -82,18 +82,27 @@
     }
   })
 
-  app.service("UserStorage", function($http, API){
+  app.service("SessionUser", function($http, API){
 
-    this.user = null;
+    var user = null;
+
+    this.getUser = function(){
+      return user
+    }
+
+    this.initUser = function(initUser){
+      user = initUser
+    }
 
     this.setUser = function(){
-      var self = this
-      $http.get(API.BASE + API.AUTH + "info/")
-      .then(function(response){
-        if (response.data !== "AnonymousUser"){
-          self.user = response.data
-        }
-      })
+      if (!user){
+        $http.get(API.BASE + API.AUTH + "info/")
+        .then(function(response){
+          if (response.data !== "AnonymousUser"){
+            user = response.data
+          }
+        })
+      }
     }
 
     this.clearUser = function(){
@@ -118,18 +127,17 @@
 
   })
 
-  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, UserStorage){
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, SessionUser){
 
     TaskResource.getAllTasks().$promise.then(function(res){
       TaskStorage.setTasks(res.objects)
       $scope.tasks = TaskStorage.getTasks()
-      UserStorage.setUser()
+      SessionUser.setUser()
     })
 
     $scope.addTask = function(){
       var newTask = {
-        description:$scope.newTask,
-        user: {}
+        description:$scope.newTask
       };
       TaskResource.createTask(newTask).$promise.then(function(){
         TaskStorage.addTask(newTask)
@@ -163,9 +171,9 @@
 
   })
 
-  app.controller("LoginController", function($scope, $http, $state, API, UserStorage){
+  app.controller("LoginController", function($scope, $http, $state, API, SessionUser){
 
-    if (UserStorage.user){
+    if (SessionUser.user){
       $state.go("list")
     }
 
@@ -175,6 +183,7 @@
         password:$scope.password
       })
       .then(function(response){
+        SessionUser.initUser(response.data)
         $state.go("list")
       })
       .catch(function(){
@@ -185,18 +194,18 @@
 
   })
 
-  app.controller("LogoutController", function($scope, $http, $state, API, UserStorage){
+  app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
 
-    $scope.username = UserStorage.user;
+    $scope.username = SessionUser.user;
 
-    $scope.$watch(function(){return UserStorage.user}, function(n, o){
+    $scope.$watch(function(){return SessionUser.getUser()}, function(n, o){
       $scope.username = n
     })
 
     $scope.logout = function(){
       $http.get(API.BASE + API.AUTH + "logout/")
       .then(function(){
-        UserStorage.clearUser()
+        SessionUser.clearUser()
         $state.go("login")
       })
     }
