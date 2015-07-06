@@ -102,10 +102,6 @@
       user = initUser
     }
 
-    this.clearUser = function(){
-      user = null
-    }
-
   })
 
   app.service("TaskFilter", function(){
@@ -201,11 +197,10 @@
     $scope.logout = function(){
       $http.get(API.BASE + API.AUTH + "logout/")
       .then(function(){
-        SessionUser.clearUser()
+        SessionUser.setUser(null)
         $state.go("login")
       })
     }
   })
 
 })();
-
