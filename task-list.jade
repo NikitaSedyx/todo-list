@@ -1,3 +1,4 @@
+include ./logout.jade
 .task-list(ng-controller="TaskController")
   .row
     form(ng-submit="addTask()")
@@ -8,7 +9,7 @@
       )
       input.btn.add-task(
         type="submit"
-        value="Add task"
+        value="Add"
       )
   .row
     ul#tasks.unstyled

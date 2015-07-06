@@ -1,0 +1,12 @@
+.logout-block(ng-controller="LogoutController")
+  .dropdown
+    button#user-dropdown.btn.dropdown-toggle(
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="true"
+    ) {{username}}
+      span.caret
+    ul.dropdown-menu.pull-right(aria-labelledby="user-dropdown")
+      li
+        a(ng-click="logout()") Logout
+.clearfix
