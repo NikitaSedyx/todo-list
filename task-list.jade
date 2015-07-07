@@ -13,8 +13,8 @@ include ./logout.jade
       )
   .row
     ul#tasks.unstyled
-      li(
-        ng-repeat="task in tasks | orderBy : '-deadline' : '-is_completed'"
+      li.task(
+        ng-repeat="task in tasks"
         ng-class="{completed:task.is_completed}"
         ui-sref="edit({id:task.id})"
       ) {{task.description}}
@@ -30,3 +30,21 @@ include ./logout.jade
       label.btn.control(ng-click="filter('all')")
         input#All(type="radio", name="options") 
         |All
+
+  .row
+    ul.pagination
+      li(
+        ng-repeat="page in pages"
+        ng-click="changePage(page)"
+      )
+        a(href="#") {{page+1}}
+
+  .row
+    button(ng-click="sortTasks('description')") ASC
+    button(ng-click="sortTasks('-description')") DESC
+    button(ng-click="sortTasks(null)") Non
+
+  .row
+    input(type="text", ng-model="filterBy")
+    button(ng-click="filterTasks()") Filter
+

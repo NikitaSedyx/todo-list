@@ -15,11 +15,11 @@
         templateUrl: "../task-list.html"
       })
       .state("edit", {
-        url:"/edit/:id",
+        url: "/edit/:id",
         templateUrl: "../edit-task.html"
       })
       .state("login", {
-        url:"/login",
+        url: "/login",
         templateUrl: "../login.html"
       })
   });
@@ -82,20 +82,31 @@
     }
   })
 
-  app.service("SessionUser", function($http, API){
+  app.service("SessionUser", function($http, $q, API){
 
     var user = null;
 
     this.getUser = function(){
-      if (!user){
+      /*if (!user){
         $http.get(API.BASE + API.AUTH + "info/")
         .then(function(response){
           if (response.data !== "AnonymousUser"){
             user = response.data
+            return user
           }
         })
       } 
-      return user 
+      return user */
+      if (user) {
+        return $q.when(user)
+      }
+      return $http.get(API.BASE + API.AUTH + "info/")
+      .then(function(response){
+          if (response.data !== "AnonymousUser"){
+            user = response.data
+          }
+          return user
+      })
     }
 
     this.setUser = function(initUser){
@@ -117,24 +128,98 @@
       filterState = state || filterState;
       return tasks.filter(filters[filterState]);
     }
+  })
+
+  app.service("PageService", function(TaskResource){
+
+    var limit = 10, totalCount, currentPage = 0, orderBy, filterBy
+
+    this.getLimit = function(){
+      return limit
+    }
+
+    this.setLimit = function(initLimit){
+      limit = initLimit
+    }
+
+    this.getTotalCount = function(){
+      return totalCount
+    }
+
+    this.setTotalCount = function(initTotalCount){
+      totalCount = initTotalCount
+    }
+
+    this.incrementTotalCount = function(){
+      totalCount++
+    }
+
+    this.decrementTotalCount = function(){
+      totalCount--
+      if ((currentPage+1) > Math.ceil(totalCount/limit)){
+        currentPage--
+      }
+    }
+
+    this.getCurrentPage = function(){
+      return current_page
+    }
+
+    this.setCurrentPage = function(initCurrentPage){
+      currentPage = initCurrentPage
+    }
+
+    this.getPages = function(){
+      return _.range(Math.ceil(totalCount/limit))
+    }
+
+    var getOffset = function(){
+      return currentPage*limit
+    }
+
+    this.setOrdering = function(initOrderBy){
+      orderBy = initOrderBy
+    }
+
+    this.setFilterBy = function(initFilterBy){
+      filterBy = initFilterBy
+    }
+
+    this.getPartitionTasks = function(){
+      var params = {offset:getOffset()}
+      if (orderBy){
+        params.order_by = orderBy
+      }
+      if (filterBy){
+        params.description__contains = filterBy
+      }
+      return TaskResource.getAllTasks(params).$promise
+    }
 
   })
 
-  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, SessionUser){
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, PageService){
 
-    TaskResource.getAllTasks().$promise.then(function(res){
+    PageService.getPartitionTasks().then(function(res){
       TaskStorage.setTasks(res.objects)
-      $scope.tasks = TaskStorage.getTasks()
+      PageService.setTotalCount(res.meta.total_count)
+      $scope.pages = PageService.getPages()
+      $scope.filter()
     })
 
     $scope.addTask = function(){
       var newTask = {
         description:$scope.newTask
       };
-      TaskResource.createTask(newTask).$promise.then(function(){
-        TaskStorage.addTask(newTask)
-        $scope.newTask = "";
-        $scope.filter();  
+      TaskResource.createTask(newTask).$promise
+      .then(function(){
+        PageService.incrementTotalCount()
+        $scope.pages = PageService.getPages()
+        PageService.getPartitionTasks().then(function(res){
+          TaskStorage.setTasks(res.objects) 
+          $scope.newTask = "";
+          $scope.filter();      
+        })
       })
     }
 
@@ -142,9 +227,36 @@
       $scope.tasks = TaskFilter.filterTasks(TaskStorage.getTasks(), state)
     }
 
+    var getPartitionTasks = function(){
+      PageService.getPartitionTasks().then(function(res){
+        TaskStorage.setTasks(res.objects)
+        $scope.filter();       
+      })     
+    }
+
+    $scope.changePage = function(page){
+      PageService.setCurrentPage(page)
+      getPartitionTasks()
+    }
+
+    $scope.sortTasks = function(orderBy){
+      PageService.setOrdering(orderBy)
+      getPartitionTasks()
+    }
+
+    $scope.filterTasks = function(){
+      PageService.setFilterBy($scope.filterBy)
+      PageService.getPartitionTasks().then(function(res){
+        TaskStorage.setTasks(res.objects)
+        PageService.setTotalCount(res.meta.total_count)
+        $scope.pages = PageService.getPages()
+        $scope.filter();       
+      }) 
+    }
+
   })
 
-  app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
+  app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource, PageService){
 
     var task = TaskResource.getTask({id: $stateParams.id}, function(){
       $scope.task = task
@@ -157,17 +269,22 @@
     }
 
     $scope.deleteTask = function(){
-      TaskResource.remove({id: $stateParams.id})
-      $state.go("list")
+      TaskResource.remove({id: $stateParams.id}).$promise
+      .then(function(){
+        PageService.decrementTotalCount()
+        $state.go("list")
+      })
     }
 
   })
 
   app.controller("LoginController", function($scope, $http, $state, API, SessionUser){
 
-    if (SessionUser.getUser()){
-      $state.go("list")
-    }
+    SessionUser.getUser().then(function(user){
+      if (user){
+        $state.go("list")
+      }
+    })
 
     $scope.login = function(){
       $http.post(API.BASE + API.AUTH + "login/", {
@@ -188,11 +305,14 @@
 
   app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
 
-    $scope.username = SessionUser.getUser();
-
-    $scope.$watch(function(){return SessionUser.getUser()}, function(n, o){
-      $scope.username = n
+    
+    SessionUser.getUser().then(function(user){
+      $scope.username = user
     })
+
+    /*$scope.$watch(function(){return SessionUser.getUser()}, function(n, o){
+      $scope.username = n
+    })*/
 
     $scope.logout = function(){
       $http.get(API.BASE + API.AUTH + "logout/")
