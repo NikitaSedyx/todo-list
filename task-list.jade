@@ -31,20 +31,4 @@ include ./logout.jade
         input#All(type="radio", name="options") 
         |All
 
-  .row
-    ul.pagination
-      li(
-        ng-repeat="page in pages"
-        ng-click="changePage(page)"
-      )
-        a(href="#") {{page+1}}
-
-  .row
-    button(ng-click="sortTasks('description')") ASC
-    button(ng-click="sortTasks('-description')") DESC
-    button(ng-click="sortTasks(null)") Non
-
-  .row
-    input(type="text", ng-model="filterBy")
-    button(ng-click="filterTasks()") Filter
-
+  paginator(page-config="pageConfig")

@@ -87,16 +87,6 @@
     var user = null;
 
     this.getUser = function(){
-      /*if (!user){
-        $http.get(API.BASE + API.AUTH + "info/")
-        .then(function(response){
-          if (response.data !== "AnonymousUser"){
-            user = response.data
-            return user
-          }
-        })
-      } 
-      return user */
       if (user) {
         return $q.when(user)
       }
@@ -130,95 +120,26 @@
     }
   })
 
-  app.service("PageService", function(TaskResource){
+  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage){
 
-    var limit = 10, totalCount, currentPage = 0, orderBy, filterBy
+    $scope.pageConfig = new PageConfig()
 
-    this.getLimit = function(){
-      return limit
-    }
-
-    this.setLimit = function(initLimit){
-      limit = initLimit
-    }
-
-    this.getTotalCount = function(){
-      return totalCount
-    }
-
-    this.setTotalCount = function(initTotalCount){
-      totalCount = initTotalCount
-    }
-
-    this.incrementTotalCount = function(){
-      totalCount++
-    }
-
-    this.decrementTotalCount = function(){
-      totalCount--
-      if ((currentPage+1) > Math.ceil(totalCount/limit)){
-        currentPage--
-      }
-    }
-
-    this.getCurrentPage = function(){
-      return current_page
-    }
-
-    this.setCurrentPage = function(initCurrentPage){
-      currentPage = initCurrentPage
-    }
-
-    this.getPages = function(){
-      return _.range(Math.ceil(totalCount/limit))
-    }
-
-    var getOffset = function(){
-      return currentPage*limit
-    }
-
-    this.setOrdering = function(initOrderBy){
-      orderBy = initOrderBy
-    }
-
-    this.setFilterBy = function(initFilterBy){
-      filterBy = initFilterBy
-    }
-
-    this.getPartitionTasks = function(){
-      var params = {offset:getOffset()}
-      if (orderBy){
-        params.order_by = orderBy
-      }
-      if (filterBy){
-        params.description__contains = filterBy
-      }
-      return TaskResource.getAllTasks(params).$promise
-    }
-
-  })
-
-  app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage, PageService){
-
-    PageService.getPartitionTasks().then(function(res){
-      TaskStorage.setTasks(res.objects)
-      PageService.setTotalCount(res.meta.total_count)
-      $scope.pages = PageService.getPages()
-      $scope.filter()
+    $scope.$watch(function(){return $scope.pageConfig.currentPage}, function(page){
+      var params = getParams()
+      TaskResource.getAllTasks(params).$promise.then(function(res){
+        processGettingTasks(res.objects, res.meta.total_count)
+      })
     })
 
     $scope.addTask = function(){
       var newTask = {
         description:$scope.newTask
       };
-      TaskResource.createTask(newTask).$promise
-      .then(function(){
-        PageService.incrementTotalCount()
-        $scope.pages = PageService.getPages()
-        PageService.getPartitionTasks().then(function(res){
-          TaskStorage.setTasks(res.objects) 
+      TaskResource.createTask(newTask).$promise.then(function(){
+        var params = getParams()
+        TaskResource.getAllTasks(params).$promise.then(function(res){
+          processGettingTasks(res.objects, res.meta.total_count)
           $scope.newTask = "";
-          $scope.filter();      
         })
       })
     }
@@ -227,36 +148,20 @@
       $scope.tasks = TaskFilter.filterTasks(TaskStorage.getTasks(), state)
     }
 
-    var getPartitionTasks = function(){
-      PageService.getPartitionTasks().then(function(res){
-        TaskStorage.setTasks(res.objects)
-        $scope.filter();       
-      })     
+    var processGettingTasks = function(tasks, countItems){
+      TaskStorage.setTasks(tasks) 
+      $scope.pageConfig.countItems = countItems
+      $scope.filter(); 
     }
 
-    $scope.changePage = function(page){
-      PageService.setCurrentPage(page)
-      getPartitionTasks()
-    }
-
-    $scope.sortTasks = function(orderBy){
-      PageService.setOrdering(orderBy)
-      getPartitionTasks()
-    }
-
-    $scope.filterTasks = function(){
-      PageService.setFilterBy($scope.filterBy)
-      PageService.getPartitionTasks().then(function(res){
-        TaskStorage.setTasks(res.objects)
-        PageService.setTotalCount(res.meta.total_count)
-        $scope.pages = PageService.getPages()
-        $scope.filter();       
-      }) 
+    var getParams = function(){
+      page = $scope.pageConfig.currentPage
+      return {offset:page * 10}
     }
 
   })
 
-  app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource, PageService){
+  app.controller("EditTaskController", function($scope, $state, $stateParams, TaskResource){
 
     var task = TaskResource.getTask({id: $stateParams.id}, function(){
       $scope.task = task
@@ -271,7 +176,6 @@
     $scope.deleteTask = function(){
       TaskResource.remove({id: $stateParams.id}).$promise
       .then(function(){
-        PageService.decrementTotalCount()
         $state.go("list")
       })
     }
@@ -304,15 +208,10 @@
   })
 
   app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
-
     
     SessionUser.getUser().then(function(user){
       $scope.username = user
     })
-
-    /*$scope.$watch(function(){return SessionUser.getUser()}, function(n, o){
-      $scope.username = n
-    })*/
 
     $scope.logout = function(){
       $http.get(API.BASE + API.AUTH + "logout/")
@@ -322,5 +221,80 @@
       })
     }
   })
+
+  //pagination
+  app.directive("paginator", function(){
+    return {
+      restrict: "E",
+      templateUrl:"../paginator.html",
+      scope: {
+        pageConfig: "="
+      },
+      controller: function($scope){
+
+        $scope.$watch(function(){return $scope.pageConfig.countItems}, function(){
+          $scope.pages = _.range($scope.pageConfig.countPages())
+        })
+
+        $scope.changePage = function(page){
+          $scope.pageConfig.currentPage = page
+        }
+
+        $scope.nextPage = function(){
+          $scope.pageConfig.next()
+        }
+
+        $scope.prevPage = function(){
+          $scope.pageConfig.prev()
+        }
+
+        $scope.isActive = function(page){
+          return $scope.pageConfig.currentPage == page
+        }
+
+      }
+    }
+  })
+
+  var PageConfig = (function(){
+
+    var PageConfig = function (){
+      var countPages = 0
+      this.currentPage = 0
+      this.countItems = 0
+    }
+
+    PageConfig.prototype.countPages = function(){
+      countPages = Math.ceil(this.countItems/10)
+      return countPages
+    }
+
+    PageConfig.prototype.hasNext = function(){
+      return this.currentPage < countPages-1
+    }
+
+    PageConfig.prototype.next = function(){
+      if (this.hasNext()){
+        this.currentPage++
+      } else{
+        this.currentPage = 0
+      }
+      return this.currentPage
+    }
+
+    PageConfig.prototype.hasPrev = function(){
+      return this.currentPage > 0
+    }
+
+    PageConfig.prototype.prev = function(){
+      if (this.hasPrev()){
+        this.currentPage--
+      } else{
+        this.currentPage = countPages-1
+      }
+    }
+
+    return PageConfig
+  })()
 
 })();

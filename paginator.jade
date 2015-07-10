@@ -1,0 +1,15 @@
+ul.pagination
+  li(ng-click="prevPage()")
+    a.page-number(href="#", aria-label="Previous")
+      span(aria-hidden="true") &laquo;
+  li(
+    ng-repeat="page in pages"
+    ng-click="changePage(page)"
+  )
+    a.page-number(
+      href="#"
+      ng-class="{'active-page':isActive(page)}"
+    ) {{page+1}}
+  li(ng-click="nextPage()")
+    a.page-number(href="#", aria-label="Next")
+      span(aria-hidden="true") &raquo;

@@ -92,6 +92,10 @@ input.new-task{
 	left:10;
 }
 
-.aaa{
-	color:#fff;
+.pagination .page-number{
+	color:#454545;
 }
+
+	.pagination .active-page{
+		background-color: #C0C0C0;
+	}
