@@ -124,7 +124,7 @@
 
     $scope.pageConfig = new PageConfig()
 
-    $scope.$watch(function(){return $scope.pageConfig.currentPage}, function(page){
+    $scope.$watch('pageConfig.currentPage', function(page){
       var params = getParams()
       TaskResource.getAllTasks(params).$promise.then(function(res){
         processGettingTasks(res.objects, res.meta.total_count)
@@ -232,7 +232,7 @@
       },
       controller: function($scope){
 
-        $scope.$watch(function(){return $scope.pageConfig.countItems}, function(){
+        $scope.$watch("pageConfig.countItems", function(){
           $scope.pages = _.range($scope.pageConfig.countPages())
         })
 
