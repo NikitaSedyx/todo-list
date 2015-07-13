@@ -124,11 +124,18 @@
 
     $scope.pageConfig = new PageConfig()
 
-    $scope.$watch('pageConfig.currentPage', function(page){
+    $scope.$watch('pageConfig.currentPage', function(){
       var params = getParams()
       TaskResource.getAllTasks(params).$promise.then(function(res){
         processGettingTasks(res.objects, res.meta.total_count)
       })
+    })
+
+    $scope.$watch('pageConfig.limit', function(){
+      var params = getParams()
+      TaskResource.getAllTasks(params).$promise.then(function(res){
+        processGettingTasks(res.objects, res.meta.total_count)
+      })      
     })
 
     $scope.addTask = function(){
@@ -155,8 +162,12 @@
     }
 
     var getParams = function(){
-      page = $scope.pageConfig.currentPage
-      return {offset:page * 10}
+      var page = $scope.pageConfig.currentPage
+      var offset = page * $scope.pageConfig.limit
+      return {
+        offset: offset,
+        limit: $scope.pageConfig.limit
+      }
     }
 
   })
@@ -252,6 +263,12 @@
           return $scope.pageConfig.currentPage == page
         }
 
+        $scope.changeLimit = function(limit){
+          $scope.pageConfig.limit = limit
+          $scope.pages = _.range($scope.pageConfig.countPages())
+          $scope.pageConfig.currentPage = 0
+        }
+
       }
     }
   })
@@ -262,10 +279,11 @@
       var countPages = 0
       this.currentPage = 0
       this.countItems = 0
+      this.limit = 10
     }
 
     PageConfig.prototype.countPages = function(){
-      countPages = Math.ceil(this.countItems/10)
+      countPages = Math.ceil(this.countItems/this.limit)
       return countPages
     }
 

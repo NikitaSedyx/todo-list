@@ -13,3 +13,8 @@ ul.pagination
   li(ng-click="nextPage()")
     a.page-number(href="#", aria-label="Next")
       span(aria-hidden="true") &raquo;
+
+div
+  a(href="#", ng-click="changeLimit(5)") 5 
+  a(href="#", ng-click="changeLimit(10)") 10 
+  a(href="#", ng-click="changeLimit(20)") 20 
