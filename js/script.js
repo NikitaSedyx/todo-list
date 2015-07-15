@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -21,6 +21,10 @@
       .state("login", {
         url: "/login",
         templateUrl: "../login.html"
+      })
+      .state("registration", {
+        url: "/registration",
+        templateUrl: "../registration.html"
       })
   });
 
@@ -45,7 +49,8 @@
   app.constant("API", {
     BASE:"/api/v1",
     ITEM:"/item/",
-    AUTH:"/auth/"
+    AUTH:"/auth/",
+    REGISTRATION:"/registration/"
   })
 
   app.service("TaskResource", function($resource, API){
@@ -314,5 +319,20 @@
 
     return PageConfig
   })()
+
+  //registration
+  app.controller("RegistrationController", function($scope, $state, $http, API){
+
+    $scope.register = function(){
+      $http.post(API.BASE + API.REGISTRATION, $scope.user)
+      .then(function(response){
+        if (response.status == 200){
+          $scope.user = null
+          $state.go("login")
+        }
+      })
+    }
+
+  })
 
 })();
