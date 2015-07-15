@@ -22,6 +22,10 @@
         url: "/login",
         templateUrl: "../login.html"
       })
+      .state("registration", {
+        url: "/registration",
+        templateUrl: "../registration.html"
+      })
   });
 
   app.config(function ($httpProvider, $injector) {
@@ -45,7 +49,8 @@
   app.constant("API", {
     BASE:"/api/v1",
     ITEM:"/item/",
-    AUTH:"/auth/"
+    AUTH:"/auth/",
+    REGISTRATION:"/registration/"
   })
 
   app.service("TaskResource", function($resource, API){
