@@ -1,3 +1,4 @@
+include ./logout.jade
 .task-list(ng-controller="TaskController")
   .row
     form(ng-submit="addTask()")
@@ -8,12 +9,12 @@
       )
       input.btn.add-task(
         type="submit"
-        value="Add task"
+        value="Add"
       )
   .row
     ul#tasks.unstyled
-      li(
-        ng-repeat="task in tasks | orderBy : '-deadline' : '-is_completed'"
+      li.task(
+        ng-repeat="task in tasks"
         ng-class="{completed:task.is_completed}"
         ui-sref="edit({id:task.id})"
       ) {{task.description}}
@@ -29,3 +30,6 @@
       label.btn.control(ng-click="filter('all')")
         input#All(type="radio", name="options") 
         |All
+
+  .row
+    paginator(page-config="pageConfig")

@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo",['ngResource', 'ui.router'])
+  app = angular.module("todo", ['ngResource', 'ui.router'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -10,23 +10,46 @@
     $urlRouterProvider.otherwise("/list")
 
     $stateProvider
-      .state('list', {
-        url: '/list',
-        templateUrl: '../task-list.html'
+      .state("list", {
+        url: "/list",
+        templateUrl: "../task-list.html"
       })
-      .state('edit', {
-        url:"/edit/:id",
-        templateUrl: '../edit-task.html'
+      .state("edit", {
+        url: "/edit/:id",
+        templateUrl: "../edit-task.html"
+      })
+      .state("login", {
+        url: "/login",
+        templateUrl: "../login.html"
       })
   });
 
-  app.constant("URLConstants", {
-    BASE:"/api/v1",
-    ITEM:"/item/"
+  app.config(function ($httpProvider, $injector) {
+    $httpProvider.interceptors.push(function($q, $injector){
+      return {
+        responseError:function(rejection){
+          if (rejection.status !== 401) {
+            return rejection;
+          }
+          var state = $injector.get("$state")
+          state.go("login")
+          return $q.reject(rejection);
+        }
+      }
+    })
+
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken'
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'
   })
 
-  app.service("TaskResource", function($resource, URLConstants){
-    return $resource(URLConstants.BASE + URLConstants.ITEM + ":id/", {id:"@id"}, {
+  app.constant("API", {
+    BASE:"/api/v1",
+    ITEM:"/item/",
+    AUTH:"/auth/"
+  })
+
+  app.service("TaskResource", function($resource, API){
+    return $resource(API.BASE + API.ITEM + ":id/", {id:"@id"}, {
       getAllTasks:{
         method:"GET",
         params: {id:null}
@@ -43,7 +66,7 @@
     });
   })
 
-  app.service("TaskStorage", function(TaskResource){
+  app.service("TaskStorage", function(){
     var tasks = []
 
     this.setTasks = function(initTasks){
@@ -59,6 +82,29 @@
     }
   })
 
+  app.service("SessionUser", function($http, $q, API){
+
+    var user = null;
+
+    this.getUser = function(){
+      if (user) {
+        return $q.when(user)
+      }
+      return $http.get(API.BASE + API.AUTH + "info/")
+      .then(function(response){
+          if (response.data !== "AnonymousUser"){
+            user = response.data
+          }
+          return user
+      })
+    }
+
+    this.setUser = function(initUser){
+      user = initUser
+    }
+
+  })
+
   app.service("TaskFilter", function(){
     var filterState = "all";
 
@@ -72,30 +118,56 @@
       filterState = state || filterState;
       return tasks.filter(filters[filterState]);
     }
-
   })
 
   app.controller("TaskController",function($scope, TaskResource, TaskFilter, TaskStorage){
 
-    TaskResource.getAllTasks().$promise.then(function(res){
-      TaskStorage.setTasks(res.objects)
-      $scope.tasks = TaskStorage.getTasks()
+    $scope.pageConfig = new PageConfig()
+
+    $scope.$watch('pageConfig.currentPage', function(){
+      var params = getParams()
+      TaskResource.getAllTasks(params).$promise.then(function(res){
+        processGettingTasks(res.objects, res.meta.total_count)
+      })
+    })
+
+    $scope.$watch('pageConfig.limit', function(){
+      var params = getParams()
+      TaskResource.getAllTasks(params).$promise.then(function(res){
+        processGettingTasks(res.objects, res.meta.total_count)
+      })      
     })
 
     $scope.addTask = function(){
       var newTask = {
-        description:$scope.newTask, 
-        user: "/api/v1/user/1/"
+        description:$scope.newTask
       };
       TaskResource.createTask(newTask).$promise.then(function(){
-        TaskStorage.addTask(newTask)
-        $scope.newTask = "";
-        $scope.filter();  
+        var params = getParams()
+        TaskResource.getAllTasks(params).$promise.then(function(res){
+          processGettingTasks(res.objects, res.meta.total_count)
+          $scope.newTask = "";
+        })
       })
     }
 
     $scope.filter = function(state){
       $scope.tasks = TaskFilter.filterTasks(TaskStorage.getTasks(), state)
+    }
+
+    var processGettingTasks = function(tasks, countItems){
+      TaskStorage.setTasks(tasks) 
+      $scope.pageConfig.countItems = countItems
+      $scope.filter(); 
+    }
+
+    var getParams = function(){
+      var page = $scope.pageConfig.currentPage
+      var offset = page * $scope.pageConfig.limit
+      return {
+        offset: offset,
+        limit: $scope.pageConfig.limit
+      }
     }
 
   })
@@ -113,10 +185,134 @@
     }
 
     $scope.deleteTask = function(){
-      TaskResource.remove({id: $stateParams.id})
-      $state.go("list")
+      TaskResource.remove({id: $stateParams.id}).$promise
+      .then(function(){
+        $state.go("list")
+      })
     }
 
   })
+
+  app.controller("LoginController", function($scope, $http, $state, API, SessionUser){
+
+    SessionUser.getUser().then(function(user){
+      if (user){
+        $state.go("list")
+      }
+    })
+
+    $scope.login = function(){
+      $http.post(API.BASE + API.AUTH + "login/", {
+        username:$scope.username, 
+        password:$scope.password
+      })
+      .then(function(response){
+        SessionUser.setUser(response.data)
+        $state.go("list")
+      })
+      .catch(function(){
+        $scope.username = ""
+        $scope.password = ""
+      })
+    }
+
+  })
+
+  app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
+    
+    SessionUser.getUser().then(function(user){
+      $scope.username = user
+    })
+
+    $scope.logout = function(){
+      $http.get(API.BASE + API.AUTH + "logout/")
+      .then(function(){
+        SessionUser.setUser(null)
+        $state.go("login")
+      })
+    }
+  })
+
+  //pagination
+  app.directive("paginator", function(){
+    return {
+      restrict: "E",
+      templateUrl:"../paginator.html",
+      scope: {
+        pageConfig: "="
+      },
+      controller: function($scope){
+
+        $scope.$watch("pageConfig.countItems", function(){
+          $scope.pages = _.range($scope.pageConfig.countPages())
+        })
+
+        $scope.changePage = function(page){
+          $scope.pageConfig.currentPage = page
+        }
+
+        $scope.nextPage = function(){
+          $scope.pageConfig.next()
+        }
+
+        $scope.prevPage = function(){
+          $scope.pageConfig.prev()
+        }
+
+        $scope.isActive = function(page){
+          return $scope.pageConfig.currentPage == page
+        }
+
+        $scope.changeLimit = function(limit){
+          $scope.pageConfig.limit = limit
+          $scope.pages = _.range($scope.pageConfig.countPages())
+          $scope.pageConfig.currentPage = 0
+        }
+
+      }
+    }
+  })
+
+  var PageConfig = (function(){
+
+    var PageConfig = function (){
+      var countPages = 0
+      this.currentPage = 0
+      this.countItems = 0
+      this.limit = 10
+    }
+
+    PageConfig.prototype.countPages = function(){
+      countPages = Math.ceil(this.countItems/this.limit)
+      return countPages
+    }
+
+    PageConfig.prototype.hasNext = function(){
+      return this.currentPage < countPages-1
+    }
+
+    PageConfig.prototype.next = function(){
+      if (this.hasNext()){
+        this.currentPage++
+      } else{
+        this.currentPage = 0
+      }
+      return this.currentPage
+    }
+
+    PageConfig.prototype.hasPrev = function(){
+      return this.currentPage > 0
+    }
+
+    PageConfig.prototype.prev = function(){
+      if (this.hasPrev()){
+        this.currentPage--
+      } else{
+        this.currentPage = countPages-1
+      }
+    }
+
+    return PageConfig
+  })()
 
 })();

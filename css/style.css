@@ -9,9 +9,14 @@
 	font-family: 'Trebuchet MS';
 }
 
-.task-list, .task-edit{
+.task-list, .task-edit, .login-block{
 	padding-left:3%;
 	padding-right: 3%;
+}
+
+.logout-block{
+	margin-bottom: 10px; 
+	float: right;
 }
 
 	.task-edit label{
@@ -30,7 +35,7 @@
 		margin-bottom: 10px;
 	}
 
-		ul li{
+		ul li.task{
 			margin-top: 5px;
 			border-radius: 5px;
 			display: inline-block;
@@ -87,6 +92,10 @@ input.new-task{
 	left:10;
 }
 
-.aaa{
-	color:#fff;
+.pagination .page-number{
+	color:#454545;
 }
+
+	.pagination .active-page{
+		background-color: #C0C0C0;
+	}
