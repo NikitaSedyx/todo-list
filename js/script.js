@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -314,5 +314,20 @@
 
     return PageConfig
   })()
+
+  //registration
+  app.controller("RegistrationController", function($scope, $state, $http, API){
+
+    $scope.register = function(){
+      $http.post(API.BASE + API.REGISTRATION, $scope.user)
+      .then(function(response){
+        if (response.status == 200){
+          $scope.user = null
+          $state.go("login")
+        }
+      })
+    }
+
+  })
 
 })();

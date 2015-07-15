@@ -9,7 +9,7 @@
 	font-family: 'Trebuchet MS';
 }
 
-.task-list, .task-edit, .login-block{
+.task-list, .task-edit, .login-block, .registration-block{
 	padding-left:3%;
 	padding-right: 3%;
 }
@@ -19,7 +19,7 @@
 	float: right;
 }
 
-	.task-edit label{
+	.task-edit label, .login-block label, .registration-block label{
 		color:#F7F7F7;
 	}
 
@@ -99,3 +99,7 @@ input.new-task{
 	.pagination .active-page{
 		background-color: #C0C0C0;
 	}
+
+.ng-invalid.ng-dirty{
+  border-color: red;
+}
