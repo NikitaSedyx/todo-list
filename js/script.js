@@ -7,22 +7,37 @@
 
   app.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/list")
+    $urlRouterProvider.otherwise("/tasks")
 
     $stateProvider
       .state("tasks", {
         abstract:true,
-        url: "/tasks",
-        templateUrl: "../tasks.html"
+        templateUrl: "../tasks.html",
+        controller: function($scope, SessionUser){
+
+          SessionUser.getUser().then(function(user){
+            $scope.taskView = user.taskView
+          })
+
+          $scope.changeView = function(view){
+            SessionUser.getUser().then(function(user){
+              user.taskView = view
+            })
+          }
+
+        }
       })
-        .state("tasks.list", {
-          url: "/list",
-          templateUrl: "../task-list.html"
-        })
-        .state("tasks.table", {
-          url: "/table",
-          templateUrl: "../task-grid.html"
-        })
+      .state("tasks.list", {
+        url: "/tasks",
+        views: {
+          "list": {
+            templateUrl: "../task-list.html"
+          },
+          "table": {
+            templateUrl: "../task-grid.html"
+          }
+        }
+      })
       .state("edit", {
         url: "/edit/:id",
         templateUrl: "../edit-task.html"
@@ -106,8 +121,9 @@
       }
       return $http.get(API.BASE + API.AUTH + "info/")
       .then(function(response){
-          if (response.data !== "AnonymousUser"){
+          if (response.status == 200){
             user = response.data
+            user.taskView = 'list'
           }
           return user
       })
@@ -115,8 +131,11 @@
 
     this.setUser = function(initUser){
       user = initUser
+      if (user){
+        user.taskView = 'list'
+      }
     }
-
+    
   })
 
   app.service("TaskFilter", function(){
@@ -221,13 +240,12 @@
         password:$scope.password
       })
       .then(function(response){
-        SessionUser.setUser(response.data)
-        $state.go("tasks.list")
-      })
-      .catch(function(){
-        $scope.username = ""
-        $scope.password = ""
-      })
+        if (response.status == 200) {
+          SessionUser.setUser(response.data)
+          $state.go("tasks.list")
+        }
+        $scope.password = null
+      })   
     }
 
   })
@@ -235,7 +253,7 @@
   app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
     
     SessionUser.getUser().then(function(user){
-      $scope.username = user
+      $scope.username = user.username
     })
 
     $scope.logout = function(){
