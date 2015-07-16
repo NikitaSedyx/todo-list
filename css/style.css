@@ -103,3 +103,7 @@ input.new-task{
 .ng-invalid.ng-dirty{
   border-color: red;
 }
+
+.task-grid{
+	width: 100%;
+}
