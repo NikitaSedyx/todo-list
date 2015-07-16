@@ -6,9 +6,6 @@ var _ = require("underscore");
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
 
-var tasksJSON = require("./tasks.json");
-var isFirst = !tasksJSON.length ? true : false;
-
 var app = express();
 
 app.use(express.static('build'));
@@ -37,7 +34,11 @@ app.listen(8000);
 
 
 
-/*app.get("/tasks", function(req, res){
+/*
+var tasksJSON = require("./tasks.json");
+var isFirst = !tasksJSON.length ? true : false;
+
+app.get("/tasks", function(req, res){
   fs.readFile('./tasks.json', 'utf8', function (err,buffer) {
     res.send(buffer);
   })

@@ -1,0 +1,13 @@
+div(ui-view="")
+.row
+  .btn-group.controls
+    label.btn.control(
+      ng-model="view"
+      btn-radio="'List'"
+      ui-sref="tasks.list"
+    ) List
+    label.btn.control(
+      ng-model="view"
+      btn-radio="'Table'"
+      ui-sref="tasks.table"
+    ) Table
