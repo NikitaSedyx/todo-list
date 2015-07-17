@@ -7,5 +7,5 @@
         $scope.gridConfig.paginationConfig.changePage(page)
       }   
     })
-    
+
 })()
