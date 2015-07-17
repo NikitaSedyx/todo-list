@@ -1,5 +1,5 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate', 'ui.grid', 'ui.grid.pagination'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -7,12 +7,36 @@
 
   app.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/list")
+    $urlRouterProvider.otherwise("/tasks")
 
     $stateProvider
-      .state("list", {
-        url: "/list",
-        templateUrl: "../task-list.html"
+      .state("tasks", {
+        abstract:true,
+        templateUrl: "../tasks.html",
+        controller: function($scope, SessionUser){
+
+          SessionUser.getUser().then(function(user){
+            $scope.taskView = user.taskView
+          })
+
+          $scope.changeView = function(view){
+            SessionUser.getUser().then(function(user){
+              user.taskView = view
+            })
+          }
+
+        }
+      })
+      .state("tasks.list", {
+        url: "/tasks",
+        views: {
+          "list": {
+            templateUrl: "../task-list.html"
+          },
+          "table": {
+            templateUrl: "../task-grid.html"
+          }
+        }
       })
       .state("edit", {
         url: "/edit/:id",
@@ -97,8 +121,9 @@
       }
       return $http.get(API.BASE + API.AUTH + "info/")
       .then(function(response){
-          if (response.data !== "AnonymousUser"){
+          if (response.status == 200){
             user = response.data
+            user.taskView = 'list'
           }
           return user
       })
@@ -106,8 +131,11 @@
 
     this.setUser = function(initUser){
       user = initUser
+      if (user){
+        user.taskView = 'list'
+      }
     }
-
+    
   })
 
   app.service("TaskFilter", function(){
@@ -186,13 +214,13 @@
 
     $scope.saveEditing = function(){
       TaskResource.editTask($scope.task)
-      $state.go("list")
+      $state.go("tasks.list")
     }
 
     $scope.deleteTask = function(){
       TaskResource.remove({id: $stateParams.id}).$promise
       .then(function(){
-        $state.go("list")
+        $state.go("tasks.list")
       })
     }
 
@@ -202,7 +230,7 @@
 
     SessionUser.getUser().then(function(user){
       if (user){
-        $state.go("list")
+        $state.go("tasks.list")
       }
     })
 
@@ -212,13 +240,12 @@
         password:$scope.password
       })
       .then(function(response){
-        SessionUser.setUser(response.data)
-        $state.go("list")
-      })
-      .catch(function(){
-        $scope.username = ""
-        $scope.password = ""
-      })
+        if (response.status == 200) {
+          SessionUser.setUser(response.data)
+          $state.go("tasks.list")
+        }
+        $scope.password = null
+      })   
     }
 
   })
@@ -226,7 +253,7 @@
   app.controller("LogoutController", function($scope, $http, $state, API, SessionUser){
     
     SessionUser.getUser().then(function(user){
-      $scope.username = user
+      $scope.username = user.username
     })
 
     $scope.logout = function(){
@@ -333,6 +360,59 @@
       })
     }
 
+  })
+
+  //grid
+  app.controller("TaskGridController", function($scope, TaskResource, uiGridConstants){
+
+    TaskResource.getAllTasks({limit: 0}).$promise.then(function(res){
+      $scope.gridOptions.data = res.objects
+    })
+
+    $scope.gridOptions = {
+      enableSorting: true,
+      enableFiltering: true,
+      showColumnFooter: true,
+      paginationPageSizes: [5, 10, 20],
+      paginationPageSize: 10,
+      columnDefs: [
+        {
+          field: "description",
+          aggregationType: uiGridConstants.aggregationTypes.count,
+          cellTooltip: true
+        },
+        {
+          field: "is_completed",
+          aggregationType: uiGridConstants.aggregationTypes.sum,
+          enableSorting: false,
+          filter: {
+            type: uiGridConstants.filter.SELECT,
+            selectOptions: [
+              {
+                value: true,
+                label: "completed"
+              },
+              {
+                value: false,
+                label: "active"
+              }
+            ]
+          }
+        },
+        {
+          field: "created_at",
+          cellFilter: "date: 'yyyy-MM-dd HH:mm'",
+          enableFiltering: false
+        },
+        {
+          field: "deadline",
+          cellFilter: "date: 'yyyy-MM-dd HH:mm'"
+        }
+      ],
+      onRegisterApi: function(gridApi) {
+        $scope.gridaApi = gridApi
+      }
+    }
   })
 
 })();
