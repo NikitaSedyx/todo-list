@@ -1,5 +1,6 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate', 'ui.grid', 'ui.grid.pagination'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 
+    'ui.validate', 'ui.grid', 'ui.grid.pagination', 'cu-grid'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -31,7 +32,8 @@
         url: "/tasks",
         views: {
           "list": {
-            templateUrl: "../task-list.html"
+            //templateUrl: "../task-list.html"
+            templateUrl: "../task-cu-grid.html"
           },
           "table": {
             templateUrl: "../task-grid.html"
@@ -412,6 +414,56 @@
       onRegisterApi: function(gridApi) {
         $scope.gridaApi = gridApi
       }
+    }
+  })
+
+  //controller for grid config
+  app.controller("TaskCuGridController", function($scope, TaskResource){
+
+    $scope.gridConfig = {
+      gridName: "Tasks",
+      paginationConfig:{
+        enablePagination: true,
+        totalItems: $scope.totalItems,
+        changePage: changePage,
+      },
+      columns: [
+        {
+          name: "description",
+          field: "description"
+        },
+        {
+          name: "Is completed",
+          field: "is_completed"
+        },
+        {
+          field: "deadline"
+        }
+      ],
+      data: $scope.tasks
+    }
+
+    var queryParams = {
+      limit: 10,
+      offset: 0
+    }
+
+    loadData()
+
+    function changePage(page){
+      queryParams.offset = (page - 1) * queryParams.limit
+      loadData()
+    }
+
+    function loadData(){
+      TaskResource.getAllTasks(queryParams).$promise.then(function(response){
+        bindData(response)
+      })
+    }
+
+    function bindData(response){
+      $scope.gridConfig.data = response.objects
+      $scope.gridConfig.paginationConfig.totalItems = response.meta.total_count
     }
   })
 

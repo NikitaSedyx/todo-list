@@ -1,0 +1,18 @@
+.table-responsive
+  table.table.table-striped
+    thead
+      tr(ng-if="gridConfig.gridName")
+        th(style="border-bottom:0px solid") {{gridConfig.gridName}}
+      tr
+        th(ng-repeat="column in gridConfig.columns") {{column.name}}
+    tbody
+      tr(ng-repeat="element in gridConfig.data")
+        td(ng-repeat="column in gridConfig.columns")
+          {{element[column.field]}}
+.pagination-block(ng-if="gridConfig.paginationConfig.enablePagination")
+  pagination.pagination-sm(
+    total-items="gridConfig.paginationConfig.totalItems" 
+    ng-model="currentPage" 
+    max-size="3"
+    ng-change="changePage(currentPage)"
+  )
