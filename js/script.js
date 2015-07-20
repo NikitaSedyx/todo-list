@@ -418,7 +418,7 @@
   })
 
   //controller for grid config
-  app.controller("TaskCuGridController", function($scope, TaskResource){
+  app.controller("TaskCuGridController", function($scope, TaskResource, cuGridConstants){
 
     $scope.gridConfig = {
       gridName: "Tasks",
@@ -427,17 +427,36 @@
         totalItems: $scope.totalItems,
         changePage: changePage,
       },
+      sortingConfig:{
+        enableSorting:true,
+        changeOrder: changeOrder
+      },
+      filteringConfig: {
+        enableFiltering: true,
+        addFilter: addFilter,
+      },
       columns: [
         {
           name: "description",
-          field: "description"
+          field: "description",
+          enableSorting: false,
+          filter:{
+            enableFiltering: true,
+            type: cuGridConstants.ICONTAINS
+          }
         },
         {
           name: "Is completed",
-          field: "is_completed"
+          field: "is_completed",
+          filter: {
+            enableFiltering: false
+          }
         },
         {
-          field: "deadline"
+          field: "deadline",
+          filter: {
+            enableFiltering: false
+          }
         }
       ],
       data: $scope.tasks
@@ -445,13 +464,24 @@
 
     var queryParams = {
       limit: 10,
-      offset: 0
+      offset: 0,
+      order_by: null
     }
 
     loadData()
 
     function changePage(page){
       queryParams.offset = (page - 1) * queryParams.limit
+      loadData()
+    }
+
+    function changeOrder(orderBy){
+      queryParams.order_by = orderBy
+      loadData()
+    }
+
+    function addFilter(filter){
+      queryParams[filter.key] = filter.value
       loadData()
     }
 

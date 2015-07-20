@@ -1,14 +1,32 @@
 .table-responsive
+  .title(ng-if="gridConfig.gridName") {{gridConfig.gridName}}
+  .controls
+    .btn-group.filters(
+      dropdown
+      ng-if="gridConfig.filteringConfig.enableFiltering"
+    )  
+      button.btn.dropdown-toggle(dropdown-toggle) Filters 
+        span.caret
+      ul.dropdown-menu(role="menu", ng-click="$event.stopPropagation()")
+        li(
+          ng-repeat="column in gridConfig.columns"
+          ng-if="column.filter.enableFiltering"
+        )
+          form(ng-submit="addFilter(column, filters[column.field])")
+            label {{column.name}}
+            input(ng-model="filters[column.field]")
   table.table.table-striped
     thead
-      tr(ng-if="gridConfig.gridName")
-        th(style="border-bottom:0px solid") {{gridConfig.gridName}}
       tr
-        th(ng-repeat="column in gridConfig.columns") {{column.name}}
+        th(
+          ng-repeat="column in gridConfig.columns"
+          ng-click="changeOrder(column)"
+        ) {{column.name}}
+          i.glyphicon.glyphicon-sort-by-attributes(ng-show="orderBy == column.field")
+          i.glyphicon.glyphicon-sort-by-attributes-alt(ng-show="orderBy == '-' + column.field")
     tbody
       tr(ng-repeat="element in gridConfig.data")
-        td(ng-repeat="column in gridConfig.columns")
-          {{element[column.field]}}
+        td(ng-repeat="column in gridConfig.columns") {{element[column.field]}}
 .pagination-block(ng-if="gridConfig.paginationConfig.enablePagination")
   pagination.pagination-sm(
     total-items="gridConfig.paginationConfig.totalItems" 
