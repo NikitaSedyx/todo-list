@@ -16,9 +16,8 @@
 
     function link($scope, element, attrs){
       $scope.container = attrs.highChart
-      console.log($scope.container)
-      $scope.$watch('chartConfig', function(){
-        var chart = new Highcharts.Chart($scope.chartConfig);
-      })
+      $scope.$watch('chartConfig.series', function(){
+        var chart = new Highcharts.Chart($scope.chartConfig)
+      }, true)
     }
 })()
