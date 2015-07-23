@@ -1,3 +1,8 @@
 .row
+  .col-md-8
+    include ./menu.jade
+  .col-md-4
+    include ./logout.jade
+.row
   div(ng-controller="ChartController")
     div(high-chart="task-chart", chart-config="config")

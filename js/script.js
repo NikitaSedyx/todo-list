@@ -37,11 +37,12 @@
           },
           "table": {
             templateUrl: "../task-grid.html"
-          },
-          "chart": {
-            templateUrl: "../task-chart.html"
           }
         }
+      })
+      .state("stats", {
+        url: "/stats",
+        templateUrl: "../task-chart.html"
       })
       .state("edit", {
         url: "/edit/:id",
@@ -538,9 +539,13 @@
             return []
           }
           var positions = []
-          var tick = Math.floor(this.dataMin)
+          /*the first tick is equal min date 
+            each next tick is equal prev + increment (max - min)/(n-1)
+            the last is equal or greater than max date
+          */
+          var tick = this.dataMin
           var increment = Math.ceil((this.dataMax - this.dataMin) / 4)
-          for (tick; tick - increment <= this.dataMax; tick += increment) {
+          for (tick; tick <= this.dataMax; tick += increment) {
             positions.push(tick);
           }
           positions.info = {
