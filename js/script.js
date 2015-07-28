@@ -550,7 +550,7 @@
           */
           var tick = this.dataMin
           var increment = Math.ceil((this.dataMax - this.dataMin) / 4)
-          for (tick; tick <= this.dataMax; tick += increment) {
+          for (tick; tick - increment <= this.dataMax; tick += increment) {
             positions.push(tick);
           }
           positions.info = {
