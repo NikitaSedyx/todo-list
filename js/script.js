@@ -1,6 +1,7 @@
 ;(function(){
   app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 
-    'ui.validate', 'ui.grid', 'ui.grid.pagination', 'cu-grid', 'high-chart'])
+    'ui.validate', 'ui.grid', 'ui.grid.pagination', 'cu-grid', 'high-chart',
+    'cu-tree'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -43,6 +44,10 @@
       .state("stats", {
         url: "/stats",
         templateUrl: "../task-chart.html"
+      })
+      .state("tree", {
+        url: "/tree",
+        templateUrl: "../tree.html"
       })
       .state("edit", {
         url: "/edit/:id",
@@ -581,4 +586,16 @@
     })
   })
 
+  app.controller("TreeController", function($scope, $http, $httpBackend, API){
+
+    $http.get("../data.json")
+    .then(function(response){
+      $scope.treeConfig.data = response.data
+    })
+
+    $scope.treeConfig = {
+      field: "size"
+    }
+
+  })
 })();
