@@ -544,11 +544,14 @@
             return []
           }
           var positions = []
+          var tick = this.dataMin
+          if (this.dataMax == this.dataMin){
+            return [tick]
+          }
           /*the first tick is equal min date 
             each next tick is equal prev + increment (max - min)/(n-1)
             the last is equal or greater than max date
           */
-          var tick = this.dataMin
           var increment = Math.ceil((this.dataMax - this.dataMin) / 4)
           for (tick; tick - increment <= this.dataMax; tick += increment) {
             positions.push(tick);
