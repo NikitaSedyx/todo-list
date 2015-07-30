@@ -1,5 +1,7 @@
 ;(function(){
-  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.validate', 'ui.grid', 'ui.grid.pagination'])
+  app = angular.module("todo", ['ngResource', 'ui.router', 'ui.bootstrap', 
+    'ui.validate', 'ui.grid', 'ui.grid.pagination', 'cu-grid', 'high-chart',
+    'cu-tree'])
 
   app.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -31,12 +33,21 @@
         url: "/tasks",
         views: {
           "list": {
-            templateUrl: "../task-list.html"
+            //templateUrl: "../task-list.html"
+            templateUrl: "../task-cu-grid.html"
           },
           "table": {
             templateUrl: "../task-grid.html"
           }
         }
+      })
+      .state("stats", {
+        url: "/stats",
+        templateUrl: "../task-chart.html"
+      })
+      .state("tree", {
+        url: "/tree",
+        templateUrl: "../tree.html"
       })
       .state("edit", {
         url: "/edit/:id",
@@ -415,4 +426,179 @@
     }
   })
 
+  //controller for grid config
+  app.controller("TaskCuGridController", function($scope, TaskResource, cuGridConstants){
+
+    $scope.gridConfig = {
+      gridName: "Tasks",
+      paginationConfig:{
+        enablePagination: true,
+        totalItems: $scope.totalItems,
+        changePage: changePage,
+      },
+      sortingConfig:{
+        enableSorting:true,
+        changeOrder: changeOrder
+      },
+      filteringConfig: {
+        enableFiltering: true,
+        addFilter: addFilter,
+      },
+      columns: [
+        {
+          name: "description",
+          field: "description",
+          enableSorting: false,
+          filter:{
+            enableFiltering: true,
+            type: cuGridConstants.ICONTAINS
+          }
+        },
+        {
+          name: "Is completed",
+          field: "is_completed",
+          filter: {
+            enableFiltering: false
+          }
+        },
+        {
+          field: "deadline",
+          filter: {
+            enableFiltering: false
+          }
+        }
+      ],
+      data: $scope.tasks
+    }
+
+    var queryParams = {
+      limit: 10,
+      offset: 0,
+      order_by: null
+    }
+
+    loadData()
+
+    function changePage(page){
+      queryParams.offset = (page - 1) * queryParams.limit
+      loadData()
+    }
+
+    function changeOrder(orderBy){
+      queryParams.order_by = orderBy
+      loadData()
+    }
+
+    function addFilter(filter){
+      queryParams[filter.key] = filter.value
+      loadData()
+    }
+
+    function loadData(){
+      TaskResource.getAllTasks(queryParams).$promise.then(function(response){
+        bindData(response)
+      })
+    }
+
+    function bindData(response){
+      $scope.gridConfig.data = response.objects
+      $scope.gridConfig.paginationConfig.totalItems = response.meta.total_count
+    }
+  })
+
+  //controller for chart
+  app.controller("ChartController", function($scope, TaskResource, API){
+
+    $scope.config = {
+      chart: {
+        renderTo: "task-chart",
+        backgroundColor: "#d3dee3",
+        spacingTop: 50
+      },
+      title: {
+        text: "Tasks"
+      },
+      credits: {
+        enabled: false
+      },
+      plotOptions: {
+        line:{
+          cursor: "pointer",
+          lineWidth: 3
+        }
+      },
+      yAxis: {
+        title: {
+          text: "Tasks"
+        },
+        gridLineColor: "#bfbfbf"
+      },
+      xAxis: {
+        type: "datetime",
+        startOnTick: true,
+        dateTimeLabelFormats: {
+          day: "%b %e"
+        },
+        tickPositioner: function() {
+          if (!this.dataMax || !this.dataMin){
+            return []
+          }
+          var positions = []
+          var tick = this.dataMin
+          if (this.dataMax == this.dataMin){
+            return [tick]
+          }
+          /*the first tick is equal min date 
+            each next tick is equal prev + increment (max - min)/(n-1)
+            the last is equal or greater than max date
+          */
+          var increment = Math.ceil((this.dataMax - this.dataMin) / 4)
+          for (tick; tick - increment <= this.dataMax; tick += increment) {
+            positions.push(tick);
+          }
+          positions.info = {
+            unitName: "day",
+            higherRanks: {} 
+          }  
+          return positions
+        }
+      },
+      series: []
+    }
+
+    TaskResource.getAllTasks({deadline__gt:"2015-07-01", limit:0}).$promise
+    .then(function(response){
+      var data = _.map(response.objects, function(item){
+        var date = new Date(item.deadline)
+        date = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2)
+        return new Date(date).getTime()
+      })
+      data = _.groupBy(data, function(date){
+        return date
+      })
+      data = _.sortBy(data, function(value, key){
+        return key
+      })
+      data = _.map(data, function(value){
+        return [value[0], value.length]
+      })
+      $scope.config.series[0] = {
+        name: "tasks",
+        data: data
+      }
+    })
+  })
+
+  app.controller("TreeController", function($scope, $http, $httpBackend, API){
+
+    $http.get("../data.json")
+    .then(function(response){
+      $scope.treeConfig.data = response.data
+    })
+
+    $scope.treeConfig = {
+      field: "size"
+    }
+
+  })
 })();

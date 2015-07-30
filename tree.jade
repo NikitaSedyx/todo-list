@@ -1,0 +1,7 @@
+.row
+  .col-md-8
+    include ./menu.jade
+  .col-md-4
+    include ./logout.jade
+div(ng-controller="TreeController")
+  cu-tree(tree-config="treeConfig")
