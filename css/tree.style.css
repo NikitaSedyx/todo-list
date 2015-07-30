@@ -1,0 +1,28 @@
+.node {
+  cursor: pointer;
+}
+
+circle {
+  stroke-width: 3px;
+  fill-opacity: 0.7;
+}
+
+text {
+  font-family: "Helvetica Neue", Helvetica;
+  fill: #656363;
+}
+
+.tooltip {
+  font-size: 20px;
+  fill: #656363;
+}
+
+text.title { 
+  font-size: 22px;
+  fill: #000;
+}
+
+.link {
+  fill: none;
+  stroke-linecap: round;
+}

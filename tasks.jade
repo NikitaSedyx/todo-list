@@ -1,4 +1,8 @@
-include ./logout.jade
+.row
+  .col-md-8
+    include ./menu.jade
+  .col-md-4
+    include ./logout.jade
 div(ui-view="list", ng-if="taskView == 'list'")
 div(ui-view="table", ng-if="taskView == 'table'")
 .row
