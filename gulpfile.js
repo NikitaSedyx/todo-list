@@ -6,6 +6,7 @@ var rename = require("gulp-rename")
 var uglify = require("gulp-uglify")
 var jshint = require("gulp-jshint")
 var karma = require('gulp-karma')
+var sass = require('gulp-sass');
 
 gulp.task("test", function(){
   var testFiles = [
@@ -52,8 +53,9 @@ gulp.task("compile-views-jade", function(){
   .pipe(gulp.dest("./build/app/views"))
 })
 
-gulp.task("concat-css", function(){
-  gulp.src("./assets/css/**/*.css")
+gulp.task("compile-sass", function(){
+  gulp.src("./assets/sass/**/*.sass")
+    .pipe(sass().on("error", sass.logError))
     .pipe(concat("index.css"))
     .pipe(gulp.dest("./build/assets/css"))
     .pipe(rename("index.min.css"))
@@ -75,8 +77,8 @@ gulp.task("watch", function(){
     gulp.run("compile-index-jade")
   })
 
-  gulp.watch("./assets/css/**/*.css", function(){
-    gulp.run("concat-css")
+  gulp.watch("./assets/sass/**/*.sass", function(){
+    gulp.run("compile-sass")
   })
 
   gulp.watch("./app/**/*.js", function(){
@@ -85,4 +87,4 @@ gulp.task("watch", function(){
 })
 
 gulp.task("default", ["test", "lint", "concat-js", "compile-views-jade", 
-  "compile-index-jade", "concat-css", "copy-libs", "watch"])
+  "compile-index-jade", "compile-sass", "copy-libs", "watch"])
