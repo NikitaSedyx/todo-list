@@ -1,5 +1,5 @@
 angular
-  .module('ToDoApp')
+  .module('todo')
   .controller('LoginController', LoginController);
 
 LoginController.$inject = ['$scope', '$http','$state'];

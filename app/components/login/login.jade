@@ -8,10 +8,10 @@ div.row
       form#login-form.panel-body(ng-submit="signIn()")
         div.form-group
           label(for="login") Login:
-          input#login.form-control(type="text", ng-model="user.username", required)
+          input.form-control(type="text", ng-model="user.username", required)
         div.form-group
           label(for="password") Password:
-          input#login.form-control(type="password", ng-model="user.password", required)
+          input.form-control(type="password", ng-model="user.password", required)
         div.form-group
           input.btn.btn-success(type="submit", value="SIGN IN")
           button.btn.btn-success.pull-right(ng-click="signUp()") SIGN UP
