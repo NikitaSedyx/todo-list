@@ -1,5 +1,7 @@
-angular
-  .module('todo', ['ui.router',
-                    'ngResource',
-                    'ui.bootstrap',
-                    'ui.validate']);
+;(function(){
+  angular
+    .module("todo", ['ui.router',
+                     'ngResource',
+                     'ui.bootstrap',
+                     'ui.validate'])
+})()
