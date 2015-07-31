@@ -1,0 +1,48 @@
+div.row
+  diw.col-md-6.col-md-offset-3
+    div.alert.alert-danger(ng-init="isMsgHide=true",ng-hide="isMsgHide") {{allertMsg}}
+div.row
+  div.col-md-4.col-md-offset-4
+    div.panel.panel-primary.login-form.shadows
+      div.panel-heading Sign In:
+      form#login-form.panel-body.css-form(
+      name="registration"
+      ng-submit="signUp()"
+      novalidate)
+        div.form-group
+          label(for="login") Login:
+          input.form-control(type="text",
+           ng-model="user.username",
+           name="login",
+           required)
+        div.form-group
+          label(for="email") Email:
+          input.form-control(type="email",
+          ng-model="user.email",
+          name="email",
+          tooltip="It's not email!"
+          tooltip-placement="bottom"
+          tooltip-enable="registration.email.$error.email"
+          required)
+        div.form-group
+          label(for="password") Password:
+          input.form-control(
+          name="password",
+          type="password",
+          ng-model="user.password",
+          required)
+         div.form-group
+          label(for="password") Repeat password:
+          input.form-control(
+          type="password",
+          name="confirm_password",
+          ui-validate=" '$value==user.password' ",
+          ui-validate-watch=" 'user.password' ",
+          ng-model="user.confirmPassword",
+          tooltip="Passwords aren't equal",
+          tooltip-placement="bottom",
+          tooltip-enable="registration.confirm_password.$error.validator",
+          required)
+        div.form-group
+          input.btn.btn-success(type="submit", value="SIGN UP", ng-disabled="!registration.$valid")
+          button.btn.btn-success.pull-right(ng-click="signIn()") SIGN IN
