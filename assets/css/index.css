@@ -1,0 +1,12 @@
+.top-menu{
+  background: #DC90BB;
+  padding: 7px 0px;
+  box-shadow: -2px 1px 1px #DB85B6, -2px 2px 1px #DD80B5, -4px 3px 1px #D77BAF;
+}
+
+  .title{
+    line-height: 1.7;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+  }

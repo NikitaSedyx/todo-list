@@ -85,4 +85,4 @@ gulp.task("watch", function(){
 })
 
 gulp.task("default", ["test", "lint", "concat-js", "compile-views-jade", 
-  "compile-index-jade", "concat-css", "copy-libs"])
+  "compile-index-jade", "concat-css", "copy-libs", "watch"])

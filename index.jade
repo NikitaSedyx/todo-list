@@ -1,7 +1,7 @@
 doctype html
 html(ng-app="todo")
   head
-    title ToDo
+    title Todo
 
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
@@ -12,9 +12,22 @@ html(ng-app="todo")
 
   body
     .container-fluid
-      .row
-        .col-md-4.col-md-offset-4.task-block
-          h1.title ToDo
+      .row.top-menu
+        .col-md-10.col-md-offset-1
+          .title.pull-left(ui-sref="tasks") Todo
+          .pull-right(ng-controller="LogoutController")
+            .dropdown(ng-if="user")
+              button.btn.dropdown-toggle(
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+              ) {{user.username}}
+                span.caret
+              ul.dropdown-menu.pull-right(aria-labelledby="user-dropdown")
+                li
+                  a(ng-click="logout()") Logout
+      .row.content
+        .col-md-10.col-md-offset-1
           div(ui-view)
 
     script(src="assets/libs/jquery/dist/jquery.min.js")
