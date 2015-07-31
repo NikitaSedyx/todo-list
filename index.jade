@@ -12,9 +12,22 @@ html(ng-app="todo")
 
   body
     .container-fluid
-      .row
-        .col-md-4.col-md-offset-4.task-block
-          h1.title ToDo
+      .row.top-menu
+        .col-md-10.col-md-offset-1
+          .title Todo
+          div(ng-controller="LogoutController")
+            .dropdown(ng-if="user")
+              button.btn.dropdown-toggle(
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+              ) {{user.username}}
+                span.caret
+              ul.dropdown-menu.pull-right(aria-labelledby="user-dropdown")
+                li
+                  a(ng-click="logout()") Logout
+      .row.content
+        .col-md-10.col-md-offset-1
           div(ui-view)
 
     script(src="bower_components/jquery/dist/jquery.min.js")
