@@ -77,8 +77,8 @@ gulp.task("watch", function(){
     gulp.run("compile-index-jade")
   })
 
-  gulp.watch("./assets/css/**/*.css", function(){
-    gulp.run("concat-css")
+  gulp.watch("./assets/sass/**/*.sass", function(){
+    gulp.run("compile-sass")
   })
 
   gulp.watch("./app/**/*.js", function(){
