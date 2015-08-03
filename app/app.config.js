@@ -2,6 +2,11 @@
   angular
     .module("todo")
 
+    .config(function($httpProvider){
+      $httpProvider.defaults.xsrfCookieName = "csrftoken"
+      $httpProvider.defaults.xsrfHeaderName = "X-CSRFToken"
+    })
+
     .config(function($httpProvider, $injector){
       $httpProvider.interceptors.push(function($q, $injector){
         return {
