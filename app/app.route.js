@@ -12,18 +12,18 @@
       $stateProvider
         .state("groups", {
           abstract: true,
-          templateUrl: "",
+          templateUrl: "app/views/components/groups/groups.html",
           controller: "GroupController"
         })
         .state("groups.list", {
           url: "/groups",
           views: {
             "list": {
-              templateUrl: "",
+              templateUrl: "app/views/components/groups/group-list/group-list.html",
               controller: "GroupListController"
             },
             "panel": {
-              templateUrl: "",
+              templateUrl: "app/views/components/groups/group-panel/group-panel.html",
               controller: "GroupPanelController"
             }
           }

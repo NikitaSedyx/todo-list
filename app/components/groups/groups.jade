@@ -1,7 +1,11 @@
 .row
   //here will be new group
 .row
-  //glyphicon.glyphicon-th
-  //glyphicon.glyphicon-th-list
+  .btn-group.switch.pull-right
+    label.btn.btn-primary(ng-model="groupView", btn-radio="'list'")
+      i.glyphicon.glyphicon-th-list
+    label.btn.btn-primary(ng-model="groupView", btn-radio="'panel'")
+      i.glyphicon.glyphicon-th
+.row
   div(ui-view="list", ng-if="groupView == 'list'")
   div(ui-view="panel", ng-if="groupView == 'panel'")
