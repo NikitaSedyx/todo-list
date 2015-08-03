@@ -6,7 +6,9 @@ var rename = require("gulp-rename")
 var uglify = require("gulp-uglify")
 var jshint = require("gulp-jshint")
 var karma = require('gulp-karma')
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')
+var gulpIgnore = require('gulp-ignore')
+var clean = require('gulp-clean')
 
 gulp.task("test", function(){
   var testFiles = [
@@ -27,12 +29,21 @@ gulp.task("lint", function(){
 });
 
 gulp.task("concat-js", ["lint"], function(){
+  gulp.src("./app/**/*.module.js")
+    .pipe(concat("modules.js"))
+    .pipe(gulp.dest("./build/app"))
+
   gulp.src("./app/**/*.js")
+    .pipe(gulpIgnore.exclude("./app/**/*.module.js"))
+    .pipe(concat("dev.js"))
+    .pipe(gulp.dest("./build/app"))
+
+  gulp.src(["./build/app/modules.js", "./build/app/dev.js"])
     .pipe(concat("index.js"))
     .pipe(gulp.dest("./build/app"))
     .pipe(rename("index.min.js"))
     .pipe(uglify())
-    .pipe(gulp.dest("./build/app"))   
+    .pipe(gulp.dest("./build/app"))  
 })
 
 gulp.task("compile-index-jade", function(){
