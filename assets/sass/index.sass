@@ -1,7 +1,8 @@
 $pink: #DC90BB
 $white: #ffffff
 $pink-shadow: -2px 1px 1px #DB85B6, -2px 2px 1px #DD80B5, -4px 3px 1px #D77BAF
-
+$inp-border-succes: #FA787E
+$inp-border-error:	#78FA89
 .top-menu
   background: $pink
   padding: 7px 0px
@@ -12,3 +13,54 @@ $pink-shadow: -2px 1px 1px #DB85B6, -2px 2px 1px #DD80B5, -4px 3px 1px #D77BAF
   font-size: 20px
   color: $white
   cursor: pointer
+
+.login-form
+	margin-top: 120px
+
+.css-form
+	input.ng-invalid.ng-touched
+		border-color: $inp-border-succes
+
+.css-form
+	input.ng-valid.ng-touched
+		border-color: $inp-border-error
+
+.shadows
+	box-shadow: 0 0 20px rgba(0,0,0,0.5)
+
+.content
+	padding-top: 30px
+
+.ctrl-btn
+  font-size: 20px
+  margin: 5px
+
+.ctrl-btn:hover
+  cursor: pointer
+
+.new-group
+  font-size: 20px
+  color: dimgray
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5)
+  padding: 10px
+
+.task-title,
+.task-description
+  padding: 5px
+  outline: none
+  outline: none
+  border: 0px
+
+.text-description
+  display: block
+  width: 100%
+  overflow: inherit
+
+textarea
+  width: 100%
+  display: inline-block
+  resize: none
+  height: auto
+
+
+

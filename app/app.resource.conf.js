@@ -1,7 +1,10 @@
-angular
-  .module('todo')
-  .config(resourceConfig);
+;
+(function () {
+  angular
+    .module("todo")
+    .config(resourceConfig);
 
-function resourceConfig($resourceProvider) {
-  $resourceProvider.defaults.stripTrailingSlashes = false;
-}
+  function resourceConfig($resourceProvider) {
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+  }
+})();

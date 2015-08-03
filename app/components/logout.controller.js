@@ -1,12 +1,11 @@
 ;(function(){
   angular
     .module("todo")
+    .controller("LogoutController", LogoutController);
 
-    .controller("LogoutController", LogoutController)
-
-    LogoutController.$inject = ["$scope"]
+    LogoutController.$inject = ["$scope"];
 
     function LogoutController($scope){
-      $scope.user = null
+      $scope.user = null;
     }
-})()
+})();
