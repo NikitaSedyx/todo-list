@@ -29,16 +29,7 @@ gulp.task("lint", function(){
 });
 
 gulp.task("concat-js", ["lint"], function(){
-  gulp.src("./app/**/*.module.js")
-    .pipe(concat("modules.js"))
-    .pipe(gulp.dest("./build/app"))
-
-  gulp.src("./app/**/*.js")
-    .pipe(gulpIgnore.exclude("./app/**/*.module.js"))
-    .pipe(concat("dev.js"))
-    .pipe(gulp.dest("./build/app"))
-
-  gulp.src(["./build/app/modules.js", "./build/app/dev.js"])
+  gulp.src(["./app/**/*.module.js", "./app/**/*.js"]) 
     .pipe(concat("index.js"))
     .pipe(gulp.dest("./build/app"))
     .pipe(rename("index.min.js"))
