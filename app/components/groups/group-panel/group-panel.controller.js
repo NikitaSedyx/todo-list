@@ -12,7 +12,7 @@
         loadData: function(){
           var offset = $scope.groups.data.length
           $scope.scrollConfig.isBusy = true
-          GroupResource.getGroups({offset: offset, limit: 7}).$promise
+          GroupResource.getGroups({offset: offset}).$promise
           .then(function(response){
             addGroups(response.objects)
             $scope.scrollConfig.isBusy = false
