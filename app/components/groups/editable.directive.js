@@ -4,7 +4,7 @@ angular
 
 function contenteditable() {
   return {
-    restrict: 'A',
+    restrict: "A",
     require: "ngModel",
     link: function (scope, elm, attrs, ctrl) {
       elm.bind("keydown", function () {

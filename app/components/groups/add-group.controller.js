@@ -24,7 +24,6 @@
         view: newGroup.view
       });
       cancel();
-      console.log($scope.groups);
     }
 
     function cancel() {
