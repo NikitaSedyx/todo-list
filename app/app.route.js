@@ -13,7 +13,7 @@
         .state("groups", {
           abstract: true,
           templateUrl: "app/views/components/groups/groups.html",
-          controller: "AddGroupController"
+          controller: "GroupController"
         })
         .state("groups.list", {
           url: "/groups",
