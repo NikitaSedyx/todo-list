@@ -7,7 +7,6 @@
 
   function LoginController($scope, $http, $state) {
     $scope.signIn = signIn;
-    $scope.signUp = signUp;
     this.loginSucces = loginSucces;
     this.loginError = loginError;
 
@@ -19,18 +18,13 @@
     }
 
     function loginSucces(response) {
-      console.log("succes");
+
     }
 
     function loginError(response) {
-      console.log("error");
       $scope.allertMsg = "Error:";
       $scope.isMsgHide = false;
       $state.go("groups");
-    }
-
-    function signUp() {
-      $state.go("register");
     }
   }
 })();

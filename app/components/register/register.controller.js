@@ -7,7 +7,6 @@
   RegisterController.$inject = ["$scope", "$http", "$state"];
 
   function RegisterController($scope, $http, $state) {
-    $scope.signIn = signIn;
     $scope.signUp = signUp;
     this.registerSucces = registerSucces;
     this.registerError = registerError;
@@ -20,17 +19,12 @@
 
 
     function registerSucces(response) {
-      console.log("succes");
+      $state.go("groups");
     }
 
     function registerError(response) {
-      console.log("error");
       $scope.allertMsg = "Error:";
       $scope.isMsgHide = false;
-    }
-
-    function signIn() {
-      $state.go("login");
     }
   }
 })();
