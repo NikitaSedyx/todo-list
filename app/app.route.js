@@ -28,5 +28,10 @@
             }
           }
         })
+        .state("edit-group", {
+          url: "/edit_group/:id",
+          templateUrl: "app/views/components/groups/group-edit/edit-group.html",
+          controller: "EditGroupController"
+        })
     }
 })()

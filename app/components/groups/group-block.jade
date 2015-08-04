@@ -2,7 +2,7 @@
   {{group.title}}
 .tasks(ng-switch="group.view")
   .text(ng-switch-when="false") 
-    {{group.tasks[0].description}}
+    {{group.items[0].description}}
   ul(ng-switch-when="true")
     li(
       ng-repeat="task in group.items"
