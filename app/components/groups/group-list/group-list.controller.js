@@ -8,25 +8,29 @@
 
     function GroupListController($scope, GroupResource){
 
-      getGroups(0)
+      var params = {
+        offset: 0,
+        limit: 10
+      }
+
+      getGroups()
 
       $scope.paginatorConfig = {
         currentPage: 1,
         itemsPerPage: 10,
         changePage: function(){
           var currentPage = $scope.paginatorConfig.currentPage - 1
-          var offset = currentPage * $scope.paginatorConfig.itemsPerPage
-          getGroups(offset)
+          params.offset = currentPage * $scope.paginatorConfig.itemsPerPage
+          getGroups()
         }
       }
 
-      function getGroups(offset){
-        GroupResource.getGroups({offset: offset}).$promise
+      function getGroups(){
+        GroupResource.getGroups(params).$promise
         .then(function(response){
           $scope.paginatorConfig.totalItems = response.meta.total_count
-          $scope.groups = response.objects
+          $scope.groups.data = response.objects
         })        
       }
-
     }
 })()
