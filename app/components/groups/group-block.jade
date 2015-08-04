@@ -5,9 +5,9 @@
     {{group.tasks[0].description}}
   ul(ng-switch-when="true")
     li(
-      ng-repeat="task in group.tasks"
+      ng-repeat="task in group.items"
       ng-class="{completed: task.is_completed}"
     ) {{task.description}}
   .updated-date.pull-right 
-    {{group.created_at}}
+    {{group.updated_at | date: "mediumDate"}}
   .clearfix
