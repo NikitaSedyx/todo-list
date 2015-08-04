@@ -1,4 +1,7 @@
 ;(function(){
   angular
-    .module("todo", [])
+    .module("todo", ["ngResource",
+                     "ui.router",
+                     "ui.bootstrap",
+                     "nm-widgets"])
 })()
