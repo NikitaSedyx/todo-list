@@ -24,6 +24,7 @@
         view: newGroup.view
       });
       cancel();
+      console.log("addd");
     }
 
     function cancel() {
