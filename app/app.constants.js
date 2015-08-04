@@ -5,7 +5,8 @@
     .constant("API", {
       BASE: "/api/v1",
       AUTH: "/auth/",
-      REGISTRATION:"/registration/",
+      REGISTRATION: "/registration/",
+      LOGIN: "/login/",
       GROUP: "/group/"
     })
 })()

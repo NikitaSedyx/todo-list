@@ -1,19 +1,18 @@
-;
-(function () {
+;(function () {
   angular
     .module("todo")
     .controller("RegisterController", RegisterController);
 
-  RegisterController.$inject = ["$scope", "$http", "$state"];
+  RegisterController.$inject = ["$scope", "$http", "$state", "API"];
 
-  function RegisterController($scope, $http, $state) {
+  function RegisterController($scope, $http, $state, API) {
     $scope.signUp = signUp;
     this.registerSucces = registerSucces;
     this.registerError = registerError;
 
 
     function signUp() {
-      $http.post("/api/v1/registration/", $scope.user)
+      $http.post(API.BASE + API.REGISTRATION, $scope.user)
         .then(registerSucces, registerError);
     }
 
@@ -27,4 +26,4 @@
       $scope.isMsgHide = false;
     }
   }
-})();
+})()

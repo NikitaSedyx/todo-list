@@ -3,16 +3,16 @@
     .module("todo")
     .controller("LoginController", LoginController);
 
-  LoginController.$inject = ["$scope", "$http", "$state"];
+  LoginController.$inject = ["$scope", "$http", "$state", "API"];
 
-  function LoginController($scope, $http, $state) {
+  function LoginController($scope, $http, $state, API) {
     $scope.signIn = signIn;
     this.loginSucces = loginSucces;
     this.loginError = loginError;
 
 
     function signIn() {
-      $http.post("/api/v1/auth/login/", $scope.user)
+      $http.post(API.BASE + API.AUTH + API.LOGIN, $scope.user)
       .then(loginSucces,loginError);
       $state.go("groups");
     }
@@ -27,4 +27,4 @@
       $state.go("groups");
     }
   }
-})();
+})()
