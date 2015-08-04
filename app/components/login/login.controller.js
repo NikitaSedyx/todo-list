@@ -7,6 +7,7 @@
 
   function LoginController($scope, $http, $state, API) {
     $scope.signIn = signIn;
+    $scope.isMsgHide=true;
     this.loginSucces = loginSucces;
     this.loginError = loginError;
 

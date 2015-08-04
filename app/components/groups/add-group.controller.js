@@ -3,10 +3,14 @@
     .module("todo")
     .controller("AddGroupController", AddGroupController);
 
-  AddGroupController.$inject = ["$scope"];
+  AddGroupController.$inject = ["$scope", "GroupResource"];
 
-  function AddGroupController($scope) {
-    $scope.groups = [];
+  function AddGroupController($scope, GroupResource) {
+    var self=this;
+    self.addingSucces=addingSucces;
+    self.addingError=addingError;
+    $scope.actions={action : "default"};
+    $scope.view={isList : false};
     $scope.addGroup = addGroup;
     $scope.cancel = cancel;
     $scope.addTask = addTask;
@@ -18,12 +22,8 @@
     };
 
     function addGroup(newGroup) {
-      $scope.groups.push({
-        title: newGroup.title,
-        tasks: newGroup.tasks,
-        view: newGroup.view
-      });
-      cancel();
+      var result=GroupResource.createGroup(newGroup);
+      result.$promise.then(addingSucces, addingError);
     }
 
     function cancel() {
@@ -45,6 +45,14 @@
     function listMode(view) {
       view.isList = true;
       $scope.newGroup.view = true;
+    }
+
+    function addingSucces(response) {
+      cancel();
+    }
+
+    function addingError(response) {
+
     }
   }
 })();

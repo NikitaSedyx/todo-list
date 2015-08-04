@@ -1,9 +1,8 @@
-div.row.new-groups-inp(
+.row.new-groups-inp(
   ng-controller="AddGroupController"
-  ng-init="actions.action='default'"
   ng-switch="actions.action"
 )
-  div.col-md-6.col-md-offset-3.new-group(
+  .col-md-6.col-md-offset-3.new-group(
     ng-switch-when="default"
     ng-click="actions.action='new-task'"
   )
@@ -12,33 +11,27 @@ div.row.new-groups-inp(
       i.glyphicon.glyphicon-th-list.ctrl-btn(
         tooltip-placement="bottom"
         tooltip="Create new list"
-        ng-click="$event.stopPropagation()"
-        )
+        ng-click="actions.action='new-task';listMode(view)"
+      )
       i.glyphicon.glyphicon-search.ctrl-btn(
         tooltip-placement="bottom"
         tooltip="Search"
         ng-click="actions.action='search'"
-        )
-  div.col-md-6.col-md-offset-3.new-group(
-    ng-switch-when="new-task"
-    )
-    div.task-title(
+      )
+  .col-md-6.col-md-offset-3.new-group(ng-switch-when="new-task")
+    .task-title(
       contentEditable="true"
       ng-model="newGroup.title"
       placeholder="Input a title"
-      ng-init="view.isList=false"
     )
-    div.task-description(
+    .task-description(
       contentEditable="true"
       ng-model="newGroup.tasks[0].description"
-      placeholder="Description" ng-if="!view.isList"
-      )
-    div.new-tasks(
-      ng-if="view.isList"
+      placeholder="Description"
+      ng-if="!view.isList"
     )
-      div.new-task(
-        ng-repeat="task in newGroup.tasks"
-      )
+    .new-tasks(ng-if="view.isList")
+      .new-task(ng-repeat="task in newGroup.tasks")
         input.toogle(
           type="checkbox"
           ng-model="task.is_completed"
@@ -47,34 +40,35 @@ div.row.new-groups-inp(
           contentEditable="true"
           ng-model="task.description"
         )
-      div.task-description(
+      .task-description(
         contentEditable="true"
         placeholder="Description"
         ng-model="newTask.description"
         ng-blur="addTask(newTask)"
       )
 
-    div.control-pane
-      i.glyphicon.glyphicon-user.ctrl-btn(
-      tooltip-placement="bottom"
-      tooltip="Add user"
-    )
-      i.glyphicon.glyphicon-tasks.ctrl-btn(
-        tooltip-placement="bottom"
-        tooltip="List"
-        ng-click="listMode(view)"
-      )
-      i.glyphicon.glyphicon-save-file.ctrl-btn(
-        tooltip-placement="bottom"
-        tooltip="Add file"
-      )
-      span.pull-right
-        i.glyphicon.glyphicon-ok.pull-right.ctrl-btn(
+    .control-pane
+      .btn-group
+        i.glyphicon.glyphicon-user.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add user"
+        )
+        i.glyphicon.glyphicon-tasks.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="List"
+          ng-click="listMode(view)"
+        )
+        i.glyphicon.glyphicon-save-file.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add file"
+        )
+      .btn-group.pull-right
+        i.glyphicon.glyphicon-ok.btn.btn-default(
           tooltip-placement="bottom"
           tooltip="Add group"
           ng-click="addGroup(newGroup)"
         )
-        i.glyphicon.glyphicon.glyphicon-remove.ctrl-btn(
+        i.glyphicon.glyphicon-remove.btn.btn-default(
           tooltip-placement="bottom"
           tooltip="Cancel"
           ng-click="cancel()"

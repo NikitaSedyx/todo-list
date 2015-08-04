@@ -2,7 +2,7 @@
   angular
     .module("todo")
 
-    .service("GroupResource", function($resource, API){
+    .service("GroupResource",["$resource", "API", function($resource, API){
       return $resource(API.BASE + API.GROUP + ":id/", {id: "@id"}, {
         getGroups: {
           method: "GET",
@@ -21,5 +21,5 @@
           method: "DELETE"
         }
       })
-    })
+    }])
 })()
