@@ -4,9 +4,9 @@
 
     .controller("GroupListController", GroupListController)
 
-    GroupListController.$inject = ["$scope", "GroupResource", "API"]
+    GroupListController.$inject = ["$scope", "GroupResource"]
 
-    function GroupListController($scope, GroupResource, API){
+    function GroupListController($scope, GroupResource){
 
       getGroups(0)
 
