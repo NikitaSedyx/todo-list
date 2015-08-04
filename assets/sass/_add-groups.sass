@@ -1,0 +1,30 @@
+.ctrl-btn
+  font-size: 20px
+  margin: 5px
+
+.ctrl-btn:hover
+  cursor: pointer
+
+.new-group
+  font-size: 20px
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5)
+  padding: 10px
+
+.task-title,
+.task-description
+  padding: 5px
+  outline: none
+  outline: none
+  border: 0px
+
+.new-task
+  border-top: 1px solid lightgrey
+  
+.new-tasks:last-child
+  border-bottom: 1px solid lightgrey
+  
+div[contentEditable="true"]:empty:not(:focus):before
+  content: attr(placeholder)
+  display: block
+  color: #BBB1B1
+
