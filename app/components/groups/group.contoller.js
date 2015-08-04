@@ -8,7 +8,9 @@
 
     function GroupController($scope){
       $scope.groupView = "list"
-      $scope.groups = []
+      $scope.groups = {
+        data: []
+      }
       $scope.changeGroupView = changeGroupView
 
       function changeGroupView(view){
