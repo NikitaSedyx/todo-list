@@ -6,46 +6,49 @@ div.row
     div.panel.panel-primary.login-form.shadows
       div.panel-heading Sign In:
       form#login-form.panel-body.css-form(
-      name="registration"
-      ng-submit="signUp()"
-      novalidate
+        name="registration"
+        ng-submit="signUp()"
+        novalidate
       )
         div.form-group
           label(for="login") Login:
           input.form-control(
-          type="text",
-           ng-model="user.username",
-           name="login",
-           required
+            type="text"
+            ng-model="user.username"
+            name="login"
+            required
            )
         div.form-group
           label(for="email") Email:
-          input.form-control(type="email",
-          ng-model="user.email",
-          name="email",
-          tooltip="It's not email!"
-          tooltip-placement="bottom"
-          tooltip-enable="registration.email.$error.email"
-          required)
+          input.form-control(
+            type="email"
+            ng-model="user.email"
+            name="email"
+            tooltip="It's not email!"
+            tooltip-placement="bottom"
+            tooltip-enable="registration.email.$error.email"
+            required
+          )
         div.form-group
           label(for="password") Password:
           input.form-control(
-          name="password",
-          type="password",
-          ng-model="user.password",
-          required)
+            name="password"
+            type="password"
+            ng-model="user.password"
+            required)
         div.form-group
            label(for="password") Repeat password:
            input.form-control(
-           type="password",
-           name="confirm_password",
-           ui-validate=" '$value==user.password' ",
-           ui-validate-watch=" 'user.password' ",
-           ng-model="user.confirmPassword",
-           tooltip="Passwords aren't equal",
-           tooltip-placement="bottom",
-           tooltip-enable="registration.confirm_password.$error.validator",
-           required)
+             type="password"
+             name="confirm_password"
+             ui-validate=" '$value==user.password' "
+             ui-validate-watch=" 'user.password' "
+             ng-model="user.confirmPassword"
+             tooltip="Passwords aren't equal"
+             tooltip-placement="bottom"
+             tooltip-enable="registration.confirm_password.$error.validator"
+             required
+           )
         div.form-group
           input.btn.btn-success(type="submit", value="SIGN UP", ng-disabled="!registration.$valid")
           button.btn.btn-success.pull-right(ui-sref="login") SIGN IN
