@@ -13,16 +13,16 @@ div.row
         div.form-group
           label(for="login") Login:
           input.form-control(
-          type="text",
-           ng-model="user.username",
-           name="login",
+          type="text"
+           ng-model="user.username"
+           name="login"
            required
            )
         div.form-group
           label(for="email") Email:
-          input.form-control(type="email",
-          ng-model="user.email",
-          name="email",
+          input.form-control(type="email"
+          ng-model="user.email"
+          name="email"
           tooltip="It's not email!"
           tooltip-placement="bottom"
           tooltip-enable="registration.email.$error.email"
@@ -30,21 +30,21 @@ div.row
         div.form-group
           label(for="password") Password:
           input.form-control(
-          name="password",
-          type="password",
-          ng-model="user.password",
+          name="password"
+          type="password"
+          ng-model="user.password"
           required)
         div.form-group
            label(for="password") Repeat password:
            input.form-control(
-           type="password",
-           name="confirm_password",
-           ui-validate=" '$value==user.password' ",
-           ui-validate-watch=" 'user.password' ",
-           ng-model="user.confirmPassword",
-           tooltip="Passwords aren't equal",
-           tooltip-placement="bottom",
-           tooltip-enable="registration.confirm_password.$error.validator",
+           type="password"
+           name="confirm_password"
+           ui-validate=" '$value==user.password' "
+           ui-validate-watch=" 'user.password' "
+           ng-model="user.confirmPassword"
+           tooltip="Passwords aren't equal"
+           tooltip-placement="bottom"
+           tooltip-enable="registration.confirm_password.$error.validator"
            required)
         div.form-group
           input.btn.btn-success(type="submit", value="SIGN UP", ng-disabled="!registration.$valid")
