@@ -1,26 +1,32 @@
-;
-(function () {
+;(function(){
   angular
     .module("todo")
-    .config(routeConf);
 
-  function routeConf($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/login");
-    $stateProvider
-      .state("login", {
-        url: "/login",
-        templateUrl: "app/views/components/login/login.html",
-        controller: "LoginController"
-      })
-      .state("register", {
-        url: "/register",
-        templateUrl: "app/views/components/register/register.html",
-        controller: "RegisterController"
-      })
-      .state("groups", {
-        url: "/groups",
-        templateUrl: "app/views/components/groups/groups.html",
-        controller: "AddGroupController"
-      });
-  }
-})();
+    .config(RouterConfig)
+
+    RouterConfig.$injector = ["$stateProvider", "$urlRouterProvider"]
+
+    function RouterConfig($stateProvider, $urlRouterProvider){
+      $urlRouterProvider.otherwise("/groups")
+
+      $stateProvider
+        .state("groups", {
+          abstract: true,
+          templateUrl: "app/views/components/groups/groups.html",
+          controller: "GroupController"
+        })
+        .state("groups.list", {
+          url: "/groups",
+          views: {
+            "list": {
+              templateUrl: "app/views/components/groups/group-list/group-list.html",
+              controller: "GroupListController"
+            },
+            "panel": {
+              templateUrl: "app/views/components/groups/group-panel/group-panel.html",
+              controller: "GroupPanelController"
+            }
+          }
+        })
+    }
+})()

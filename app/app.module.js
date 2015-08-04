@@ -3,5 +3,6 @@
     .module("todo", ["ui.router",
                      "ngResource",
                      "ui.bootstrap",
-                     "ui.validate"]);
+                     "ui.validate",
+                     "nm-widgets"]);
 })();
