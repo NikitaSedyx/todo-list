@@ -6,9 +6,6 @@
   AddGroupController.$inject = ["$scope", "GroupResource"];
 
   function AddGroupController($scope, GroupResource) {
-    var self=this;
-    self.addingSucces=addingSucces;
-    self.addingError=addingError;
     $scope.actions={action : "default"};
     $scope.view={isList : false};
     $scope.addGroup = addGroup;
