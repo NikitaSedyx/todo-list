@@ -8,7 +8,7 @@
           return new ScrollConfig(name)
         }
         this.params = {
-          limit: 20
+          limit: 50
         }
         this.isBusy = false
         this.loadData = function(){
