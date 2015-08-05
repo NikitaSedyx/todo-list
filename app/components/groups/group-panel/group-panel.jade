@@ -1,8 +1,8 @@
 .group-panel.col-md-12
   .col-md-12(
     masonry
-    infinite-scroll="scrollConfig.loadData()"
-    infinite-scroll-immediate-check="true"
+    infinite-scroll="loadData()"
+    infinite-scroll-immediate-check="false"
     infinite-scroll-disabled="scrollConfig.isBusy"
   )
     .col-md-3.group(ng-repeat="group in groups.data")
