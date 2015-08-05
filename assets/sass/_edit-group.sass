@@ -1,0 +1,47 @@
+.edit-group
+  margin-top: 30px
+
+  .edit-field
+    border: 0px solid
+    padding: 1%
+
+  .title
+    @extend .edit-field
+    width: 100%
+    box-sizing: border-box
+
+  .text-task
+    @extend .edit-field
+    width: 100%
+    resize: none
+
+  ul
+    padding: 0
+    margin-bottom: 0px
+
+    li
+      padding-left: 2%
+      border-bottom: 1px inset
+
+      .new-task-description
+        @extend .edit-field
+        width: 100%
+
+      .status
+        display: inline-block
+        width: 4%
+
+      .description-container
+        display: inline-block
+        width: 93%
+
+        .description
+          @extend .edit-field
+          margin-left: 1%
+          width: 93%
+
+    li:last-child
+      padding-left: 0
+
+  .control-panel
+    margin: 10px

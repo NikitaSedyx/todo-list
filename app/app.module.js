@@ -4,5 +4,8 @@
                      "ngResource",
                      "ui.bootstrap",
                      "ui.validate",
-                     "nm-widgets"]);
+                     "nm-widgets",
+                     "nm-widgets",
+                     "monospaced.elastic"]);
 })();
+
