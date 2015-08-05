@@ -13,7 +13,8 @@
       loadData()
 
       function loadData(){
-        $scope.scrollConfig.loadData($scope.groups.data.length)
+        $scope.scrollConfig.params.offset = $scope.groups.data.length
+        $scope.scrollConfig.loadData()
         .then(function(response){
           _.forEach(response, function(group){
             $scope.groups.data.push(group)
