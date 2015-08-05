@@ -1,0 +1,67 @@
+.row
+  .group.edit-group.col-md-6.col-md-offset-3
+    .row
+      input.title(
+        type="text"
+        ng-model="group.title"
+        placeholder="Title"
+      )
+      .tasks(ng-switch="group.view")
+        textarea.text-task(
+          msd-elastic
+          ng-switch-when="false"
+          ng-model="group.items[0].description"
+        )
+        ul(ng-switch-when="true")
+          li(ng-repeat="task in group.items")
+            input.checkbox.status(
+              type="checkbox"
+              ng-model="task.is_completed"
+            )
+            .description-container
+              input.description(
+                type="text"
+                ng-model="task.description"
+                ng-class="{completed: task.is_completed}"
+              )
+              i.glyphicon.glyphicon-trash.trash
+          li
+            input.new-task-description(
+              type="text"
+              ng-model="newTask.description"
+              placeholder="New Task"
+              tooltip="Press 'Enter' to add new task"
+              tooltip-trigger="focus"
+              tooltip-placement="bottom"
+            )
+    .row
+      .control-panel
+        .group-control.btn-group.pull-left
+          button.btn.btn-default(
+            tooltip="Add contributor"
+            tooltip-placement="bottom"
+          )
+            i.glyphicon.glyphicon-user
+          button.btn.btn-default(
+            tooltip="Add file"
+            tooltip-placement="bottom"
+          )
+            i.glyphicon.glyphicon-floppy-disk
+          button.btn.btn-default(
+            tooltip="Delete group"
+            tooltip-placement="bottom"
+          )
+            i.glyphicon.glyphicon-trash.trash
+        .edit-control.btn-group.pull-right
+          button.btn.btn-default(
+            tooltip="Cancel"
+            tooltip-placement="bottom"
+            ui-sref="groups.list"
+          )
+            i.glyphicon.glyphicon-remove
+          button.btn.btn-default(
+            tooltip="Apply"
+            tooltip-placement="bottom"
+          )
+            i.glyphicon.glyphicon-ok
+        .clearfix

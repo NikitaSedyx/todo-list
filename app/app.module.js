@@ -3,5 +3,6 @@
     .module("todo", ["ngResource",
                      "ui.router",
                      "ui.bootstrap",
-                     "nm-widgets"])
+                     "nm-widgets",
+                     "monospaced.elastic"])
 })()
