@@ -21,7 +21,6 @@
     function loginError(response) {
       $scope.allertMsg = "Error:";
       $scope.isMsgHide = false;
-      $state.go("groups");
     }
   }
 })()
