@@ -19,13 +19,13 @@
         ng-click="actions.action='search'"
       )
   .col-md-6.col-md-offset-3.new-group(ng-switch-when="new-task")
-    .task-title(
-      contentEditable="true"
+    textarea.task-title(
+      msd-elastic
       ng-model="newGroup.title"
       placeholder="Input a title"
     )
-    .task-description(
-      contentEditable="true"
+    textarea.task-description(
+      msd-elastic
       ng-model="newGroup.tasks[0].description"
       placeholder="Description"
       ng-if="!view.isList"
