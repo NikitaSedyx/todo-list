@@ -3,9 +3,9 @@
     .module("todo")
     .controller("LoginController", LoginController);
 
-  LoginController.$inject = ["$scope", "$http", "$state", "API"];
+  LoginController.$inject = ["$scope", "$http", "$state", "API", "UserService"];
 
-  function LoginController($scope, $http, $state, API) {
+  function LoginController($scope, $http, $state, API, UserService) {
     $scope.signIn = signIn;
     $scope.isMsgHide=true;
 
@@ -15,12 +15,14 @@
     }
 
     function loginSucces(response) {
-      $state.go("groups");
+      UserService.setUser(response.data);
+      $state.go("groups.list");
     }
 
     function loginError(response) {
-      $scope.allertMsg = "Error:";
-      $scope.isMsgHide = false;
+      var responseStatus=response.status;
+      $scope.allertMsg="User with curren login and password does not exist!"
+      $scope.isMsgHide=false;
     }
   }
 })()
