@@ -8,18 +8,14 @@
   function LoginController($scope, $http, $state, API) {
     $scope.signIn = signIn;
     $scope.isMsgHide=true;
-    this.loginSucces = loginSucces;
-    this.loginError = loginError;
-
 
     function signIn() {
       $http.post(API.BASE + API.AUTH + API.LOGIN, $scope.user)
       .then(loginSucces,loginError);
-      $state.go("groups");
     }
 
     function loginSucces(response) {
-
+      $state.go("groups");
     }
 
     function loginError(response) {
