@@ -3,7 +3,7 @@
     .module("todo")
     .service("GroupResource",GroupResource)
 
-  GroupResource.$inject=["$resource", "API"];
+  GroupResource.$inject=["$resource", "API"]
 
   function GroupResource($resource, API) {
     return $resource(API.BASE + API.GROUP + ":id/", {id: "@id"}, {
@@ -24,4 +24,5 @@
         method: "DELETE"
       }
     })
+  }
 })()
