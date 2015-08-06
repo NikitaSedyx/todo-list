@@ -3,23 +3,25 @@
     .module("todo")
     .controller("AddGroupController", AddGroupController);
 
-  AddGroupController.$inject = ["$scope", "GroupResource"];
+  AddGroupController.$inject = ["$scope", "GroupResource", "UserService"];
 
-  function AddGroupController($scope, GroupResource) {
-    $scope.actions={action : "default"};
-    $scope.view={isList : false};
+  function AddGroupController($scope, GroupResource, UserService) {
+    $scope.actions = {action : "default"};
+    $scope.view = {isList : false};
     $scope.addGroup = addGroup;
     $scope.cancel = cancel;
     $scope.addTask = addTask;
     $scope.listMode = listMode;
     $scope.newGroup = {
       title: "",
-      tasks: [],
-      view: false
+      items: [],
+      view: false,
+      files: [],
+      users: [UserService.getUser()]
     };
 
-    function addGroup(newGroup) {
-      var result=GroupResource.createGroup(newGroup);
+    function addGroup() {
+      var result = GroupResource.createGroup($scope.newGroup);
       result.$promise.then(addingSucces, addingError);
     }
 
@@ -30,13 +32,13 @@
       $scope.actions.action = "default";
     }
 
-    function addTask(task) {
-      var newTask = {
-        description: task.description,
+    function addTask(item) {
+      var newItem = {
+        description: item.description,
         is_completed: false
       };
-      $scope.newGroup.tasks.push(newTask);
-      task.description = undefined;
+      $scope.newGroup.items.push(newItem);
+      item.description = undefined;
     }
 
     function listMode(view) {
@@ -49,7 +51,6 @@
     }
 
     function addingError(response) {
-
     }
   }
 })();

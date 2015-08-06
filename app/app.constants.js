@@ -7,6 +7,8 @@
       AUTH: "/auth/",
       REGISTRATION: "/registration/",
       LOGIN: "/login/",
-      GROUP: "/group/"
+      GROUP: "/group/",
+      LOGOUT: "/logout/",
+      INFO: "/info/"
     })
 })()

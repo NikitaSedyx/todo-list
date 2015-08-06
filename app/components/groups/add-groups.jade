@@ -26,22 +26,25 @@
     )
     textarea.task-description(
       msd-elastic
-      ng-model="newGroup.tasks[0].description"
+      ng-model="newGroup.items[0].description"
       placeholder="Description"
       ng-if="!view.isList"
     )
     .new-tasks(ng-if="view.isList")
-      .new-task(ng-repeat="task in newGroup.tasks")
-        input.toogle(
-          type="checkbox"
-          ng-model="task.is_completed"
-        )
-        span.task-description(
-          contentEditable="true"
-          ng-model="task.description"
-        )
-      .task-description(
-        contentEditable="true"
+      .row.new-task(ng-repeat="item in newGroup.items")
+        .col-md-1
+          input.toogle(
+            type="checkbox"
+            ng-model="item.is_completed"
+          )
+        .col-md-11
+          textarea.task-description(
+            msd-elastic
+            rows="1"
+            ng-model="item.description"
+          )
+      textarea.task-description(
+        msd-elastic
         placeholder="Description"
         ng-model="newTask.description"
         ng-blur="addTask(newTask)"

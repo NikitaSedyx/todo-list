@@ -1,16 +1,16 @@
-;(function(){
+;(function () {
   angular
     .module("todo")
 
-    .config(function($httpProvider){
+    .config(function ($httpProvider) {
       $httpProvider.defaults.xsrfCookieName = "csrftoken"
       $httpProvider.defaults.xsrfHeaderName = "X-CSRFToken"
     })
 
-    .config(function($httpProvider, $injector){
+    .config(function ($httpProvider, $injector) {
       $httpProvider.interceptors.push(function($q, $injector){
         return {
-          responseError: function(rejection){
+          responseError: function (rejection){
             if (rejection.status !== 401){
               return rejection
             }

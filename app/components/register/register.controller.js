@@ -1,5 +1,4 @@
-;
-(function () {
+;(function () {
   angular
     .module("todo")
     .controller("RegisterController", RegisterController);
@@ -11,7 +10,6 @@
     $scope.isMsgHide = true;
     this.registerSucces = registerSucces;
     this.registerError = registerError;
-
 
     function signUp() {
       $http.post(API.BASE + API.REGISTRATION, $scope.user)
@@ -27,8 +25,6 @@
       }
     }
 
-
-
     function registerSucces(response) {
       $state.go("groups.list");
     }
@@ -38,4 +34,4 @@
       $scope.isMsgHide = false;
     }
   }
-})()
+})();
