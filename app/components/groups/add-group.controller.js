@@ -27,7 +27,7 @@
 
     function cancel() {
       $scope.newGroup.title = "";
-      $scope.newGroup.tasks = [];
+      $scope.newGroup.items = [];
       $scope.newGroup.view = false;
       $scope.actions.action = "default";
     }
