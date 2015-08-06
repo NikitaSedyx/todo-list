@@ -1,0 +1,22 @@
+.modal-header
+  h3 Contributors
+.modal-body
+  ul.contributots-list
+    li(ng-repeat="contributor in contributors")
+      {{contributor.username}}
+      i.glyphicon.glyphicon-trash.pull-right(ng-click="deleteContributor($index)")
+      .clearfix
+  form.search-contributors(ng-submit="findUsers()")
+    input.search-field(ng-model="username")
+    ul.search-results
+      li(
+        ng-repeat="user in users"
+        ng-click="addContributor(user)"
+      ) {{user.username}}
+.modal-footer
+  button.btn.btn-default(
+    ng-click="cancel()"
+  ) Cancel
+  button.btn.btn-default(
+    ng-click="apply()"
+  ) Save
