@@ -4,5 +4,6 @@
                      "ui.router",
                      "ui.bootstrap",
                      "nm-widgets",
-                     "monospaced.elastic"])
+                     "monospaced.elastic",
+                     "infinite-scroll"])
 })()
