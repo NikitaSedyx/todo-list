@@ -5,9 +5,9 @@
     //inject session storage
     .service("GroupStorage", GroupStorage)
 
-  GroupStorage.$inject = ["GroupResource", "SessionUserService"]
+  GroupStorage.$inject = ["GroupResource", "SessionUser"]
 
-  function GroupStorage(GroupResource, SessionUserService) {
+  function GroupStorage(GroupResource, SessionUser) {
     var self = this
     self.groups = {
       data: [],
@@ -21,7 +21,7 @@
     }
 
     function loadData(params) {
-      var view = SessionUserService.userView
+      var view = SessionUser.userView
       loaders[view](params)
     }
 

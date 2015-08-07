@@ -4,9 +4,9 @@
 
     .controller("GroupController", GroupController)
 
-    GroupController.$inject = ["GroupStorage", "$scope", "SessionUserService"]
+    GroupController.$inject = ["GroupStorage", "$scope", "SessionUser"]
 
-    function GroupController(GroupStorage, $scope, SessionUserService){
+    function GroupController(GroupStorage, $scope, SessionUser){
       $scope.groupView = "list"
       $scope.groups = GroupStorage.groups
       $scope.params = {
@@ -14,7 +14,7 @@
       }
       $scope.changeGroupView = changeGroupView
       function changeGroupView(groupView){
-        SessionUserService.userView = groupView;
+        SessionUser.userView = groupView;
         $scope.params.offset = 0
         GroupStorage.groups.data = []
 

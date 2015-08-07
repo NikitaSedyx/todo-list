@@ -3,9 +3,9 @@
     .module("todo")
     .controller("LoginController", LoginController);
 
-  LoginController.$inject = ["$scope", "$http", "$state", "API", "SessionUserService"];
+  LoginController.$inject = ["$scope", "$http", "$state", "API", "SessionUser"];
 
-  function LoginController($scope, $http, $state, API, SessionUserService) {
+  function LoginController($scope, $http, $state, API, SessionUser) {
     $scope.signIn = signIn;
     $scope.isMsgHide = true;
 
@@ -15,7 +15,7 @@
     }
 
     function loginSucces(response) {
-      SessionUserService.setUser(response.data);
+      SessionUser.getUser();
       $state.go("groups.list");
     }
 

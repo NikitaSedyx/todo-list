@@ -3,9 +3,9 @@
     .module("todo")
     .controller("AddGroupController", AddGroupController);
 
-  AddGroupController.$inject = ["$scope", "GroupResource", "SessionUserService", "GroupStorage"];
+  AddGroupController.$inject = ["$scope", "GroupResource", "SessionUser", "GroupStorage"];
 
-  function AddGroupController($scope, GroupResource, SessionUserService, GroupStorage) {
+  function AddGroupController($scope, GroupResource, SessionUser, GroupStorage) {
     $scope.actions = {
       action: "default"
     };

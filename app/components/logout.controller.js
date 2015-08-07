@@ -3,26 +3,17 @@
     .module("todo")
     .controller("LogoutController", LogoutController);
 
-  LogoutController.$inject = ["$scope", "API", "SessionUserService", "$http", "$state"];
+  LogoutController.$inject = ["$scope", "API", "SessionUser", "$http", "$state"];
 
-  function LogoutController($scope, API, SessionUserService, $http, $state) {
-    this.notify = notify;
+  function LogoutController($scope, API, SessionUser, $http, $state) {
     $scope.logout = logout;
-    SessionUserService.registerObserver(this);
-    $http.get(API.BASE + API.AUTH + API.INFO)
-      .then(function (response) {
-        SessionUserService.setUser(response.data.user);
-        $state.go("groups.list");
-    })
+    $scope.user = SessionUser.user;
 
-    function notify(user) {
-      $scope.user = user;
-    }
+    SessionUser.getUser();
 
     function logout() {
       $http.get(API.BASE + API.AUTH + API.LOGOUT);
-      SessionUserService.removeUser();
-      $scope.user = undefined;
+      $scope.user = {};
       $state.go("login");
     }
   }
