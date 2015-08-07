@@ -1,7 +1,7 @@
 .modal-header
   h3 Contributors
 .modal-body
-  ul.contributots-list
+  ul.contributors-list
     li(ng-repeat="contributor in contributors")
       {{contributor.username}}
       i.glyphicon.glyphicon-trash.pull-right(ng-click="deleteContributor($index)")
