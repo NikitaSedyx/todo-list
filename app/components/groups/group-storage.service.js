@@ -21,7 +21,7 @@
     }
 
     function loadData(params) {
-      var view = SessionUser.userView
+      var view = SessionUser.user.userView
       loaders[view](params)
     }
 

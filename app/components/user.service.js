@@ -8,8 +8,7 @@
 
   function SessionUser($http, API) {
     var self = this;
-    self.userView = "list"
-    self.user = {};
+    self.user = {userView : "list"};
     self.getUser = getUser;
 
     function getUser() {
