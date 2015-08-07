@@ -4,3 +4,4 @@ build/
 assets/libs/
 *.*~
 /css/
+/npm-debug.log
