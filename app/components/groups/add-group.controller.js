@@ -3,11 +3,15 @@
     .module("todo")
     .controller("AddGroupController", AddGroupController);
 
-  AddGroupController.$inject = ["$scope", "GroupResource", "UserService"];
+  AddGroupController.$inject = ["$scope", "GroupResource", "SessionUserService", "GroupStorage"];
 
-  function AddGroupController($scope, GroupResource, UserService) {
-    $scope.actions = {action : "default"};
-    $scope.view = {isList : false};
+  function AddGroupController($scope, GroupResource, SessionUserService, GroupStorage) {
+    $scope.actions = {
+      action: "default"
+    };
+    $scope.view = {
+      isList: false
+    };
     $scope.addGroup = addGroup;
     $scope.cancel = cancel;
     $scope.addTask = addTask;
@@ -17,18 +21,25 @@
       items: [],
       view: false,
       files: [],
-      users: [UserService.getUser()]
+      users: []
     };
 
     function addGroup() {
+      $scope.newGroup.users.push(SessionUserService.user);
       var result = GroupResource.createGroup($scope.newGroup);
-      result.$promise.then(addingSucces, addingError);
+      result.$promise.then(function (response) {
+        $scope.params.offset = 0;
+        GroupStorage.groups.data = [];
+        GroupStorage.loadData($scope.params);
+        cancel();
+      });
     }
 
     function cancel() {
       $scope.newGroup.title = "";
       $scope.newGroup.items = [];
       $scope.newGroup.view = false;
+      $scope.newGroup.users = [];
       $scope.actions.action = "default";
     }
 
@@ -44,13 +55,6 @@
     function listMode(view) {
       view.isList = true;
       $scope.newGroup.view = true;
-    }
-
-    function addingSucces(response) {
-      cancel();
-    }
-
-    function addingError(response) {
     }
   }
 })();
