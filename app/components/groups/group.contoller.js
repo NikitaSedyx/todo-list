@@ -4,17 +4,18 @@
 
     .controller("GroupController", GroupController)
 
-    GroupController.$inject = ["$scope"]
+    GroupController.$inject = ["GroupStorage", "$scope"]
 
-    function GroupController($scope){
+    function GroupController(GroupStorage, $scope){
       $scope.groupView = "list"
-      $scope.groups = {
-        data: []
+      $scope.groups = GroupStorage.groups
+      $scope.params = {
+        offset: 0
       }
       $scope.changeGroupView = changeGroupView
-
-      function changeGroupView(view){
-        $scope.groupView = view
+      function changeGroupView(){
+        $scope.params.offset = 0
+        GroupStorage.groups.data = []
       }
     }
 })()

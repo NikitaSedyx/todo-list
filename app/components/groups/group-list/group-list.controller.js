@@ -1,36 +1,23 @@
-;(function(){
+;
+(function () {
   angular
     .module("todo")
 
-    .controller("GroupListController", GroupListController)
+  .controller("GroupListController", GroupListController)
 
-    GroupListController.$inject = ["$scope", "GroupResource"]
+  GroupListController.$inject = ["GroupStorage", "$scope"]
 
-    function GroupListController($scope, GroupResource){
+  function GroupListController(GroupStorage, $scope) {
+    $scope.params.limit = 10
+    GroupStorage.loadData($scope.params)
 
-      var params = {
-        offset: 0,
-        limit: 10
-      }
-
-      getGroups()
-
-      $scope.paginatorConfig = {
-        currentPage: 1,
-        itemsPerPage: 10,
-        changePage: function(){
-          var currentPage = $scope.paginatorConfig.currentPage - 1
-          params.offset = currentPage * $scope.paginatorConfig.itemsPerPage
-          getGroups()
-        }
-      }
-
-      function getGroups(){
-        GroupResource.getGroups(params).$promise
-        .then(function(response){
-          $scope.paginatorConfig.totalItems = response.meta.total_count
-          $scope.groups.data = response.objects
-        })
+    $scope.paginatorConfig = {
+      currentPage: 1,
+      changePage: function () {
+        var currentPage = $scope.paginatorConfig.currentPage - 1
+        $scope.params.offset = currentPage * $scope.params.limit
+        GroupStorage.loadData($scope.params)
       }
     }
+  }
 })()

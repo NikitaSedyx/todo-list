@@ -6,9 +6,8 @@
     include ../group-block.jade
   pagination.pagination-sm.pull-left(
     max-size=5
-    items-per-page="paginatorConfig.itemsPerPage"
-    total-items="paginatorConfig.totalItems"
+    items-per-page="params.limit"
+    total-items="groups.totalItems"
     ng-model="paginatorConfig.currentPage"
     ng-change="paginatorConfig.changePage()"
   )
-

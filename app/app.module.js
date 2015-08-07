@@ -1,11 +1,10 @@
-;(function(){
+;(function () {
   angular
     .module("todo", ["ui.router",
                      "ngResource",
                      "ui.bootstrap",
                      "ui.validate",
                      "nm-widgets",
-                     "nm-widgets",
-                     "monospaced.elastic"]);
-})();
-
+                     "monospaced.elastic",
+                     "infinite-scroll"])
+})()

@@ -1,3 +1,7 @@
-.col-md-12(masonry)
-  div.col-md-3.group(ng-repeat="group in groups")
+.col-md-12(
+  masonry
+  infinite-scroll="loadData()"
+  infinite-scroll-immediate-check="false"
+)
+  div.col-md-3.group(ng-repeat="group in groups.data")
     include ../group-block.jade
