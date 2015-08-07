@@ -1,10 +1,11 @@
 ;(function () {
   angular
     .module("todo")
-    .service("UserService", UserService);
+    .service("SessionUserService", SessionUserService);
 
-  function UserService() {
+  function SessionUserService() {
     var self = this;
+    self.userView = "list"
     self.user = undefined;
     self.setUser = setUser;
     self.removeUser = removeUser;
