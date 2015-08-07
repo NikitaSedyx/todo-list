@@ -25,7 +25,7 @@
     };
 
     function addGroup() {
-      $scope.newGroup.users.push(SessionUserService.user.data);
+      $scope.newGroup.users.push(SessionUser.user.data);
       var result = GroupResource.createGroup($scope.newGroup);
       result.$promise.then(function (response) {
         $scope.params.offset = 0;
