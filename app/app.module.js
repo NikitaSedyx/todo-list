@@ -5,5 +5,6 @@
                      "ui.bootstrap",
                      "nm-widgets",
                      "monospaced.elastic",
-                     "infinite-scroll"])
+                     "infinite-scroll",
+                     "downloaders"])
 })()

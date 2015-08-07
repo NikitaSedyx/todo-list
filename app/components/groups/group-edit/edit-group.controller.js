@@ -4,8 +4,14 @@
 
     .controller("EditGroupController", EditGroupController)
 
-    EditGroupController.$inject = ["$scope"]
+    EditGroupController.$inject = ["API", "groupId", "$scope", "XlsDownloader"]
 
-    function EditGroupController($scope){
+    function EditGroupController(API, groupId, $scope, XlsDownloader){
+      $scope.xlsExport = xlsExport
+
+      function xlsExport(){
+        var url = API.BASE + API.EXPORT + "xls/" + groupId + "/"
+        XlsDownloader.download(url)
+      }
     }
 })()
