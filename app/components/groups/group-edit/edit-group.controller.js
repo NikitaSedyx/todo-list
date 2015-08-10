@@ -4,10 +4,11 @@
 
     .controller("EditGroupController", EditGroupController)
 
-    EditGroupController.$inject = ["groupId", "GroupResource", 
-      "ItemResource", "$modal", "$scope", "$state"]
+    EditGroupController.$inject = ["API", "groupId", "GroupResource", 
+      "ItemResource", "$modal", "$scope", "$state", "XlsDownloader"]
 
-    function EditGroupController(groupId, GroupResource, ItemResource, $modal, $scope, $state){
+    function EditGroupController(API, groupId, GroupResource, 
+      ItemResource, $modal, $scope, $state, XlsDownloader){
       getGroup()
 
       $scope.newTask = {}
@@ -17,6 +18,7 @@
       $scope.deleteTask = deleteTask
       $scope.editContributors = editContributors
       $scope.updateGroup = updateGroup
+      $scope.xlsExport = xlsExport
 
       function addTask(){
         $scope.group.items.push($scope.newTask)
@@ -71,6 +73,11 @@
         .then(function(response){
           getGroup()
         })
+      }
+
+      function xlsExport(){
+        var url = API.BASE + API.EXPORT + "xls/" + groupId + "/"
+        XlsDownloader.download(url)
       }
     }
 })()
