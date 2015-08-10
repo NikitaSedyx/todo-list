@@ -2,7 +2,6 @@
   angular
     .module("todo")
     .service("GroupResource",GroupResource)
-
   GroupResource.$inject=["$resource", "API"]
 
   function GroupResource($resource, API) {

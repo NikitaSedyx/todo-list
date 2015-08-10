@@ -28,11 +28,6 @@
           }
         }
       })
-      .state("edit-group", {
-        url: "/edit_group/:id",
-        templateUrl: "app/views/components/groups/group-edit/edit-group.html",
-        controller: "EditGroupController"
-      })
       .state("login", {
         url: "/login",
         templateUrl: "app/views/components/login/login.html",
@@ -43,5 +38,15 @@
         templateUrl: "app/views/components/register/register.html",
         controller: "RegisterController"
       })
-  }
+      .state("edit-group", {
+        url: "/edit_group/:id",
+        templateUrl: "app/views/components/groups/group-edit/edit-group.html",
+        controller: "EditGroupController",
+        resolve: {
+          groupId: function($stateParams, $state){
+            return $stateParams.id
+          }
+        }
+      })
+    }
 })()

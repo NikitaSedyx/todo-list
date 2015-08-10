@@ -9,6 +9,9 @@
       LOGIN: "/login/",
       GROUP: "/group/",
       LOGOUT: "/logout/",
-      INFO: "/info/"
+      INFO: "/info/",
+      EXPORT: "/export/",
+      USER: "/user/",
+      ITEM: "/item/"
     })
 })()

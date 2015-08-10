@@ -6,5 +6,6 @@
                      "ui.validate",
                      "nm-widgets",
                      "monospaced.elastic",
-                     "infinite-scroll"])
+                     "infinite-scroll",
+                     "downloaders"])
 })()
