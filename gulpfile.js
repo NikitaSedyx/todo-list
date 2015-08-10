@@ -24,8 +24,10 @@ gulp.task("test", function(){
     "./assets/libs/underscore/underscore-min.js",
     "./app/**/*.module.js",
     "./app/**/*.js",
+    "./test/mocks/**/*.js",
     "./test/**/*.js"
   ]
+  
   gulp.src(testFiles)
   .pipe(karma({
     configFile: "karma.conf.js",
