@@ -5,35 +5,42 @@
         type="text"
         ng-model="group.title"
         placeholder="Title"
+        ng-blur="updateGroup()"
       )
       .tasks(ng-switch="group.view")
         textarea.text-task(
           msd-elastic
           ng-switch-when="false"
           ng-model="group.items[0].description"
+          ng-blur="updateGroup()"
         )
         ul(ng-switch-when="true")
           li(ng-repeat="task in group.items")
             input.checkbox.status(
               type="checkbox"
               ng-model="task.is_completed"
+              ng-change="updateGroup()"
             )
             .description-container
               input.description(
                 type="text"
                 ng-model="task.description"
                 ng-class="{completed: task.is_completed}"
+                ng-blur="updateGroup()"
               )
-              i.glyphicon.glyphicon-trash.trash
+              i.glyphicon.glyphicon-trash.trash(
+                ng-click="deleteTask(task)"
+              )
           li
-            input.new-task-description(
-              type="text"
-              ng-model="newTask.description"
-              placeholder="New Task"
-              tooltip="Press 'Enter' to add new task"
-              tooltip-trigger="focus"
-              tooltip-placement="bottom"
-            )
+            form(ng-submit="addTask()")
+              input.new-task-description(
+                type="text"
+                ng-model="newTask.description"
+                placeholder="New Task"
+                tooltip="Press 'Enter' to add new task"
+                tooltip-trigger="focus"
+                tooltip-placement="bottom"
+              )
     .row
       .control-panel
         .group-control.btn-group.pull-left
@@ -50,6 +57,7 @@
           button.btn.btn-default(
             tooltip="Delete group"
             tooltip-placement="bottom"
+            ng-click="deleteGroup()"
           )
             i.glyphicon.glyphicon-trash.trash
         .edit-control.btn-group.pull-right
@@ -62,6 +70,7 @@
           button.btn.btn-default(
             tooltip="Apply"
             tooltip-placement="bottom"
+            ng-click="apply()"
           )
             i.glyphicon.glyphicon-ok
         .clearfix
