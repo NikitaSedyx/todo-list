@@ -6,7 +6,7 @@
       return $resource(API.BASE + API.GROUP + ":id/", {id: "@id"}, {
         getGroups: {
           method: "GET",
-          params: {id:null}
+          params: {id: null}
         },
         getGroup: {
           method: "GET"

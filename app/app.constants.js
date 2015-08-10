@@ -7,6 +7,7 @@
       AUTH: "/auth/",
       REGISTRATION:"/registration/",
       GROUP: "/group/",
+      USER: "/user/",
       ITEM: "/item/"
     })
 })()
