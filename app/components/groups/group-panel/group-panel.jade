@@ -3,5 +3,8 @@
   infinite-scroll="loadData()"
   infinite-scroll-immediate-check="false"
 )
-  div.col-md-3.group(ng-repeat="group in groups.data")
+  div.col-md-3.group(
+    ng-repeat="group in groups.data"
+    ui-sref="edit-group({id: group.id})"
+  )
     include ../group-block.jade
