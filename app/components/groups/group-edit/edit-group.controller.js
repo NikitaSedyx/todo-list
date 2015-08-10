@@ -4,13 +4,42 @@
 
     .controller("EditGroupController", EditGroupController)
 
-    EditGroupController.$inject = ["groupId", "GroupResource", "$modal", "$scope",
-      "$state"]
+    EditGroupController.$inject = ["groupId", "GroupResource", 
+      "ItemResource", "$modal", "$scope", "$state"]
 
-    function EditGroupController(groupId, GroupResource, $modal, $scope, $state){
+    function EditGroupController(groupId, GroupResource, ItemResource, $modal, $scope, $state){
       getGroup()
 
+      $scope.newTask = {}
+      $scope.addTask = addTask
+      $scope.apply = apply
+      $scope.deleteGroup = deleteGroup
+      $scope.deleteTask = deleteTask
       $scope.editContributors = editContributors
+      $scope.updateGroup = updateGroup
+
+      function addTask(){
+        $scope.group.items.push($scope.newTask)
+        $scope.newTask = {}
+        updateGroup()
+      }
+
+      function apply(){
+        updateGroup()
+        $state.go("groups.list")
+      }
+
+      function deleteGroup(){
+        $scope.group.is_deleted = true
+        apply()
+      }
+
+      function deleteTask(item){
+        ItemResource.deleteItem(item).$promise
+        .then(function(response){
+          getGroup()
+        })
+      }
 
       function editContributors(){
         var contributorsModal = $modal.open({
@@ -35,6 +64,13 @@
         .then(function(response){
           $scope.group = response
         })    
+      }
+
+      function updateGroup(){
+        GroupResource.editGroup($scope.group).$promise
+        .then(function(response){
+          getGroup()
+        })
       }
     }
 })()
