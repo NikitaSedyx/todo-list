@@ -6,6 +6,9 @@
       BASE: "/api/v1",
       AUTH: "/auth/",
       REGISTRATION:"/registration/",
-      GROUP: "/group/"
+      GROUP: "/group/",
+      EXPORT: "/export/",
+      USER: "/user/",
+      ITEM: "/item/"
     })
 })()
