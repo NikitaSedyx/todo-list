@@ -12,6 +12,17 @@ var clean = require('gulp-clean')
 
 gulp.task("test", function(){
   var testFiles = [
+    "./assets/libs/jquery/dist/jquery.min.js",
+    "./assets/libs/masonry/dist/masonry.pkgd.js",
+    "./assets/libs/angular/angular.js",
+    "./assets/libs/angular-mocks/angular-mocks.js",
+    "./assets/libs/angular-resource/angular-resource.min.js",
+    "./assets/libs/angular-ui-router/release/angular-ui-router.min.js",
+    "./assets/libs/angular-bootstrap/ui-bootstrap.min.js",
+    "./assets/libs/angular-elastic/elastic.js",
+    "./assets/libs/ngInfiniteScroll/build/ng-infinite-scroll.min.js",
+    "./assets/libs/underscore/underscore-min.js",
+    "./app/**/*.module.js",
     "./app/**/*.js",
     "./test/**/*.js"
   ]
