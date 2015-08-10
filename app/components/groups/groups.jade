@@ -4,13 +4,13 @@ include ./add-groups.jade
     label.btn.btn-primary(
       ng-model="groupView"
       btn-radio="'list'"
-      ng-change="changeGroupView('list')"
+      ng-change="groupView='list';changeGroupView()"
     )
       i.glyphicon.glyphicon-th-list
     label.btn.btn-primary(
       ng-model="groupView"
       btn-radio="'panel'"
-      ng-change="changeGroupView('panel')"
+      ng-change="groupView='panel';changeGroupView()"
     )
       i.glyphicon.glyphicon-th
 .row

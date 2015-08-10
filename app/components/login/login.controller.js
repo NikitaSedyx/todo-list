@@ -15,12 +15,11 @@
     }
 
     function loginSucces(response) {
-      SessionUser.getUser();
+      SessionUser.getUser()
       $state.go("groups.list");
     }
 
     function loginError(response) {
-      var responseStatus = response.status;
       $scope.allertMsg = "User with curren login and password does not exist!";
       $scope.isMsgHide = false;
     }
