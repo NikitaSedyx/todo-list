@@ -17,7 +17,6 @@
         SessionUser.user.userView = $scope.groupView;
         $scope.params.offset = 0
         GroupStorage.groups.data = []
-
       }
     }
 })()

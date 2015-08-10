@@ -13,7 +13,7 @@
 
     function logout() {
       $http.get(API.BASE + API.AUTH + API.LOGOUT);
-      $scope.user = {};
+      SessionUser.user.data=undefined;
       $state.go("login");
     }
   }
