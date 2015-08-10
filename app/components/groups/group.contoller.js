@@ -13,7 +13,7 @@
         offset: 0
       }
       $scope.changeGroupView = changeGroupView
-      function changeGroupView(groupView){
+      function changeGroupView(){
         SessionUser.user.userView = groupView;
         $scope.params.offset = 0
         GroupStorage.groups.data = []
