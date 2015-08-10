@@ -9,6 +9,6 @@
       LOGIN: "/login/",
       GROUP: "/group/",
       LOGOUT: "/logout/",
-      INFO: "/info/"
+      INFO: "info/"
     })
 })()

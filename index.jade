@@ -14,7 +14,7 @@ html(ng-app="todo")
         .col-md-10.col-md-offset-1
           .title.pull-left(ui-sref="tasks") Todo
           .pull-right(ng-controller="LogoutController")
-            .dropdown(ng-if="user.data.username")
+            .dropdown(ng-if="user.data")
               button.btn.dropdown-toggle(
                 data-toggle="dropdown"
                 aria-haspopup="true"

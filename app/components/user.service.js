@@ -1,5 +1,4 @@
-;
-(function () {
+;(function () {
   angular
     .module("todo")
     .service("SessionUser", SessionUser);
@@ -10,6 +9,8 @@
     var self = this;
     self.user = {userView : "list"};
     self.getUser = getUser;
+
+    self.getUser();
 
     function getUser() {
       $http.get(API.BASE + API.AUTH + API.INFO)
