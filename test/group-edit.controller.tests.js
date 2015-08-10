@@ -4,25 +4,25 @@
       API, state, url
     var groupId = 35
     var group = {
-        id: groupId,
-        is_deleted: false,
-        items: [
-          {
-            id: 1,
-            description: "test item"
-          }
-        ],
-        creator: {
+      id: groupId,
+      is_deleted: false,
+      items: [
+        {
           id: 1,
-          username: "admin"
-        },
-        contributros: [
-          {
-            id: 1,
-            username: "admin"        
-          }
-        ]
-      }
+          description: "test item"
+        }
+      ],
+      creator: {
+        id: 1,
+        username: "admin"
+      },
+      contributros: [
+        {
+          id: 1,
+          username: "admin"        
+        }
+      ]
+    }
 
     beforeEach(module("todo"))
     beforeEach(module("stateMock"))
