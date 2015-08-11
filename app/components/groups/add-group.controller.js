@@ -6,16 +6,13 @@
   AddGroupController.$inject = ["$scope", "GroupResource", "SessionUser", "GroupStorage"];
 
   function AddGroupController($scope, GroupResource, SessionUser, GroupStorage) {
-    $scope.actions = {
-      action: "default"
-    };
-    $scope.view = {
-      isList: false
-    };
+    $scope.actions = { action: "default" };
+    $scope.view = { isList: false };
     $scope.addGroup = addGroup;
     $scope.cancel = cancel;
     $scope.addTask = addTask;
     $scope.listMode = listMode;
+    $scope.newListGroup = newListGroup;
     $scope.newGroup = {
       title: "",
       items: [],
@@ -23,6 +20,11 @@
       files: [],
       users: []
     };
+
+    function newListGroup() {
+      $scope.actions.action='new-group';
+      listMode()
+    }
 
     function addGroup() {
       $scope.newGroup.users.push(SessionUser.user.data);
@@ -52,8 +54,8 @@
       item.description = undefined;
     }
 
-    function listMode(view) {
-      view.isList = true;
+    function listMode() {
+      $scope.view.isList = true;
       $scope.newGroup.view = true;
     }
   }

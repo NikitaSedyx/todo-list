@@ -4,46 +4,46 @@
 )
   .col-md-6.col-md-offset-3.new-group(
     ng-switch-when="default"
-    ng-click="actions.action='new-task'"
+    ng-click="actions.action='new-group'"
   )
     span New group
     span.ctl-pane.pull-right
       i.glyphicon.glyphicon-th-list.ctrl-btn(
         tooltip-placement="bottom"
         tooltip="Create new list"
-        ng-click="actions.action='new-task';listMode(view)"
+        ng-click="newListGroup()"
       )
       i.glyphicon.glyphicon-search.ctrl-btn(
         tooltip-placement="bottom"
         tooltip="Search"
         ng-click="actions.action='search'"
       )
-  .col-md-6.col-md-offset-3.new-group(ng-switch-when="new-task")
-    textarea.task-title(
+  .col-md-6.col-md-offset-3.new-group(ng-switch-when="new-group")
+    textarea.group-title(
       msd-elastic
       ng-model="newGroup.title"
       placeholder="Input a title"
     )
-    textarea.task-description(
+    textarea.group-description(
       msd-elastic
       ng-model="newGroup.items[0].description"
       placeholder="Description"
       ng-if="!view.isList"
     )
-    .new-tasks(ng-if="view.isList")
-      .row.new-task(ng-repeat="item in newGroup.items")
+    .new-items(ng-if="view.isList")
+      .row.new-item(ng-repeat="item in newGroup.items")
         .col-md-1
           input.toogle(
             type="checkbox"
             ng-model="item.is_completed"
           )
         .col-md-11
-          textarea.task-description(
+          textarea.item-description(
             msd-elastic
             rows="1"
             ng-model="item.description"
           )
-      textarea.task-description(
+      textarea.item-description(
         msd-elastic
         placeholder="Description"
         ng-model="newTask.description"

@@ -13,26 +13,21 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5)
   padding: 10px
 
-.task-title,
-.task-description
+.group-title,
+.group-description,
+.item-title,
+.item-description
   padding: 5px
-  outline: none
   outline: none
   border: 0px
   display: block
   width: 100%
   resize: none
 
-.new-task
+.new-item
   border-top: 1px solid lightgrey
   margin-right: -10px;
   margin-left: -10px;
 
-.new-tasks:last-child
+.new-items:last-child()
   border-bottom: 1px solid lightgrey
-
-div[contentEditable="true"]:empty:not(:focus):before
-  content: attr(placeholder)
-  display: block
-  color: #BBB1B1
-
