@@ -5,10 +5,13 @@
     .constant("API", {
       BASE: "/api/v1",
       AUTH: "/auth/",
-      REGISTRATION:"/registration/",
+      REGISTRATION: "/registration/",
+      LOGIN: "/login/",
       GROUP: "/group/",
+      LOGOUT: "/logout/",
       EXPORT: "/export/",
       USER: "/user/",
-      ITEM: "/item/"
+      ITEM: "/item/",
+      INFO: "info/"
     })
 })()

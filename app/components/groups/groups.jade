@@ -1,5 +1,4 @@
-.row
-  //new group will be here
+include ./add-groups.jade
 .row
   .btn-group.switch.pull-right
     label.btn.btn-primary(
@@ -17,3 +16,4 @@
 .row
   div(ui-view="list", ng-if="groupView == 'list'")
   div(ui-view="panel", ng-if="groupView == 'panel'")
+

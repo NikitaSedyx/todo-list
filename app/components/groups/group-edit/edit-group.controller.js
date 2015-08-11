@@ -4,10 +4,10 @@
 
     .controller("EditGroupController", EditGroupController)
 
-    EditGroupController.$inject = ["API", "groupId", "GroupResource", 
+    EditGroupController.$inject = ["API", "groupId", "GroupResource",
       "ItemResource", "$modal", "$scope", "$state", "XlsDownloader"]
 
-    function EditGroupController(API, groupId, GroupResource, 
+    function EditGroupController(API, groupId, GroupResource,
       ItemResource, $modal, $scope, $state, XlsDownloader){
       getGroup()
 
@@ -65,7 +65,7 @@
         GroupResource.getGroup({id: groupId}).$promise
         .then(function(response){
           $scope.group = response
-        })    
+        })
       }
 
       function updateGroup(){

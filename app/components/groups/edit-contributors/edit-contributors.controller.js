@@ -4,7 +4,7 @@
 
     .controller("EditContributorsController", EditContributorsController)
 
-    EditContributorsController.$inject = ["contributors", 
+    EditContributorsController.$inject = ["contributors",
       "$modalInstance", "$scope", "UserResource"]
 
     function EditContributorsController(contributors, $modalInstance, $scope, UserResource){
@@ -32,7 +32,7 @@
 
       function deleteContributor(index){
         $scope.contributors.splice(index, 1)
-      } 
+      }
 
       function findUsers(){
         var params = {
@@ -44,5 +44,5 @@
           $scope.users = response.objects
         })
       }
-    } 
+    }
 })()

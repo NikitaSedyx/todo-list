@@ -42,12 +42,12 @@ gulp.task("lint", function(){
 });
 
 gulp.task("concat-js", ["lint"], function(){
-  gulp.src(["./app/**/*.module.js", "./app/**/*.js"]) 
+  gulp.src(["./app/**/*.module.js", "./app/**/*.js"])
     .pipe(concat("index.js"))
     .pipe(gulp.dest("./build/app"))
     .pipe(rename("index.min.js"))
     .pipe(uglify())
-    .pipe(gulp.dest("./build/app")) 
+    .pipe(gulp.dest("./build/app"))
 })
 
 gulp.task("compile-index-jade", function(){

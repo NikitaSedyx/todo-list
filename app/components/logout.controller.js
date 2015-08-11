@@ -1,12 +1,20 @@
-;(function(){
+;(function () {
   angular
     .module("todo")
+    .controller("LogoutController", LogoutController);
 
-    .controller("LogoutController", LogoutController)
+  LogoutController.$inject = ["$scope", "API", "SessionUser", "$http", "$state"];
 
-    LogoutController.$inject = ["$scope"]
+  function LogoutController($scope, API, SessionUser, $http, $state) {
+    $scope.logout = logout;
+    $scope.user = SessionUser.user;
 
-    function LogoutController($scope){
-      $scope.user = null
+    SessionUser.getUser();
+
+    function logout() {
+      $http.get(API.BASE + API.AUTH + API.LOGOUT);
+      SessionUser.user.data=undefined;
+      $state.go("login");
     }
-})()
+  }
+})();

@@ -2,10 +2,8 @@ doctype html
 html(ng-app="todo")
   head
     title Todo
-
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-
     link(href="assets/libs/bootstrap/dist/css/bootstrap.css", rel="stylesheet")
     link(href="assets/css/index.css", rel="stylesheet")
     link(href="assets/libs/angular-ui-grid/ui-grid.min.css", rel="stylesheet")
@@ -16,12 +14,12 @@ html(ng-app="todo")
         .col-md-10.col-md-offset-1
           .title.pull-left(ui-sref="tasks") Todo
           .pull-right(ng-controller="LogoutController")
-            .dropdown(ng-if="user")
+            .dropdown(ng-if="user.data")
               button.btn.dropdown-toggle(
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="true"
-              ) {{user.username}}
+              ) {{user.data.username}}
                 span.caret
               ul.dropdown-menu.pull-right(aria-labelledby="user-dropdown")
                 li

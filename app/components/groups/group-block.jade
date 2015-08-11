@@ -1,13 +1,13 @@
 .title
   {{group.title}}
 .tasks(ng-switch="group.view")
-  .text(ng-switch-when="false") 
+  .text(ng-switch-when="false")
     {{group.items[0].description}}
   ul(ng-switch-when="true")
     li(
       ng-repeat="task in group.items"
       ng-class="{completed: task.is_completed}"
     ) {{task.description}}
-  .updated-date.pull-right 
+  .updated-date.pull-right
     {{group.updated_at | date: "mediumDate"}}
   .clearfix

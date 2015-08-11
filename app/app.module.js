@@ -1,8 +1,9 @@
-;(function(){
+;(function () {
   angular
-    .module("todo", ["ngResource",
-                     "ui.router",
+    .module("todo", ["ui.router",
+                     "ngResource",
                      "ui.bootstrap",
+                     "ui.validate",
                      "nm-widgets",
                      "monospaced.elastic",
                      "infinite-scroll",
