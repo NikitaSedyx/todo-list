@@ -6,5 +6,7 @@
                      "nm-widgets",
                      "monospaced.elastic",
                      "infinite-scroll",
-                     "downloaders"])
+                     "downloaders",
+                     "ui.validate",
+                     "ngFileUpload"])
 })()
