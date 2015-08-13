@@ -1,0 +1,80 @@
+.row.new-groups-inp(
+  ng-controller="AddGroupController"
+  ng-switch="actions.action"
+)
+  .col-md-6.col-md-offset-3.new-group(
+    ng-switch-when="default"
+    ng-click="newTextGroup()"
+  )
+    span New group
+    span.ctl-pane.pull-right
+      i.glyphicon.glyphicon-th-list.ctrl-btn(
+        tooltip-placement="bottom"
+        tooltip="Create new list"
+        ng-click="newListGroup()"
+      )
+      i.glyphicon.glyphicon-search.ctrl-btn(
+        tooltip-placement="bottom"
+        tooltip="Search"
+        ng-click="actions.action='search'"
+      )
+  .col-md-6.col-md-offset-3.new-group(ng-switch-when="new-group")
+    textarea.group-title(
+      msd-elastic
+      ng-model="newGroup.title"
+      placeholder="Input a title"
+    )
+    textarea.group-description(
+      msd-elastic
+      ng-model="newGroup.items[0].description"
+      placeholder="Description"
+      ng-if="view.mode=='text'"
+    )
+    .new-items(ng-if="view.mode=='list'")
+      .row.new-item(ng-repeat="item in newGroup.items")
+        .col-xs-1
+          input.toogle(
+            type="checkbox"
+            ng-model="item.is_completed"
+          )
+        .col-xs-11
+          textarea.item-description(
+            msd-elastic
+            rows="1"
+            ng-model="item.description"
+          )
+      .new-item
+        textarea.item-description(
+          msd-elastic
+          placeholder="Description"
+          ng-model="newTask.description"
+          ng-blur="addTask(newTask)"
+        )
+    .control-pane
+      .btn-group
+        i.glyphicon.glyphicon-user.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add user"
+          ng-click="addContributors()"
+        )
+        i.glyphicon.glyphicon-tasks.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="List"
+          ng-click="listMode(view)"
+        )
+        i.glyphicon.glyphicon-save-file.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add file"
+          ng-click="addFiles()"
+        )
+      .btn-group.pull-right
+        i.glyphicon.glyphicon-ok.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add group"
+          ng-click="addGroup(newGroup)"
+        )
+        i.glyphicon.glyphicon-remove.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Cancel"
+          ng-click="cancel()"
+        )
