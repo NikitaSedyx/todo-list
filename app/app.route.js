@@ -28,6 +28,16 @@
             }
           }
         })
+        .state("login", {
+          url: "/login",
+          templateUrl: "app/views/components/login/login.html",
+          controller: "LoginController"
+        })
+        .state("registration", {
+          url: "/registration",
+          templateUrl: "app/views/components/register/register.html",
+          controller: "RegisterController"
+        })
         .state("edit-group", {
           url: "/edit_group/:id",
           templateUrl: "app/views/components/groups/group-edit/edit-group.html",
