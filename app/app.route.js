@@ -38,5 +38,10 @@
             }
           }
         })
+        .state("login", {
+          url: "/login",
+          templateUrl: "app/views/components/login/login.html",
+          controller: "LoginController"
+      })
     }
 })()
