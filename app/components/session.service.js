@@ -7,22 +7,33 @@
 
   function SessionService($http, API, $state) {
     var self = this;
-    self.user = {
-      userView: "list"
-    };
+    self.user = {};
     self.getUser = getUser;
     self.login = login;
     self.registration = registration;
     self.logout = logout;
+    self.setUserView = setUserView;
 
     self.getUser();
 
+    function setUserView(userView) {
+      sessionStorage.setItem("userView", userView);
+    }
+
+    function checkUserView() {
+      var viewInSessionStorage = sessionStorage.getItem("userView");
+      if(!viewInSessionStorage){
+        sessionStorage.setItem("userView", "list");
+      }
+    }
+
     function getUser() {
+      checkUserView();
       $http.get(API.BASE + API.AUTH + API.INFO)
         .then(function (response) {
-          self.user.data = response.data.user;
+          self.user.data = response.data;
           $state.go("groups.list");
-        });
+        })
     }
 
     function login(user) {
@@ -50,6 +61,7 @@
       return $http.get(API.BASE + API.AUTH + API.LOGOUT)
         .then(function () {
           self.user.data = undefined;
+          sessionStorage.clear();
           $state.go("login");
         })
     }

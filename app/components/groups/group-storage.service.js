@@ -20,7 +20,7 @@
       }
 
       function loadData(params){
-        var view = SessionService.user.userView
+        var view = sessionStorage.getItem("userView")
         loaders[view](params)
       }
 
