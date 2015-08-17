@@ -38,5 +38,15 @@
             }
           }
         })
+        .state("login", {
+          url: "/login",
+          templateUrl: "app/views/components/logining/login.html",
+          controller: "LoginController as loginCtrl"
+        })
+        .state("registration", {
+          url: "/registration",
+          templateUrl: "app/views/components/registration/register.html",
+          controller: "RegisterController as registerCtrl"
+        })
     }
 })()

@@ -9,6 +9,11 @@
       GROUP: "/group/",
       EXPORT: "/export/",
       USER: "/user/",
-      ITEM: "/item/"
+      ITEM: "/item/",
+      INFO: "info/",
+      FILE: "/file/",
+      UPLOAD: "upload/",
+      LOGOUT: "/logout/",
+      LOGIN: "/login/"
     })
 })()

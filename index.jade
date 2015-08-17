@@ -15,17 +15,17 @@ html(ng-app="todo")
       .row.top-menu
         .col-md-10.col-md-offset-1
           .title.pull-left(ui-sref="tasks") Todo
-          .pull-right(ng-controller="LogoutController")
-            .dropdown(ng-if="user")
+          .pull-right(ng-controller="LogoutController as logCtrl")
+            .dropdown(ng-if="logCtrl.user.data")
               button.btn.dropdown-toggle(
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="true"
-              ) {{user.username}}
+              ) {{logCtrl.user.data.username}}
                 span.caret
               ul.dropdown-menu.pull-right(aria-labelledby="user-dropdown")
                 li
-                  a(ng-click="logout()") Logout
+                  a(ng-click="logCtrl.logout()") Logout
       .row.content
         .col-md-10.col-md-offset-1
           div(ui-view)
