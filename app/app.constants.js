@@ -11,6 +11,11 @@
       USER: "/user/",
       ITEM: "/item/",
       FILE: "/file/",
-      UPLOAD: "upload/"
+      UPLOAD: "upload/",
+      INFO: "info/",
+      FILE: "/file/",
+      UPLOAD: "upload/",
+      LOGOUT: "/logout/",
+      LOGIN: "/login/"
     })
 })()
