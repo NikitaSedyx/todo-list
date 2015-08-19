@@ -1,0 +1,21 @@
+.modal-header
+  h3 Files
+.modal-body
+  .drop-box(
+    ngf-drop
+    ngf-select
+    ng-model="newFiles"
+    ngf-drag-over-class="dragover"
+    ngf-multiple="true"
+    ngf-allow-dir="true"
+  ) Drop your file here or click to upload.
+  .files-header Files to upload:
+  .files
+    .row(ng-repeat="file in filesToUpload")
+      .filecontainer.col-xs-11
+        .file-name {{file.name}}
+      .delete-btn-container.col-xs-1
+        i.glyphicon.delete-btn.glyphicon-trash(ng-click="deleteFile($index)")
+  .modal-footer
+    button.btn.btn-danger(ng-click="cancel()") Cancel
+    button.btn.btn-success(ng-click="apply()") Save

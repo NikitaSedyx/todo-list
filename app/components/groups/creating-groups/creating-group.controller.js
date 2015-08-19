@@ -1,16 +1,25 @@
-;(function () {
+;(function(){
   angular
     .module("todo")
     .controller("CreatingGroupController", CreatingGroupController);
 
-  CreatingGroupController.$inject = ["$scope", "CreatingGroupService"];
+  CreatingGroupController.$inject = ["CreatingGroupService"];
 
-  function CreatingGroupController($scope, CreatingGroupService) {
+  function CreatingGroupController(CreatingGroupService) {
     var self = this;
-    self.addGroup = addGroup;
+    self.newGroup = CreatingGroupService.newGroup;
+    self.addItem = addItem;
+    self.deleteItem = deleteItem;
+    self.newItem = null;
 
-    function addGroup() {
-      CreatingGroupService.addGroup();
+    function addItem() {
+      CreatingGroupService.addItem(self.newItem);
+      self.newItem = null;
+    }
+
+    function deleteItem(index) {
+      CreatingGroupService.deleteItem(index);
     }
   }
-})();
+})()
+

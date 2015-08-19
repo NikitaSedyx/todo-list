@@ -21,4 +21,7 @@
         }
       })
     })
+    .config(function resourceConfig($resourceProvider) {
+      $resourceProvider.defaults.stripTrailingSlashes = false;
+    })
 })()

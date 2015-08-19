@@ -4,9 +4,9 @@
     .module("todo")
     .service("CreatingGroupService", CreatingGroupService)
 
-  CreatingGroupService.$inject = ["GroupResource"]
+  CreatingGroupService.$inject = ["GroupResource", "FileService"]
 
-  function CreatingGroupService(GroupResource) {
+  function CreatingGroupService(GroupResource, FileService) {
     var self = this;
     self.newGroup = {
       title: "",
@@ -16,28 +16,26 @@
       files: []
     };
     self.addGroup = addGroup;
-    self.cancel = cancel;
+    self.cancel = reset;
     self.filesToUpload = [];
     self.addItem = addItem;
     self.deleteItem = deleteItem;
-    self.addContributors = addContributors;
     self.newListGroup = newListGroup;
+    self.reset = reset;
 
     function addGroup() {
-      //self.newGroup.push(SessionService.user.data);
-      /*GroupResource.createGroup(self.newGroup)
-        .$promise.then(function (response) {
-          if (self.filesToUpload.length) {
-            return FileService.upload(self.filesToUpload, response)
-              .then(cancel)
-          } else {
-            return addGroupSucces();
-          }
-        })*/
-      console.log(self.newGroup);
+      if(self.filesToUpload.length){
+        return GroupResource.createGroup(self.newGroup).$promise
+          .then(function(response){
+            FileService.upload(self.filesToUpload, response);
+        }).then(reset);
+      } else {
+        return GroupResource.createGroup(self.newGroup).$promise
+          .then(reset);
+      }
     }
 
-    function cancel() {
+    function reset() {
       self.newGroup.title = "";
       self.newGroup.items = [];
       self.newGroup.view = false;
@@ -46,7 +44,8 @@
     }
 
     function deleteItem(index) {
-      self.newGroup.items.slice(index, 1);
+      self.newGroup.items.splice(index, 1);
+      console.log(self.newGroup.items);
     }
 
     function addItem(item) {
@@ -59,8 +58,5 @@
       self.newGroup.view = true;
     }
 
-    function addContributors() {
-
-    }
   }
 })()
