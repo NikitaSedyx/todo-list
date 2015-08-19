@@ -1,8 +1,12 @@
 ;(function(){
   angular
     .module("todo")
-    //inject session storage
-    .service("GroupStorage", function(GroupResource){
+
+    .service("GroupStorage", GroupStorage)
+
+  GroupStorage.$inject = ["GroupResource", "SessionService"]
+
+    function GroupStorage(GroupResource, SessionService){
       var self = this
       self.groups = {
         data: [],
@@ -16,9 +20,7 @@
       }
 
       function loadData(params){
-        //instead of view use SessionUser.user.groupView 
-        //var view = "list" 
-        var view = "panel"
+        var view = sessionStorage.getItem("userView")
         loaders[view](params)
       }
 
@@ -38,5 +40,5 @@
           })
         })  
       }
-    })
+    }
 })()
