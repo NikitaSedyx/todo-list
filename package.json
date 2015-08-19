@@ -17,10 +17,6 @@
     "body-parser": "~1.13.1",
     "express": "~4.12.4",
     "jade": "~1.11.0",
-    "karma": "~0.12.36",
-    "karma-firefox-launcher": "~0.1.6",
-    "karma-jasmine": "~0.3.5",
-    "jasmine": "~2.3.1",
     "underscore": "~1.8.3",
     "http-proxy": "~1.11.1"
   },
@@ -37,6 +33,12 @@
     "gulp-karma": "0.0.4",
     "gulp-sass": "~2.0.4",
     "gulp-ignore": "~1.2.1",
-    "gulp-clean": "~0.3.1"
+    "gulp-clean": "~0.3.1",
+    "karma": "~0.12.37",
+    "jasmine": "~2.3.1",
+    "jasmine-core": "~2.3.4",
+    "karma-jasmine": "~0.3.6",
+    "karma-firefox-launcher": "~0.1.6",
+    "karma-coverage": "~0.5.0"
   }
 }
