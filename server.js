@@ -16,8 +16,7 @@ app.get("/", function(req, res){
 });
 
 app.post("/api/v1/file/upload/", function(req, res){
-  console.log("file");
-  apiProxy.web(req, res, { target: 'http://localhost:8080'});
+  apiProxy.web(req, res, {target: 'http://localhost:8080'});
 });
 
 app.all("/*", function(req, res){ 

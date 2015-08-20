@@ -32,7 +32,6 @@
       $http.get(API.BASE + API.AUTH + API.INFO)
         .then(function (response) {
           self.user.data = response.data;
-          $state.go("groups.list");
         })
     }
 

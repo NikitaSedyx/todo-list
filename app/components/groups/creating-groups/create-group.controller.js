@@ -1,41 +1,40 @@
 ;(function () {
   angular
     .module("todo")
-    .controller("ActionController", ActionController);
+    .controller("CreateGroupController", CreateGroupController);
 
-  ActionController.$inject = ["$scope", "CreatingGroupService", "$modal", "GroupStorage"];
+  CreateGroupController.$inject = ["$scope", "CreatingGroupService", "$modal", "GroupStorage"];
 
-  function ActionController($scope, CreatingGroupService, $modal, GroupStorage) {
+  function CreateGroupController($scope, CreatingGroupService, $modal, GroupStorage) {
     var self = this;
-    self.newTextGroup = newTextGroup;
-    self.newListGroup = newListGroup;
-    self.action = "default";
-    self.mode = "text";
-    self.listMode = listMode;
-    self.cancel = cancel;
+    self.viewParams = {view: "default"}
+    self.listGroup = listGroup;
+    self.reset = reset;
     self.addContributors = addContributors;
     self.addFiles = addFiles;
-    self.addGroup = addGroup;
+    self.saveGroup = saveGroup;
+    self.addItem = addItem;
+    self.deleteItem = deleteItem;
+    self.newItem = null;
+    self.group = CreatingGroupService.group;
 
-    function cancel(){
+    function addItem() {
+      self.group.items.push(self.newItem);
+      self.newItem = null;
+    }
+
+    function deleteItem(index) {
+      self.group.items.splice(index, 1);
+    }
+
+    function reset(){
+      self.viewParams.view = "default";
       CreatingGroupService.reset();
-      self.action = "default";
-      self.mode = "text";
     }
 
-    function newTextGroup() {
-      self.action = "new-group";
-      self.mode = "text";
-    }
-
-    function newListGroup() {
-      self.action = "new-group";
-      listMode();
-    }
-
-    function listMode() {
-      self.mode = "list";
-      CreatingGroupService.newListGroup();
+    function listGroup() {
+      self.viewParams.view = "create-group";
+      self.group.view = true;
     }
 
     function addContributors() {
@@ -45,13 +44,14 @@
         windowClass: "edit-contributors-modal",
         resolve: {
           contributors: function () {
-            return CreatingGroupService.newGroup.users;
+            return self.group.users;
           }
         }
       });
+
       contributorsModal.result
         .then(function (contributors) {
-          CreatingGroupService.newGroup.users = contributors
+           self.group.users = contributors
         });
     }
 
@@ -73,16 +73,16 @@
         })
     }
 
-    function addGroup() {
-      CreatingGroupService.addGroup().then(addGroupSucces);
+    function saveGroup() {
+      CreatingGroupService.saveGroup()
+        .then(reset)
+        .then(reloadGroups);
     }
 
-    function addGroupSucces() {
-      cancel();
+    function reloadGroups() {
       $scope.params.offset = 0;
       GroupStorage.groups.data = [];
       GroupStorage.loadData($scope.params);
     }
-
   }
 })();
