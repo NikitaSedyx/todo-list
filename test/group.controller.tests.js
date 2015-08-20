@@ -13,6 +13,16 @@
     ]
     beforeEach(module("todo"))
 
+    beforeEach(function () {
+      var store = {
+        userView: "list"
+      }
+
+      spyOn(localStorage, "getItem").and.callFake(function(key){
+        return store[key]
+      })
+    })
+
     beforeEach(inject(function($rootScope, $controller, $injector){
       GroupStorage = $injector.get("GroupStorage")
       scope = $rootScope.$new()
@@ -26,6 +36,11 @@
     it("groups should be defined", function(){
       var controller = createGroupController()
       expect(scope.groups).toBeDefined()
+    })
+
+    it("groupView should be list", function(){
+      var controller = createGroupController()
+      expect(scope.groupView).toBe("list")
     })
 
     it("groups should be changed", function(){
