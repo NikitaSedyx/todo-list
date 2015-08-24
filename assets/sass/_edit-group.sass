@@ -25,6 +25,7 @@
 
       .new-task-description
         @extend .edit-field
+        background-color: transparent
         width: 100%
 
       .status
@@ -38,6 +39,7 @@
         .description
           @extend .edit-field
           margin-left: 1%
+          background-color: transparent
           width: 93%
 
     li:last-child
@@ -45,3 +47,6 @@
 
   .control-panel
     margin: 10px
+
+  *:focus
+    outline: 0
