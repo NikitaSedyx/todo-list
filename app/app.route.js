@@ -48,5 +48,13 @@
           templateUrl: "app/views/components/registration/register.html",
           controller: "RegisterController as registerCtrl"
         })
+        .state("404", {
+          url: "/404",
+          templateUrl: "app/views/components/errors/error.404.html"
+        })
+        .state("403", {
+          url: "/403",
+          templateUrl: "app/views/components/errors/error.403.html"
+        })
     }
 })()
