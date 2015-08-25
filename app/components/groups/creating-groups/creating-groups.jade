@@ -16,7 +16,7 @@
       i.glyphicon.glyphicon-search.ctrl-btn(
         tooltip-placement="bottom"
         tooltip="Search"
-        ng-click=""
+        ng-click="creatingGroupCtrl.viewParams.view='search'"
       )
   .col-md-6.col-md-offset-3.new-group(
     ng-switch-when="create-group"
@@ -82,3 +82,22 @@
           tooltip="Cancel"
           ng-click="creatingGroupCtrl.reset()"
         )
+  .col-md-6.col-md-offset-3.search(
+    ng-switch-when="search"
+    ng-controller="SearchController as searchCtrl"
+  )
+    .input-group
+      input.search-inp.form-control(
+        type="text"
+        placeholder="Search in groups"
+        ng-model="searchCtrl.searchParam"
+        ng-change="searchCtrl.search()"
+      )
+      span.input-group-btn
+       button.btn.btn-default(
+         tooltip-placement="bottom"
+         tooltip="Cancel"
+         ng-click="searchCtrl.reset();creatingGroupCtrl.reset()"
+         type="button"
+       )
+          i.glyphicon.glyphicon-remove
