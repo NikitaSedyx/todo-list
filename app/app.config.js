@@ -21,8 +21,7 @@
         }
       })
     })
-
-    .config(function($resourceProvider){
-      $resourceProvider.defaults.stripTrailingSlashes = false
+    .config(function resourceConfig($resourceProvider) {
+      $resourceProvider.defaults.stripTrailingSlashes = false;
     })
 })()

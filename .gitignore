@@ -4,3 +4,4 @@ build/
 assets/libs/
 reports/
 *.*~
+/npm-debug.log

@@ -14,7 +14,11 @@ app.use(bodyParser.json());
 app.get("/", function(req, res){
   res.sendFile(__dirname + "/build/index.html")
 });
- 
+
+app.post("/api/v1/file/upload/", function(req, res){
+  apiProxy.web(req, res, {target: 'http://localhost:8080'});
+});
+
 app.all("/*", function(req, res){ 
 
   req.removeAllListeners('data');

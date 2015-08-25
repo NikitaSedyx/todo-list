@@ -10,6 +10,8 @@
       EXPORT: "/export/",
       USER: "/user/",
       ITEM: "/item/",
+      FILE: "/file/",
+      UPLOAD: "upload/",
       INFO: "info/",
       FILE: "/file/",
       UPLOAD: "upload/",

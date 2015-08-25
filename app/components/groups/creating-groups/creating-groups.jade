@@ -1,0 +1,84 @@
+.row.new-groups-inp(
+  ng-controller="CreateGroupController as creatingGroupCtrl"
+  ng-switch="creatingGroupCtrl.viewParams.view"
+)
+  .col-md-6.col-md-offset-3.new-group(
+    ng-switch-when="default"
+    ng-click="creatingGroupCtrl.viewParams.view='create-group'"
+  )
+    span New group
+    span.ctl-pane.pull-right
+      i.glyphicon.glyphicon-th-list.ctrl-btn(
+        tooltip-placement="bottom"
+        tooltip="Create new list"
+        ng-click="creatingGroupCtrl.listGroup()"
+      )
+      i.glyphicon.glyphicon-search.ctrl-btn(
+        tooltip-placement="bottom"
+        tooltip="Search"
+        ng-click=""
+      )
+  .col-md-6.col-md-offset-3.new-group(
+    ng-switch-when="create-group"
+  )
+    textarea.group-title(
+      msd-elastic
+      ng-model="creatingGroupCtrl.group.title"
+      placeholder="Input a title"
+    )
+    textarea.group-description(
+      msd-elastic
+      ng-model="creatingGroupCtrl.group.items[0].description"
+      placeholder="Description"
+      ng-if="!creatingGroupCtrl.group.view"
+    )
+    .new-items(ng-if="creatingGroupCtrl.group.view")
+      .row.new-item(ng-repeat="item in creatingGroupCtrl.group.items")
+        .col-xs-1
+          input.toogle(
+            type="checkbox"
+            ng-model="item.is_completed"
+          )
+        .col-xs-10
+          textarea.item-description(
+            msd-elastic
+            rows="1"
+            ng-model="item.description"
+          )
+        .col-xs-1
+          i.glyphicon.glyphicon-trash.del-btn(ng-click="creatingGroupCtrl.deleteItem($index)")
+      .new-item
+        textarea.item-description(
+          msd-elastic
+          placeholder="Description"
+          ng-model="creatingGroupCtrl.newItem.description"
+          ng-blur="creatingGroupCtrl.addItem()"
+        )
+    .control-pane
+      .btn-group
+        i.glyphicon.glyphicon-user.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add user"
+          ng-click="creatingGroupCtrl.addContributors()"
+        )
+        i.glyphicon.glyphicon-tasks.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="List"
+          ng-click="creatingGroupCtrl.listGroup()"
+        )
+        i.glyphicon.glyphicon-save-file.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add file"
+          ng-click="creatingGroupCtrl.addFiles()"
+        )
+      .btn-group.pull-right
+        i.glyphicon.glyphicon-ok.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Add group"
+          ng-click="creatingGroupCtrl.saveGroup()"
+        )
+        i.glyphicon.glyphicon-remove.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Cancel"
+          ng-click="creatingGroupCtrl.reset()"
+        )
