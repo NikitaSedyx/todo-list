@@ -34,6 +34,21 @@
         }
       })
     })
+
+    .config(function($httpProvider, $injector){
+      $httpProvider.interceptors.push(function($q, $injector){
+        return {
+          responseError: function(rejection){
+            if (rejection.status == 403){
+              var state = $injector.get("$state")
+              state.go("403")
+            }
+            return $q.reject(rejection)
+          }
+        }
+      })
+    })
+
     .config(function resourceConfig($resourceProvider) {
       $resourceProvider.defaults.stripTrailingSlashes = false;
     })
