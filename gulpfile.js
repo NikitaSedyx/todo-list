@@ -9,6 +9,7 @@ var karma = require('gulp-karma')
 var sass = require('gulp-sass')
 var gulpIgnore = require('gulp-ignore')
 var clean = require('gulp-clean')
+var watch = require('gulp-watch')
 
 gulp.task("test", function(){
   var testFiles = [
@@ -83,6 +84,13 @@ gulp.task("copy-libs", function(){
     .pipe(gulp.dest("./build/assets/libs"))
 })
 
+gulp.task("copy-images", function(){
+  var images = "./assets/images/**/*"
+  return gulp.src(images)
+    .pipe(watch(images))
+    .pipe(gulp.dest("./build/assets/images"))
+})
+
 gulp.task("watch", function(){
   gulp.watch("./app/**/*.jade", function(){
     gulp.run("compile-views-jade")
@@ -102,4 +110,4 @@ gulp.task("watch", function(){
 })
 
 gulp.task("default", ["test", "lint", "concat-js", "compile-views-jade", 
-  "compile-index-jade", "compile-sass", "copy-libs", "watch"])
+  "compile-index-jade", "compile-sass", "copy-libs", "copy-images", "watch"])

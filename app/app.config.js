@@ -11,11 +11,24 @@
       $httpProvider.interceptors.push(function($q, $injector){
         return {
           responseError: function(rejection){
-            if (rejection.status !== 401){
-              return rejection
+            if (rejection.status == 401){
+              var state = $injector.get("$state")
+              state.go("login")
             }
-            var state = $injector.get("$state")
-            state.go("login")
+            return $q.reject(rejection)
+          }
+        }
+      })
+    })
+
+    .config(function($httpProvider, $injector){
+      $httpProvider.interceptors.push(function($q, $injector){
+        return {
+          responseError: function(rejection){
+            if (rejection.status == 404){
+              var state = $injector.get("$state")
+              state.go("404")
+            }
             return $q.reject(rejection)
           }
         }
