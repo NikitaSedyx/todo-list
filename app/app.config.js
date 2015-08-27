@@ -49,6 +49,29 @@
       })
     })
 
+    .config(function($httpProvider){
+      $httpProvider.interceptors.push(function($q, $rootScope){
+        return {
+          request: function(request){
+            $rootScope.enableSpinner = true
+            return request
+          },
+          requestError: function(rejection){
+            $rootScope.enableSpinner = false
+            return $q.reject(rejection)
+          },
+          response: function(response){
+            $rootScope.enableSpinner = false
+            return response
+          },
+          responseError: function(rejection){
+            $rootScope.enableSpinner = false
+            return $q.reject(rejection)
+          }
+        }
+      })
+    })
+
     .config(function resourceConfig($resourceProvider) {
       $resourceProvider.defaults.stripTrailingSlashes = false;
     })
