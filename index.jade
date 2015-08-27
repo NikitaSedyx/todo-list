@@ -29,6 +29,7 @@ html(ng-app="todo")
       .row.content
         .col-md-10.col-md-offset-1
           div(ui-view)
+      include ./app/components/left-navbar/left-navbar.jade
       nm-spinner(enable="enableSpinner")
 
     script(src="assets/libs/jquery/dist/jquery.min.js")

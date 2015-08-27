@@ -34,7 +34,7 @@
         }
       })
     })
-
+    
     .config(function($httpProvider, $injector){
       $httpProvider.interceptors.push(function($q, $injector){
         return {

@@ -1,0 +1,59 @@
+.left-navbar
+  position: fixed
+  left: 0
+  top: 0
+  height:100%
+  z-index: 5
+
+  .navbar.ng-hide
+    margin-left: -250px
+
+  .navbar
+    display: inline-block
+    transition: margin-left 0.5s linear
+    margin-left: 0px
+    height: 100%
+    width: 250px
+    background: $white
+    box-shadow: 1px 0px 1px $pink
+    border-radius: 0
+    vertical-align: middle
+
+    .title
+      text-align: center
+      color: $dark-pink
+
+    ul.menu
+      list-style: none
+      margin-top: 50px
+      font-size: 18px
+      padding: 0px
+
+      li
+        border-bottom: 1px inset $pink
+        padding: 10px 20px
+        color: $dark-pink
+        cursor: pointer
+
+        span
+          margin-right: 8px
+
+      li:hover
+        color: $white
+        background: $pink
+        border-bottom: 0px inset
+        +shadow($pink)
+
+  .controls
+    display: inline-block
+    vertical-align: middle
+
+    span
+      color: $dark-pink
+      cursor: pointer
+
+.left-navbar:after
+  display: inline-block
+  height: 100%
+  content: ""
+  vertical-align: middle
