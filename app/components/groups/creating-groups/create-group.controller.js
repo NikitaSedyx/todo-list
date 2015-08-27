@@ -17,6 +17,7 @@
     self.deleteItem = deleteItem;
     self.newItem = null;
     self.group = CreatingGroupService.group;
+    self.setColor = setColor;
 
     function addItem() {
       self.group.items.push(self.newItem);
@@ -83,6 +84,10 @@
       $scope.params.offset = 0;
       GroupStorage.groups.data = [];
       GroupStorage.loadData($scope.params);
+    }
+
+    function setColor(color) {
+      self.group.color = color;
     }
   }
 })();

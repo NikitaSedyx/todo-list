@@ -32,6 +32,7 @@
       self.group.items = [];
       self.group.view = false;
       self.group.users = [];
+      self.group.color = "white";
     }
 
   }

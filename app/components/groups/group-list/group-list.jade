@@ -2,6 +2,7 @@
   div.col-md-12.group(
     ng-repeat="group in groups.data"
     ui-sref="edit-group({id: group.id})"
+    ng-class="group.color"
   )
     include ../group-block.jade
   pagination.pagination-sm.pull-left(

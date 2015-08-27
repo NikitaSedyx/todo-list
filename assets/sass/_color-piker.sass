@@ -1,0 +1,53 @@
+=placeholder-color($color)
+
+  ::-webkit-input-placeholder
+    color: $color
+
+  ::-moz-placeholder
+    color: $color
+
+  :-moz-placeholder
+    color: $color
+
+  :-ms-input-placeholder
+    color: $color
+
+.colors-container
+  width: 75px
+
+.color
+  margin: 2px
+  width: 20px
+  height: 20px
+  display: inline-block
+  border: $border-grey
+  border-radius: 10px;
+
+.color:hover
+  border: 2px solid darkgrey
+
+.red
+  background-color: $group-color-red
+  +placeholder-color(#696969)
+
+.green
+  background-color: $group-color-green
+  +placeholder-color(#696969)
+
+.blue
+  background-color: $group-color-blue
+  +placeholder-color(#696969)
+
+.white
+  background-color: $group-color-white
+
+.yellow
+  background-color: $group-color-yellow
+  +placeholder-color(#696969)
+
+.orange
+  background-color: $group-color-orange
+  +placeholder-color(#696969)
+
+.transition-color
+  transition: background-color 1s
