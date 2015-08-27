@@ -22,6 +22,7 @@ gulp.task("test", function(){
     "./assets/libs/angular-bootstrap/ui-bootstrap.min.js",
     "./assets/libs/angular-elastic/elastic.js",
     "./assets/libs/ngInfiniteScroll/build/ng-infinite-scroll.min.js",
+    "./assets/libs/ng-file-upload/ng-file-upload-all.min.js",
     "./assets/libs/underscore/underscore-min.js",
     "./app/**/*.module.js",
     "./app/**/*.js",
