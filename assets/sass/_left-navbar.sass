@@ -9,7 +9,6 @@
     margin-left: -250px
 
   .navbar
-    display: inline-block
     transition: margin-left 0.5s linear
     margin-left: 0px
     height: 100%
@@ -17,7 +16,7 @@
     background: $white
     box-shadow: 1px 0px 1px $pink
     border-radius: 0
-    vertical-align: middle
+    float:left
 
     .title
       text-align: center
@@ -38,22 +37,28 @@
         span
           margin-right: 8px
 
-      li:hover
-        color: $white
-        background: $pink
-        border-bottom: 0px inset
-        +shadow($pink)
+        &:hover
+          color: $white
+          background: $pink
+          border-bottom: 0px inset
+          +shadow($pink)
+
+        &.active
+          @extend &:hover
 
   .controls
     display: inline-block
     vertical-align: middle
 
+    input
+      visibility: hidden
+
     span
       color: $dark-pink
       cursor: pointer
 
-.left-navbar:after
-  display: inline-block
-  height: 100%
-  content: ""
-  vertical-align: middle
+  &:after
+    display: inline-block
+    height: 100%
+    content: ""
+    vertical-align: middle
