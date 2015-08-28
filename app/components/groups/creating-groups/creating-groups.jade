@@ -18,8 +18,9 @@
         tooltip="Search"
         ng-click=""
       )
-  .col-md-6.col-md-offset-3.new-group(
+  .col-md-6.col-md-offset-3.new-group.transition-color(
     ng-switch-when="create-group"
+    ng-class="creatingGroupCtrl.group.color"
   )
     textarea.group-title(
       msd-elastic
@@ -71,6 +72,12 @@
           tooltip="Add file"
           ng-click="creatingGroupCtrl.addFiles()"
         )
+        i.glyphicon.fa.fa-paint-brush.btn.btn-default(
+          tooltip-placement="bottom"
+          tooltip="Set color"
+          popover-template="'app/views/components/groups/creating-groups/color-piker-template.html'"
+        )
+
       .btn-group.pull-right
         i.glyphicon.glyphicon-ok.btn.btn-default(
           tooltip-placement="bottom"

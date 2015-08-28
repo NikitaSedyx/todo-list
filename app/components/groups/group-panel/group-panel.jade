@@ -6,5 +6,6 @@
   div.col-md-3.group(
     ng-repeat="group in groups.data"
     ui-sref="edit-group({id: group.id})"
+    ng-class="group.color"
   )
     include ../group-block.jade
