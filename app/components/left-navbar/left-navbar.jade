@@ -1,13 +1,20 @@
-div.left-navbar(ng-if="false")
-  .navbar
-    h2.title Menu
-    ul.menu
-      li 
-        span.glyphicon.glyphicon-list-alt
-        | Notes
-      li
-        span.glyphicon.glyphicon-trash 
-        | Trash
-  .controls
-    span.glyphicon.glyphicon-chevron-left
-    span.glyphicon.glyphicon-chevron-right
+div(ng-controller="LeftNavbarController")
+  div.left-navbar(ng-if="user.data")
+    .navbar(ng-show="isHidden")
+      h2.title Menu
+      ul.menu
+        li(
+            ui-sref="groups.list"
+            ui-sref-active="active"
+          )
+          span.glyphicon.glyphicon-list-alt
+          | Notes
+        li
+          span.glyphicon.glyphicon-trash 
+          | Trash
+    .controls
+      input#is-hidden(type="checkbox", ng-model="isHidden")
+      label(for="is-hidden")
+        span.glyphicon.glyphicon-chevron-left(ng-if="isHidden")
+      label(for="is-hidden")
+        span.glyphicon.glyphicon-chevron-right(ng-if="!isHidden")

@@ -7,5 +7,6 @@
                      "monospaced.elastic",
                      "infinite-scroll",
                      "downloaders",
-                     "ngFileUpload"])
+                     "ngFileUpload",
+                     "ngAnimate"])
 })()
