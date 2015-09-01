@@ -8,6 +8,7 @@
 
     function GroupListController(GroupStorage, $scope){
       $scope.params.limit = 10
+      GroupStorage.groups.data = []
       GroupStorage.loadData($scope.params)
 
       $scope.paginatorConfig = {

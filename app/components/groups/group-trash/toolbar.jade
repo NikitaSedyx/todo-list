@@ -1,0 +1,8 @@
+.toolbar.row.opacity-transition(ng-class="toolbar.class")
+  span(dropdown)
+    .toolbar-btn(dropdown-toggle) &#8942
+    ul.dropdown-menu(aria-labelledby="simple-dropdown")
+      li
+        a(ng-click="trashCtrl.deleteGroup(group)") Delete Group
+      li
+        a(ng-click="trashCtrl.restoreGroup(group)") Restore Group

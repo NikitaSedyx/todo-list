@@ -38,6 +38,24 @@
             }
           }
         })
+        .state("trash", {
+          abstract: true,
+          templateUrl: "app/views/components/groups/group-trash/group-trash.html",
+          controller: "GroupController"
+        })
+        .state("trash.list", {
+          url: "/trash",
+          views: {
+            "list": {
+              templateUrl: "app/views/components/groups/group-list/group-list-in-trash.html",
+              controller: "GroupListController"
+            },
+            "panel": {
+              templateUrl: "app/views/components/groups/group-panel/group-panel-in-trash.html",
+              controller: "GroupPanelController"
+            }
+          }
+        })
         .state("login", {
           url: "/login",
           templateUrl: "app/views/components/logining/login.html",

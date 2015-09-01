@@ -32,8 +32,10 @@
       }
 
       function deleteGroup(){
-        $scope.group.is_deleted = true
-        apply()
+        GroupResource.patch({id: $scope.group.id}, {is_deleted: true, users: $scope.group.users})
+        .$promise.then(function(response){
+          $state.go("groups.list")
+        })
       }
 
       function deleteTask(item){
@@ -62,14 +64,14 @@
       }
 
       function getGroup(){
-        GroupResource.getGroup({id: groupId}).$promise
+        GroupResource.get({id: groupId}).$promise
         .then(function(response){
           $scope.group = response
         })    
       }
 
       function updateGroup(){
-        GroupResource.editGroup($scope.group).$promise
+        GroupResource.update($scope.group).$promise
         .then(function(response){
           getGroup()
         })

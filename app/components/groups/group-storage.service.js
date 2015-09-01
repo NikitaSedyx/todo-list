@@ -4,9 +4,9 @@
 
     .service("GroupStorage", GroupStorage)
 
-  GroupStorage.$inject = ["GroupResource", "SessionService"]
+  GroupStorage.$inject = ["GroupResource", "SessionService", "TrashResource", "$state"]
 
-    function GroupStorage(GroupResource, SessionService){
+    function GroupStorage(GroupResource, SessionService, TrashResource, $state){
       var self = this
       self.groups = {
         data: [],
@@ -19,21 +19,27 @@
         "panel": panelLoader
       }
 
-      function loadData(params){
-        var view = sessionStorage.getItem("userView")
-        loaders[view](params)
+      var loadResources = {
+        "groups.list": GroupResource,
+        "trash.list": TrashResource
       }
 
-      function listLoader(params){
-        GroupResource.getGroups(params).$promise
+      function loadData(params){
+        var view = sessionStorage.getItem("userView")
+        var loadResource = loadResources[$state.current.name]
+        loaders[view](loadResource, params)
+      }
+
+      function listLoader(loadResource, params){
+        loadResource.get(params).$promise
         .then(function(response){
           self.groups.data = response.objects
           self.groups.totalItems = response.meta.total_count
         })  
       }
 
-      function panelLoader(params){
-        GroupResource.getGroups(params).$promise
+      function panelLoader(loadResource, params){
+        loadResource.get(params).$promise
         .then(function(response){
           _.forEach(response.objects, function(group){
             self.groups.data.push(group)

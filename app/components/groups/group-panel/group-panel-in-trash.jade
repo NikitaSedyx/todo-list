@@ -1,0 +1,15 @@
+.col-md-12(
+  masonry
+  infinite-scroll="loadData()"
+  infinite-scroll-immediate-check="false"
+)
+  div.col-md-3.group(
+    ng-repeat="group in groups.data"
+    ng-class="group.color"
+    ng-init="toolbar.class='invisible'"
+    ng-mouseover="toolbar.class='visible'"
+    ng-mouseleave="toolbar.class='invisible'"
+  )
+    include ../group-block.jade
+    include ../group-trash/toolbar.jade
+

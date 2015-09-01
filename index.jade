@@ -15,7 +15,7 @@ html(ng-app="todo")
     .container-fluid
       .row.top-menu
         .col-md-10.col-md-offset-1
-          .title.pull-left(ui-sref="tasks") Todo
+          .title.pull-left(ui-sref="groups.list") Todo
           .pull-right(ng-controller="LogoutController as logCtrl")
             .dropdown(ng-if="logCtrl.user.data")
               button.btn.dropdown-toggle(
