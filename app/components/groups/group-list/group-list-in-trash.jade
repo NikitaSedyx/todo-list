@@ -1,0 +1,17 @@
+.col-md-6.col-md-offset-3
+  div.col-md-12.group(
+    ng-repeat="group in groups.data"
+    ng-class="group.color"
+    ng-init="toolbar.class='invisible'"
+    ng-mouseover="toolbar.class='visible'"
+    ng-mouseleave="toolbar.class='invisible'"
+  )
+    include ../group-block.jade
+    include ../group-trash/toolbar.jade
+  pagination.pagination-sm.pull-left(
+    max-size=5
+    items-per-page="params.limit"
+    total-items="groups.totalItems"
+    ng-model="paginatorConfig.currentPage"
+    ng-change="paginatorConfig.changePage()"
+  )

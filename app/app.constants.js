@@ -16,6 +16,7 @@
       FILE: "/file/",
       UPLOAD: "upload/",
       LOGOUT: "/logout/",
-      LOGIN: "/login/"
+      LOGIN: "/login/",
+      TRASH: "/trash/"
     })
 })()

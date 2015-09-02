@@ -19,7 +19,7 @@
 
     function saveGroup() {
       self.group.users.push(SessionService.user.data)
-      return GroupResource.createGroup(self.group).$promise
+      return GroupResource.create(self.group).$promise
         .then(function(response){
           if(self.filesToUpload.length){
             FileService.upload(self.filesToUpload, response);

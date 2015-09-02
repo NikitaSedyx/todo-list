@@ -1,0 +1,26 @@
+.row(ng-controller="TrashController as trashCtrl")
+  .row
+    a.trash-logo
+      i.glyphicon.glyphicon-trash
+      span Trash
+    button.btn.btn-primary.pull-right.clear-trash(
+      type="button"
+      ng-click="trashCtrl.clearTrash()"
+    ) Clear trash
+  .row
+    .btn-group.switch.pull-right
+      label.btn.btn-primary(
+        ng-model="groupView"
+        btn-radio="'list'"
+        ng-change="changeGroupView()"
+      )
+        i.glyphicon.glyphicon-th-list
+      label.btn.btn-primary(
+        ng-model="groupView"
+        btn-radio="'panel'"
+        ng-change="changeGroupView()"
+      )
+        i.glyphicon.glyphicon-th
+  .row
+    div(ui-view="list", ng-if="groupView == 'list'")
+    div(ui-view="panel", ng-if="groupView == 'panel'")

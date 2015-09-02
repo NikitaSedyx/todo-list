@@ -8,7 +8,7 @@
 
     function GroupPanelController(GroupStorage, $scope){
       $scope.params.limit = 50
-
+      GroupStorage.groups.data = []
       $scope.loadData = loadData
       loadData()
 

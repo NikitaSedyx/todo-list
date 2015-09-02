@@ -4,21 +4,20 @@
 
     .service("GroupResource", function($resource, API){
       return $resource(API.BASE + API.GROUP + ":id/", {id: "@id"}, {
-        getGroups: {
-          method: "GET",
-          params: {id: null}
-        },
-        getGroup: {
+        get: {
           method: "GET"
         },
-        createGroup: {
+        create: {
           method: "POST"
         },
-        editGroup: {
+        update: {
           method: "PUT"
         },
-        deleteGroup: {
+        delete: {
           method: "DELETE"
+        },
+        patch: {
+          method: "PATCH"
         }
       })
     })
