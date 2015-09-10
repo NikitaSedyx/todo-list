@@ -1,0 +1,14 @@
+.pull-left.color-chooser(ng-controller="ColorFilterController as colorCtrl")
+  span Filter by colour:
+  select(
+    ng-class="colorCtrl.color"
+    ng-model="colorCtrl.color"
+    ng-change="colorCtrl.filter()"
+  )
+    option(value="") All
+    option.white(value="white")
+    option.green(value="green")
+    option.blue(value="blue")
+    option.orange(value="orange")
+    option.red(value="red")
+    option.yellow(value="yellow")
